@@ -13,16 +13,17 @@ suppressPackageStartupMessages({
   library(stringr)
   library(cli)
   library(eurostat)
+  library(openxlsx)
 })
 
 # ============================================================
 # 0) USER PARAMETERS
 # ============================================================
 
-years_target <- 2021:2023
+years_target <- 2018:2024
 fao_qty_path <- "./data/FAO/Aquaculture_Quantity.csv"
 fao_val_path <- "./data/FAO/Aquaculture_Value.csv"
-eumofa_path <- "./data/EUMOFA/Yearly_Aquaculture.csv"
+eumofa_path  <- "./data/EUMOFA/Yearly_Aquaculture.csv"
 
 # FAO → ISO2 mapping (expand later if needed)
 fao_to_iso2 <- tibble::tribble(
@@ -125,6 +126,7 @@ aquaculture_raw <- list(
 cli_h2("RAW TABLES READY — NO FILTERS APPLIED")
 print(lapply(aquaculture_raw, head))
 
+
 ##############################################################
 # UNIVERSAL JOIN + COMPARISON LAYER
 ##############################################################
@@ -149,8 +151,15 @@ harmonise_eurostat <- function(eu_df) {
       country_code = geo,
       environment = aquaenv
     ) %>%
-    group_by(country_code, year, unit, environment, aquameth, species, fishreg, freq) %>%
-    summarise(values = first(values), .groups = "drop") %>%
+    # KEEP ONLY TOTAL ROWS:
+    filter(
+      freq == "A",
+      species == "F00",       # TOTAL
+      fishreg == "0"          # TOTAL region
+      # aquameth: keep all (Eurostat does not always provide TOTAL)
+    ) %>%
+    group_by(country_code, year, unit, environment) %>%
+    summarise(values = sum(values, na.rm = TRUE), .groups = "drop") %>%
     mutate(
       measure = case_when(
         unit == "TLW" ~ "production_tonnes",
@@ -159,8 +168,7 @@ harmonise_eurostat <- function(eu_df) {
       source = "eurostat"
     ) %>%
     select(
-      country_code, year, measure, values, unit, source,
-      environment, aquameth, species, fishreg, freq
+      country_code, year, measure, values, unit, source, environment
     )
 }
 
@@ -177,10 +185,8 @@ harmonise_fao_qty <- function(df, map) {
     ) %>%
     left_join(map, by = "country_un_code") %>%
     mutate(country_code = coalesce(iso2, country_un_code)) %>%
-    select(
-      country_code, year, measure, values, unit, source,
-      environment, country_un_code
-    )
+    group_by(country_code, year, measure, unit, source, environment, country_un_code) %>%
+    summarise(values = sum(values, na.rm = TRUE), .groups = "drop")
 }
 
 harmonise_fao_val <- function(df, map) {
@@ -196,10 +202,8 @@ harmonise_fao_val <- function(df, map) {
     ) %>%
     left_join(map, by = "country_un_code") %>%
     mutate(country_code = coalesce(iso2, country_un_code)) %>%
-    select(
-      country_code, year, measure, values, unit, source,
-      environment, country_un_code
-    )
+    group_by(country_code, year, measure, unit, source, environment, country_un_code) %>%
+    summarise(values = sum(values, na.rm = TRUE), .groups = "drop")
 }
 
 harmonise_eumofa <- function(df) {
@@ -269,63 +273,111 @@ filter_freshwater <- function(long_tbl) {
 }
 
 # ============================================================
-# 3) FX CONVERSION: USD → EUR
+# 3) FX CONVERSION: USD → EUR (Improved)
 # ============================================================
 
 fx_path <- "./data/FX/usd_eur_rates.csv"
 
-if (file.exists(fx_path)) {
-  cli_h1("Loading FX rates from CSV")
-  fx_raw <- read_csv(fx_path, show_col_types = FALSE) %>% clean_names()
-  col_year <- if ("year" %in% names(fx_raw)) {
-    "year"
-  } else if ("period" %in% names(fx_raw)) {
-    "period"
-  } else {
-    stop("FX CSV must contain a year column")
+load_fx_table <- function(fx_path) {
+  if (!file.exists(fx_path)) {
+    cli_alert_warning("FX CSV not found — using fallback rates")
+    return(
+      tibble::tribble(
+        ~year, ~eur_per_usd,
+        2018, 0.85,
+        2019, 0.89,
+        2020, 0.88,
+        2021, 0.845,
+        2022, 0.95,
+        2023, 0.92,
+        2024, 0.93
+      )
+    )
   }
+
+  cli_h1("Loading FX rates from CSV")
+
+  fx_raw <- read_csv(fx_path, show_col_types = FALSE) %>% clean_names()
+
+  # Detect column names
+  year_col <- if ("year" %in% names(fx_raw)) "year" else "period"
+
   if ("eur_per_usd" %in% names(fx_raw)) {
-    fx_tbl <- fx_raw %>% transmute(
-      year = !!sym(col_year),
+    fx <- fx_raw %>% transmute(
+      year = as.integer(.data[[year_col]]),
       eur_per_usd = as.numeric(eur_per_usd)
     )
   } else if ("usd_per_eur" %in% names(fx_raw)) {
-    fx_tbl <- fx_raw %>% transmute(
-      year = !!sym(col_year),
+    fx <- fx_raw %>% transmute(
+      year = as.integer(.data[[year_col]]),
       eur_per_usd = 1 / as.numeric(usd_per_eur)
     )
   } else {
-    stop("FX CSV missing expected columns")
+    stop("FX file missing eur_per_usd or usd_per_eur")
   }
-  cli_alert_success("FX table loaded")
-} else {
-  cli_alert_warning("FX CSV not found — using fallback rates")
-  fx_tbl <- tibble::tribble(
-    ~year, ~eur_per_usd,
-    2021, 0.845,
-    2022, 0.950,
-    2023, 0.920
-  )
+
+  # Fill missing years using nearest value
+  all_years <- tibble(year = 2010:2030)
+  fx <- all_years %>%
+    left_join(fx, by = "year") %>%
+    tidyr::fill(eur_per_usd, .direction = "downup")
+
+  cli_alert_success("FX table loaded and expanded")
+  return(fx)
 }
 
+fx_tbl <- load_fx_table(fx_path)
+
+# Convert FAO USD → EUR
 fao_v_long_fx <- fao_v_long %>%
   left_join(fx_tbl, by = "year") %>%
   mutate(
     production_value_eur_fao = values * eur_per_usd,
-    measure = "production_value_eur_fao",
     unit = "EUR",
+    measure = "production_value_eur_fao",
     source = "fao_value_eur_converted"
   ) %>%
-  transmute(country_code, year, measure,
+  transmute(
+    country_code, year, measure,
     values = production_value_eur_fao,
     unit, source, environment, country_un_code
   )
 
-all_long_fx <- bind_rows(all_long, fao_v_long_fx) %>%
-  arrange(country_code, year, measure, source)
+all_long_fx <- bind_rows(all_long, fao_v_long_fx)
 
 cli_h2("LONG table updated with FX‑converted FAO EUR values")
 print(head(all_long_fx, 20))
+
+
+# ============================================================
+# UNIT SANITY CHECK
+# ============================================================
+
+cli_h2("Checking for unit inconsistencies (kg vs tonnes)")
+
+unit_check <- all_long_fx %>%
+  filter(measure == "production_tonnes") %>%
+  group_by(country_code, year, source) %>%
+  summarise(value_tonnes = sum(values, na.rm = TRUE), .groups = "drop") %>%
+  tidyr::pivot_wider(
+    id_cols   = c(country_code, year),
+    names_from = source,
+    values_from = value_tonnes
+  ) %>%
+  # Make sure there are no NA's
+  mutate(
+    eurostat   = coalesce(eurostat, 0),
+    fao_quantity = coalesce(fao_quantity, 0),
+    eumofa     = coalesce(eumofa, 0)
+  ) %>%
+  mutate(
+    suspicious_fao  = (fao_quantity > 1e6) & (eurostat < 1e4),
+    suspicious_eumo = (eumofa       > 1e6) & (eurostat < 1e4)
+  )
+
+cli_h2("Suspicious unit mismatches (if any)")
+print(unit_check %>% filter(suspicious_fao | suspicious_eumo))
+
 
 # ============================================================
 # 4) COMPARISON BUILDER (WITH FIX A: PRE-AGGREGATION)
@@ -429,11 +481,124 @@ print(head(comparison_fx_focus, 20))
 
 # Freshwater-only comparison
 fw_long_fx <- filter_freshwater(all_long_fx)
+
 comparison_fw_fx <- build_comparison(
   long_tbl  = fw_long_fx,
   years     = years_target,
   countries = c("HU", "NL", "RO", "BE", "HR"),
   tolerance = 0.30
 )
+
 cli_h2("Freshwater-only comparison ready")
 print(head(comparison_fw_fx, 20))
+
+
+# ============================================================
+# 6) EUROPE SUMMARY TABLE
+# ============================================================
+
+# 6.1 Aggregate to country-year-source-measure totals and pivot wider
+totals_wide <- all_long_fx %>%
+  filter(year %in% years_target) %>%
+  mutate(values = as.numeric(values)) %>%
+  group_by(country_code, year, source, measure) %>%
+  summarise(values = sum(values, na.rm = TRUE), .groups = "drop") %>%
+  pivot_wider(
+    id_cols   = c(country_code, year),
+    names_from  = c(source, measure),
+    values_from = values
+  )
+
+# 6.2 Ensure expected columns exist (fill with NA if absent)
+ensure_cols <- c(
+  "eurostat_production_tonnes",
+  "fao_quantity_production_tonnes",
+  "eumofa_production_tonnes",
+  "eurostat_production_value_eur",
+  "eumofa_production_value_eur",
+  "fao_value_eur_converted_production_value_eur_fao"
+)
+for (col in ensure_cols) {
+  if (!col %in% names(totals_wide)) totals_wide[[col]] <- NA_real_
+}
+
+# 6.3 Create the simplified/clarified columns and reorder for readability
+summary_simple <- totals_wide %>%
+  transmute(
+    country_code,
+    year,
+    eurostat_production = eurostat_production_tonnes,
+    fao_production      = fao_quantity_production_tonnes,
+    eumofa_production   = eumofa_production_tonnes,
+    eurostat_value      = eurostat_production_value_eur,
+    fao_value           = fao_value_eur_converted_production_value_eur_fao,
+    eumofa_value        = eumofa_production_value_eur
+  )
+
+# 6.4 Filter to European countries (EU + EFTA + UK/GB)
+eu_iso2   <- unique(eurostat::eu_countries$code)
+efta_iso2 <- unique(eurostat::efta_countries$code)
+europe_codes <- unique(c(eu_iso2, efta_iso2, "UK", "GB"))
+
+summary_europe <- summary_simple %>%
+  mutate(across(where(is.numeric), ~ round(.x, 0))) %>%
+  filter(country_code %in% europe_codes,
+         year %in% c(2021L, 2022L, 2023L, 2024L)) %>%
+  arrange(country_code, year)
+
+cli_h2("European summary — production and value")
+print(head(summary_europe, 60))
+
+write.xlsx(summary_europe, "Europe_summary.xlsx", sheetName = "data")
+
+# ============================================================
+# 7) FRESHWATER SUMMARY TABLE (European countries only)
+# ============================================================
+
+cli_h1("Building freshwater summary for Europe")
+
+fw_long_summary <- filter_freshwater(all_long_fx)
+
+fw_totals <- fw_long_summary %>%
+  filter(year %in% years_target) %>%
+  mutate(values = as.numeric(values)) %>%
+  group_by(country_code, year, source, measure) %>%
+  summarise(values = sum(values, na.rm = TRUE), .groups = "drop") %>%
+  pivot_wider(
+    id_cols   = c(country_code, year),
+    names_from  = c(source, measure),
+    values_from = values
+  )
+
+# Ensure expected columns exist
+ensure_cols <- c(
+  "eurostat_production_tonnes",
+  "fao_quantity_production_tonnes",
+  "eumofa_production_tonnes",
+  "eurostat_production_value_eur",
+  "eumofa_production_value_eur",
+  "fao_value_eur_converted_production_value_eur_fao"
+)
+for (col in ensure_cols) {
+  if (!col %in% names(fw_totals)) fw_totals[[col]] <- NA_real_
+}
+
+fw_summary <- fw_totals %>%
+  transmute(
+    country_code,
+    year,
+    eurostat_production = eurostat_production_tonnes,
+    fao_production      = fao_quantity_production_tonnes,
+    eumofa_production   = eumofa_production_tonnes,
+    eurostat_value      = eurostat_production_value_eur,
+    fao_value           = fao_value_eur_converted_production_value_eur_fao,
+    eumofa_value        = eumofa_production_value_eur
+  ) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 0))) %>%
+  filter(country_code %in% europe_codes) %>%
+  arrange(country_code, year)
+
+cli_h2("Freshwater summary — Europe")
+print(head(fw_summary, 60))
+
+write.xlsx(fw_summary, "Europe_freshwater_summary.xlsx", sheetName = "data")
