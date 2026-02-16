@@ -237,12 +237,14 @@ print(head(comparison_fw_fx, 20))
 
 
 # ============================================================
-# 6) EUROPE SUMMARY TABLE
+# NEW: EUROPE SUMMARY (2018–2024, all countries with any data)
 # ============================================================
 
-# 6.1 Aggregate to country-year-source-measure totals and pivot wider
+years_consistent <- 2018:2024
+
+# 1) Aggregate to country–year–source–measure totals
 totals_wide <- all_long_fx %>%
-  filter(year %in% years_target) %>%
+  filter(year %in% years_consistent) %>%
   mutate(values = as.numeric(values)) %>%
   group_by(country_code, year, source, measure) %>%
   summarise(values = sum(values, na.rm = TRUE), .groups = "drop") %>%
@@ -252,7 +254,7 @@ totals_wide <- all_long_fx %>%
     values_from = values
   )
 
-# 6.2 Ensure expected columns exist (fill with NA if absent)
+# 2) Ensure expected columns exist
 ensure_cols <- c(
   "eurostat_production_tonnes",
   "fao_quantity_production_tonnes",
@@ -265,7 +267,7 @@ for (col in ensure_cols) {
   if (!col %in% names(totals_wide)) totals_wide[[col]] <- NA_real_
 }
 
-# 6.3 Create the simplified/clarified columns and reorder for readability
+# 3) Make simplified summary table
 summary_simple <- totals_wide %>%
   transmute(
     country_code,
@@ -276,34 +278,38 @@ summary_simple <- totals_wide %>%
     eurostat_value      = eurostat_production_value_eur,
     fao_value           = fao_value_eur_converted_production_value_eur_fao,
     eumofa_value        = eumofa_production_value_eur
-  )
+  ) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 0)))
 
-# 6.4 Filter to European countries (EU + EFTA + UK/GB)
+# 4) European country filter
 eu_iso2   <- unique(eurostat::eu_countries$code)
 efta_iso2 <- unique(eurostat::efta_countries$code)
 europe_codes <- unique(c(eu_iso2, efta_iso2, "UK", "GB"))
 
+# 5) NEW RULE: Keep all countries that report *anything* in 2018–2024
 summary_europe <- summary_simple %>%
-  mutate(across(where(is.numeric), ~ round(.x, 0))) %>%
-  filter(country_code %in% europe_codes,
-         year %in% c(2021L, 2022L, 2023L, 2024L)) %>%
+  filter(country_code %in% europe_codes) %>%
+  group_by(country_code) %>%
+  filter(any(!is.na(eurostat_production) |
+               !is.na(fao_production) |
+               !is.na(eumofa_production) |
+               !is.na(eurostat_value) |
+               !is.na(fao_value) |
+               !is.na(eumofa_value))) %>%
+  ungroup() %>%
   arrange(country_code, year)
-
-cli_h2("European summary — production and value")
-print(head(summary_europe, 60))
 
 write.xlsx(summary_europe, "output/Europe_summary.xlsx", sheetName = "data")
 
-# ============================================================
-# 7) FRESHWATER SUMMARY TABLE (European countries only)
-# ============================================================
 
-cli_h1("Building freshwater summary for Europe")
+# ============================================================
+# NEW: FRESHWATER SUMMARY (2018–2024, all countries with any data)
+# ============================================================
 
 fw_long_summary <- filter_freshwater(all_long_fx)
 
 fw_totals <- fw_long_summary %>%
-  filter(year %in% years_target) %>%
+  filter(year %in% years_consistent) %>%
   mutate(values = as.numeric(values)) %>%
   group_by(country_code, year, source, measure) %>%
   summarise(values = sum(values, na.rm = TRUE), .groups = "drop") %>%
@@ -313,15 +319,7 @@ fw_totals <- fw_long_summary %>%
     values_from = values
   )
 
-# Ensure expected columns exist
-ensure_cols <- c(
-  "eurostat_production_tonnes",
-  "fao_quantity_production_tonnes",
-  "eumofa_production_tonnes",
-  "eurostat_production_value_eur",
-  "eumofa_production_value_eur",
-  "fao_value_eur_converted_production_value_eur_fao"
-)
+# Ensure required columns exist
 for (col in ensure_cols) {
   if (!col %in% names(fw_totals)) fw_totals[[col]] <- NA_real_
 }
@@ -339,10 +337,17 @@ fw_summary <- fw_totals %>%
   ) %>%
   mutate(across(where(is.numeric), ~ round(.x, 0))) %>%
   filter(country_code %in% europe_codes) %>%
-  arrange(country_code, year)
 
-cli_h2("Freshwater summary — Europe")
-print(head(fw_summary, 60))
+  # NEW RULE: Drop countries with absolutely no freshwater data
+  group_by(country_code) %>%
+  filter(any(!is.na(eurostat_production) |
+               !is.na(fao_production) |
+               !is.na(eumofa_production) |
+               !is.na(eurostat_value) |
+               !is.na(fao_value) |
+               !is.na(eumofa_value))) %>%
+  ungroup() %>%
+  arrange(country_code, year)
 
 write.xlsx(fw_summary, "output/Europe_freshwater_summary.xlsx", sheetName = "data")
 
