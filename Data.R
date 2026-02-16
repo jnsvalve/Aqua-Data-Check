@@ -292,7 +292,7 @@ summary_europe <- summary_simple %>%
 cli_h2("European summary — production and value")
 print(head(summary_europe, 60))
 
-write.xlsx(summary_europe, "Europe_summary.xlsx", sheetName = "data")
+write.xlsx(summary_europe, "output/Europe_summary.xlsx", sheetName = "data")
 
 # ============================================================
 # 7) FRESHWATER SUMMARY TABLE (European countries only)
@@ -344,7 +344,7 @@ fw_summary <- fw_totals %>%
 cli_h2("Freshwater summary — Europe")
 print(head(fw_summary, 60))
 
-write.xlsx(fw_summary, "Europe_freshwater_summary.xlsx", sheetName = "data")
+write.xlsx(fw_summary, "output/Europe_freshwater_summary.xlsx", sheetName = "data")
 
 
 # ============================================================
