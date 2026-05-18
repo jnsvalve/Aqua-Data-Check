@@ -37,9 +37,6 @@ fao_to_iso2 <- tibble::tribble(
   "191", "HR"
 )
 
-# Null-coalescing helper
-`%||%` <- function(a, b) if (!is.null(a)) a else b
-
 # (Optional) diagnostics: find duplicates by country-year-source-measure
 inspect_duplicates <- function(long_tbl) {
   long_tbl %>%
@@ -161,14 +158,13 @@ fx_tbl <- load_fx_table(fx_path)
 fao_v_long_fx <- fao_v_long %>%
   left_join(fx_tbl, by = "year") %>%
   mutate(
-    production_value_eur_fao = values * eur_per_usd,
-    unit = "EUR",
-    measure = "production_value_eur_fao",
-    source = "fao_value_eur_converted"
+    unit    = "EUR",
+    measure = "production_value_eur",
+    source  = "fao_eur"
   ) %>%
   transmute(
     country_code, year, measure,
-    values = production_value_eur_fao,
+    values = values * eur_per_usd,
     unit, source, environment, country_un_code
   )
 
@@ -205,7 +201,11 @@ unit_check <- all_long_fx %>%
   )
 
 cli_h2("Suspicious unit mismatches (if any)")
-print(unit_check %>% filter(suspicious_fao | suspicious_eumo))
+suspicious <- unit_check %>% filter(suspicious_fao | suspicious_eumo)
+if (nrow(suspicious) > 0) {
+  cli_alert_danger("{nrow(suspicious)} suspicious unit mismatch(es) detected — verify raw data before using results")
+}
+print(suspicious)
 
 
 # ============================================================
@@ -237,118 +237,27 @@ print(head(comparison_fw_fx, 20))
 
 
 # ============================================================
-# NEW: EUROPE SUMMARY (2018–2024, all countries with any data)
+# EUROPE SUMMARY (2018–2024, all countries with any data)
 # ============================================================
 
 years_consistent <- 2018:2024
 
-# 1) Aggregate to country–year–source–measure totals
-totals_wide <- all_long_fx %>%
-  filter(year %in% years_consistent) %>%
-  mutate(values = as.numeric(values)) %>%
-  group_by(country_code, year, source, measure) %>%
-  summarise(values = sum(values, na.rm = TRUE), .groups = "drop") %>%
-  pivot_wider(
-    id_cols   = c(country_code, year),
-    names_from  = c(source, measure),
-    values_from = values
-  )
-
-# 2) Ensure expected columns exist
-ensure_cols <- c(
-  "eurostat_production_tonnes",
-  "fao_quantity_production_tonnes",
-  "eumofa_production_tonnes",
-  "eurostat_production_value_eur",
-  "eumofa_production_value_eur",
-  "fao_value_eur_converted_production_value_eur_fao"
-)
-for (col in ensure_cols) {
-  if (!col %in% names(totals_wide)) totals_wide[[col]] <- NA_real_
-}
-
-# 3) Make simplified summary table
-summary_simple <- totals_wide %>%
-  transmute(
-    country_code,
-    year,
-    eurostat_production = eurostat_production_tonnes,
-    fao_production      = fao_quantity_production_tonnes,
-    eumofa_production   = eumofa_production_tonnes,
-    eurostat_value      = eurostat_production_value_eur,
-    fao_value           = fao_value_eur_converted_production_value_eur_fao,
-    eumofa_value        = eumofa_production_value_eur
-  ) %>%
-  mutate(across(where(is.numeric), ~ round(.x, 0)))
-
-# 4) European country filter
-eu_iso2   <- unique(eurostat::eu_countries$code)
-efta_iso2 <- unique(eurostat::efta_countries$code)
+eu_iso2      <- unique(eurostat::eu_countries$code)
+efta_iso2    <- unique(eurostat::efta_countries$code)
 europe_codes <- unique(c(eu_iso2, efta_iso2, "UK", "GB"))
 
-# 5) NEW RULE: Keep all countries that report *anything* in 2018–2024
-summary_europe <- summary_simple %>%
-  filter(country_code %in% europe_codes) %>%
-  group_by(country_code) %>%
-  filter(any(!is.na(eurostat_production) |
-               !is.na(fao_production) |
-               !is.na(eumofa_production) |
-               !is.na(eurostat_value) |
-               !is.na(fao_value) |
-               !is.na(eumofa_value))) %>%
-  ungroup() %>%
-  arrange(country_code, year)
+dir.create("./output", showWarnings = FALSE, recursive = TRUE)
 
+summary_europe <- build_summary_table(all_long_fx, years_consistent, europe_codes)
 write.xlsx(summary_europe, "output/Europe_summary.xlsx", sheetName = "data")
 
 
 # ============================================================
-# NEW: FRESHWATER SUMMARY (2018–2024, all countries with any data)
+# FRESHWATER SUMMARY (2018–2024, all countries with any data)
 # ============================================================
 
 fw_long_summary <- filter_freshwater(all_long_fx)
-
-fw_totals <- fw_long_summary %>%
-  filter(year %in% years_consistent) %>%
-  mutate(values = as.numeric(values)) %>%
-  group_by(country_code, year, source, measure) %>%
-  summarise(values = sum(values, na.rm = TRUE), .groups = "drop") %>%
-  pivot_wider(
-    id_cols   = c(country_code, year),
-    names_from  = c(source, measure),
-    values_from = values
-  )
-
-# Ensure required columns exist
-for (col in ensure_cols) {
-  if (!col %in% names(fw_totals)) fw_totals[[col]] <- NA_real_
-}
-
-fw_summary <- fw_totals %>%
-  transmute(
-    country_code,
-    year,
-    eurostat_production = eurostat_production_tonnes,
-    fao_production      = fao_quantity_production_tonnes,
-    eumofa_production   = eumofa_production_tonnes,
-    eurostat_value      = eurostat_production_value_eur,
-    fao_value           = fao_value_eur_converted_production_value_eur_fao,
-    eumofa_value        = eumofa_production_value_eur
-  ) %>%
-  mutate(across(where(is.numeric), ~ round(.x, 0))) %>%
-  filter(country_code %in% europe_codes) %>%
-
-  # NEW RULE: Drop countries with absolutely no freshwater data
-  group_by(country_code) %>%
-  filter(any(!is.na(eurostat_production) |
-               !is.na(fao_production) |
-               !is.na(eumofa_production) |
-               !is.na(eurostat_value) |
-               !is.na(fao_value) |
-               !is.na(eumofa_value))) %>%
-  ungroup() %>%
-  arrange(country_code, year)
-
+fw_summary      <- build_summary_table(fw_long_summary, years_consistent, europe_codes)
 write.xlsx(fw_summary, "output/Europe_freshwater_summary.xlsx", sheetName = "data")
 
 

@@ -1,3 +1,16 @@
+# Null-coalescing helper — defined here so functions.R is self-contained
+`%||%` <- function(a, b) if (!is.null(a)) a else b
+
+# Expected pivot_wider column names — single source of truth shared across functions
+.ENSURE_COLS <- c(
+  "eurostat_production_tonnes",
+  "fao_quantity_production_tonnes",
+  "eumofa_production_tonnes",
+  "eurostat_production_value_eur",
+  "eumofa_production_value_eur",
+  "fao_eur_production_value_eur"
+)
+
 # ============================================================
 # 1) HARMONISATION
 # ============================================================
@@ -40,6 +53,9 @@ harmonise_eurostat <- function(eu_df) {
 }
 
 harmonise_fao_qty <- function(df, map) {
+  n_fail <- sum(is.na(suppressWarnings(as.numeric(df$value)))) - sum(is.na(df$value))
+  if (n_fail > 0) cli_alert_warning("FAO quantity: {n_fail} non-numeric value(s) coerced to NA")
+
   df %>%
     transmute(
       country_un_code = as.character(country_un_code),
@@ -57,6 +73,9 @@ harmonise_fao_qty <- function(df, map) {
 }
 
 harmonise_fao_val <- function(df, map) {
+  n_fail <- sum(is.na(suppressWarnings(as.numeric(df$value)))) - sum(is.na(df$value))
+  if (n_fail > 0) cli_alert_warning("FAO value: {n_fail} non-numeric value(s) coerced to NA")
+
   df %>%
     transmute(
       country_un_code = as.character(country_un_code),
@@ -77,6 +96,11 @@ harmonise_fao_val <- function(df, map) {
 }
 
 harmonise_eumofa <- function(df) {
+  n_fail_vol <- sum(is.na(suppressWarnings(as.numeric(df$volume_kg)))) - sum(is.na(df$volume_kg))
+  n_fail_val <- sum(is.na(suppressWarnings(as.numeric(df$value_eur)))) - sum(is.na(df$value_eur))
+  if (n_fail_vol > 0) cli_alert_warning("EUMOFA: {n_fail_vol} volume_kg value(s) coerced to NA")
+  if (n_fail_val > 0) cli_alert_warning("EUMOFA: {n_fail_val} value_eur value(s) coerced to NA")
+
   tonnes <- df %>%
     transmute(
       country_code = toupper(country),
@@ -118,15 +142,18 @@ filter_freshwater <- function(long_tbl) {
   fao_v_fw <- long_tbl %>%
     filter(source == "fao_value", environment == "IN")
 
-  # FAO freshwater (IN) — EUR converted values (this was missing before)
+  # FAO freshwater (IN) — EUR converted values
   fao_v_fx_fw <- long_tbl %>%
-    filter(source == "fao_value_eur_converted", environment == "IN")
+    filter(source == "fao_eur", environment == "IN")
 
   # EUMOFA freshwater: identify using commodity_group text
   eumo_fw <- long_tbl %>%
     filter(source == "eumofa") %>%
     filter(is.na(commodity_group) |
              str_detect(tolower(commodity_group), "fresh|inland"))
+
+  n_eumo_fw <- nrow(eumo_fw)
+  cli_alert_info("EUMOFA freshwater rows matched: {n_eumo_fw} (via 'fresh|inland' in commodity_group)")
 
   bind_rows(es_fw, fao_q_fw, fao_v_fw, fao_v_fx_fw, eumo_fw) %>%
     arrange(country_code, year, measure, source)
@@ -209,18 +236,15 @@ build_comparison <- function(long_tbl, years = NULL, countries = NULL, tolerance
     arrange(country_code, year)
 
   # Ensure required columns exist (create as NA_real_ if missing)
-  ensure_cols <- c(
-    "eurostat_production_tonnes",
-    "fao_quantity_production_tonnes",
-    "eumofa_production_tonnes",
-    "eurostat_production_value_eur",
-    "eumofa_production_value_eur",
-    "fao_value_eur_converted_production_value_eur_fao"
-  )
-  for (col in ensure_cols) {
+  for (col in .ENSURE_COLS) {
     if (!col %in% names(cmp_wide)) {
       cmp_wide[[col]] <- NA_real_
     }
+  }
+
+  # Warn if FAO EUR value column is all-NA (FX conversion may not have run)
+  if (all(is.na(cmp_wide[["fao_eur_production_value_eur"]]))) {
+    cli_alert_warning("build_comparison: 'fao_eur_production_value_eur' is all-NA — FAO USD\u2192EUR conversion may not have run")
   }
 
   # TONNES ratios
@@ -235,7 +259,7 @@ build_comparison <- function(long_tbl, years = NULL, countries = NULL, tolerance
     mutate(
       ratio_es_fao_val =
         eurostat_production_value_eur /
-        fao_value_eur_converted_production_value_eur_fao,
+        fao_eur_production_value_eur,
 
       ratio_es_eumo_val =
         eurostat_production_value_eur /
@@ -322,4 +346,48 @@ export_fw_consistency <- function(fw_summary,
 
   message("✔ Consistency CSV written to: ", out_path)
   return(consistency_tbl)
+}
+
+# ============================================================
+# FUNCTION: Build country-year summary table (shared by Europe and freshwater)
+# ============================================================
+
+build_summary_table <- function(long_fx, years, europe_codes) {
+  totals_wide <- long_fx %>%
+    filter(year %in% years) %>%
+    mutate(values = as.numeric(values)) %>%
+    group_by(country_code, year, source, measure) %>%
+    summarise(values = sum(values, na.rm = TRUE), .groups = "drop") %>%
+    pivot_wider(
+      id_cols     = c(country_code, year),
+      names_from  = c(source, measure),
+      values_from = values
+    )
+
+  for (col in .ENSURE_COLS) {
+    if (!col %in% names(totals_wide)) totals_wide[[col]] <- NA_real_
+  }
+
+  totals_wide %>%
+    transmute(
+      country_code,
+      year,
+      eurostat_production = eurostat_production_tonnes,
+      fao_production      = fao_quantity_production_tonnes,
+      eumofa_production   = eumofa_production_tonnes,
+      eurostat_value      = eurostat_production_value_eur,
+      fao_value           = fao_eur_production_value_eur,
+      eumofa_value        = eumofa_production_value_eur
+    ) %>%
+    mutate(across(where(is.numeric), ~ round(.x, 0))) %>%
+    filter(country_code %in% europe_codes) %>%
+    group_by(country_code) %>%
+    filter(any(!is.na(eurostat_production) |
+                 !is.na(fao_production) |
+                 !is.na(eumofa_production) |
+                 !is.na(eurostat_value) |
+                 !is.na(fao_value) |
+                 !is.na(eumofa_value))) %>%
+    ungroup() %>%
+    arrange(country_code, year)
 }
