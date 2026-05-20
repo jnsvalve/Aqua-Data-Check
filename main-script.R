@@ -6,14 +6,29 @@
 ##############################################################
 
 suppressPackageStartupMessages({
+  required_pkgs <- c(
+    "dplyr", "readr", "tidyr", "janitor", "stringr", "cli", "openxlsx", "countrycode"
+  )
+  missing_pkgs <- required_pkgs[!vapply(required_pkgs, requireNamespace, logical(1), quietly = TRUE)]
+  if (length(missing_pkgs) > 0) {
+    message("Installing missing package(s): ", paste(missing_pkgs, collapse = ", "))
+    install.packages(missing_pkgs, repos = "https://cloud.r-project.org")
+  }
+
   library(dplyr)
   library(readr)
   library(tidyr)
   library(janitor)
   library(stringr)
   library(cli)
-  library(eurostat)
   library(openxlsx)
+
+  has_eurostat <- requireNamespace("eurostat", quietly = TRUE)
+  if (has_eurostat) {
+    library(eurostat)
+  } else {
+    cli::cli_alert_warning("Package 'eurostat' is not available. Running in FAO/EUMOFA-only mode.")
+  }
 })
 
 source("R/functions.R")
@@ -22,7 +37,7 @@ source("R/functions.R")
 # 0) USER PARAMETERS
 # ============================================================
 
-years_target <- 2018:2024
+years_target <- 2018:2025
 fao_qty_path <- "./data/FAO/Aquaculture_Quantity.csv"
 fao_val_path <- "./data/FAO/Aquaculture_Value.csv"
 eumofa_path  <- "./data/EUMOFA/Yearly_Aquaculture.csv"
@@ -31,7 +46,7 @@ fao_iso2_overrides_path <- "./data/FAO/fao_iso2_overrides.csv"
 
 # Optional FAO UN→ISO2 overrides (only if you need manual corrections)
 fao_to_iso2 <- if (file.exists(fao_iso2_overrides_path)) {
-  read_csv(fao_iso2_overrides_path, show_col_types = FALSE) %>%
+  read_csv_safe(fao_iso2_overrides_path) %>%
     clean_names() %>%
     transmute(country_un_code = as.character(country_un_code), iso2 = toupper(iso2))
 } else {
@@ -52,38 +67,39 @@ inspect_duplicates <- function(long_tbl) {
 
 cli_h1("EUROSTAT AQUACULTURE — RAW DATA")
 
-eu_raw <- tryCatch(
-  {
-    get_eurostat(
-      id = "fish_aq2a",
-      time_format = "num",
-      cache = TRUE
-    )
-  },
-  error = function(e1) {
-    cli_alert_warning("Eurostat fetch failed on first attempt: {conditionMessage(e1)}")
-    cli_alert_info("Retrying with cache refresh enabled...")
-    tryCatch(
-      {
-        get_eurostat(
-          id = "fish_aq2a",
-          time_format = "num",
-          cache = TRUE,
-          update_cache = TRUE
-        )
-      },
-      error = function(e2) {
-        stop(
-          paste0(
-            "Eurostat download failed for dataset 'fish_aq2a'. ",
-            "Check internet/proxy/firewall and try again. Last error: ",
-            conditionMessage(e2)
+eu_raw <- if (has_eurostat) {
+  tryCatch(
+    {
+      get_eurostat(
+        id = "fish_aq2a",
+        time_format = "num",
+        cache = TRUE
+      )
+    },
+    error = function(e1) {
+      cli_alert_warning("Eurostat fetch failed on first attempt: {conditionMessage(e1)}")
+      cli_alert_info("Retrying with cache refresh enabled...")
+      tryCatch(
+        {
+          get_eurostat(
+            id = "fish_aq2a",
+            time_format = "num",
+            cache = TRUE,
+            update_cache = TRUE
           )
-        )
-      }
-    )
-  }
-)
+        },
+        error = function(e2) {
+          cli_alert_warning(
+            "Eurostat download failed for dataset 'fish_aq2a'. Continuing without Eurostat data. Last error: {conditionMessage(e2)}"
+          )
+          tibble()
+        }
+      )
+    }
+  )
+} else {
+  tibble()
+}
 
 eu_clean <- eu_raw %>% clean_names()
 
@@ -96,11 +112,9 @@ print(head(eu_clean, 5))
 
 cli_h1("FAO AQUACULTURE — RAW QUANTITY")
 
-fao_qty_raw <- read_csv(
+fao_qty_raw <- read_csv_safe(
   fao_qty_path,
-  locale = locale(decimal_mark = "."),
-  guess_max = 500000,
-  show_col_types = FALSE
+  decimal_mark = "."
 ) %>% clean_names()
 
 cli_alert_info("FAO Quantity columns:")
@@ -109,11 +123,9 @@ cli_alert_success("FAO Quantity rows: {nrow(fao_qty_raw)}")
 
 cli_h1("FAO AQUACULTURE — RAW VALUE")
 
-fao_val_raw <- read_csv(
+fao_val_raw <- read_csv_safe(
   fao_val_path,
-  locale = locale(decimal_mark = "."),
-  guess_max = 500000,
-  show_col_types = FALSE
+  decimal_mark = "."
 ) %>% clean_names()
 
 cli_alert_info("FAO Value columns:")
@@ -126,13 +138,10 @@ cli_alert_success("FAO Value rows: {nrow(fao_val_raw)}")
 
 cli_h1("EUMOFA AQUACULTURE — RAW DATA")
 
-eumofa_raw <- read_delim(
+eumofa_raw <- read_delim_safe(
   eumofa_path,
   delim = ";",
-  locale = locale(decimal_mark = ".", grouping_mark = ""),
-  trim_ws = TRUE,
-  guess_max = 500000,
-  show_col_types = FALSE
+  decimal_mark = "."
 ) %>% clean_names()
 
 cli_alert_info("EUMOFA columns:")
@@ -212,7 +221,7 @@ if (!file.exists(fao_species_path)) {
   stop("FAO species lookup file missing: ", fao_species_path)
 }
 
-fao_species <- read_csv(fao_species_path, show_col_types = FALSE) %>%
+fao_species <- read_csv_safe(fao_species_path) %>%
   clean_names() %>%
   transmute(
     species_alpha_3_code = x3a_code,
@@ -348,7 +357,13 @@ unit_check <- all_long_fx %>%
     id_cols   = c(country_code, year),
     names_from = source,
     values_from = value_tonnes
-  ) %>%
+  )
+
+for (src_col in c("eurostat", "fao_quantity", "eumofa")) {
+  if (!src_col %in% names(unit_check)) unit_check[[src_col]] <- NA_real_
+}
+
+unit_check <- unit_check %>%
   # Make sure there are no NA's
   mutate(
     eurostat   = coalesce(eurostat, 0),
@@ -402,8 +417,18 @@ print(head(comparison_fw_fx, 20))
 
 years_consistent <- 2018:2024
 
-eu_iso2      <- unique(eurostat::eu_countries$code)
-efta_iso2    <- unique(eurostat::efta_countries$code)
+if (has_eurostat) {
+  eu_iso2   <- unique(eurostat::eu_countries$code)
+  efta_iso2 <- unique(eurostat::efta_countries$code)
+} else {
+  # Fallback list keeps summary usable when eurostat package/API is unavailable.
+  eu_iso2 <- c(
+    "AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR",
+    "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO",
+    "SE", "SI", "SK"
+  )
+  efta_iso2 <- c("IS", "LI", "NO", "CH")
+}
 europe_codes <- unique(c(eu_iso2, efta_iso2, "UK", "GB"))
 
 dir.create("./output", showWarnings = FALSE, recursive = TRUE)

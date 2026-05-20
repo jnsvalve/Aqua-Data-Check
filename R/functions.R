@@ -1,6 +1,85 @@
 # Null-coalescing helper — defined here so functions.R is self-contained
 `%||%` <- function(a, b) if (!is.null(a)) a else b
 
+read_csv_safe <- function(path, decimal_mark = ".") {
+  if (requireNamespace("readr", quietly = TRUE)) {
+    out <- tryCatch(
+      readr::read_csv(
+        path,
+        locale = readr::locale(decimal_mark = decimal_mark),
+        guess_max = 500000,
+        show_col_types = FALSE
+      ),
+      error = function(e) {
+        cli::cli_alert_warning("readr::read_csv failed for {path}. Falling back to base::read.csv. Error: {conditionMessage(e)}")
+        NULL
+      }
+    )
+    if (!is.null(out)) return(out)
+  }
+
+  tibble::as_tibble(
+    utils::read.csv(
+      path,
+      stringsAsFactors = FALSE,
+      check.names = FALSE,
+      dec = decimal_mark
+    )
+  )
+}
+
+read_delim_safe <- function(path, delim = ";", decimal_mark = ".") {
+  if (requireNamespace("readr", quietly = TRUE)) {
+    out <- tryCatch(
+      readr::read_delim(
+        path,
+        delim = delim,
+        locale = readr::locale(decimal_mark = decimal_mark, grouping_mark = ""),
+        trim_ws = TRUE,
+        guess_max = 500000,
+        show_col_types = FALSE
+      ),
+      error = function(e) {
+        cli::cli_alert_warning("readr::read_delim failed for {path}. Falling back to base::read.table. Error: {conditionMessage(e)}")
+        NULL
+      }
+    )
+    if (!is.null(out)) return(out)
+  }
+
+  tibble::as_tibble(
+    utils::read.table(
+      path,
+      sep = delim,
+      header = TRUE,
+      stringsAsFactors = FALSE,
+      check.names = FALSE,
+      dec = decimal_mark,
+      quote = "\"",
+      comment.char = ""
+    )
+  )
+}
+
+write_csv_safe <- function(df, path) {
+  if (requireNamespace("readr", quietly = TRUE)) {
+    ok <- tryCatch(
+      {
+        readr::write_csv(df, path)
+        TRUE
+      },
+      error = function(e) {
+        cli::cli_alert_warning("readr::write_csv failed for {path}. Falling back to base::write.csv. Error: {conditionMessage(e)}")
+        FALSE
+      }
+    )
+    if (ok) return(invisible(path))
+  }
+
+  utils::write.csv(df, path, row.names = FALSE)
+  invisible(path)
+}
+
 # Expected pivot_wider column names — single source of truth shared across functions
 .ENSURE_COLS <- c(
   "eurostat_production_tonnes",
@@ -37,6 +116,19 @@ resolve_fao_country_code <- function(country_un_code, override_map = NULL) {
 # ============================================================
 
 harmonise_eurostat <- function(eu_df) {
+  required_cols <- c("unit", "geo", "aquaenv", "freq", "species", "fishreg", "values")
+  if (nrow(eu_df) == 0 || !all(required_cols %in% names(eu_df))) {
+    return(tibble::tibble(
+      country_code = character(),
+      year = integer(),
+      measure = character(),
+      values = numeric(),
+      unit = character(),
+      source = character(),
+      environment = character()
+    ))
+  }
+
   time_col <- if ("time" %in% names(eu_df)) {
     "time"
   } else if ("time_period" %in% names(eu_df)) {
@@ -74,6 +166,18 @@ harmonise_eurostat <- function(eu_df) {
 }
 
 harmonise_eurostat_low_anthropic <- function(eu_df) {
+  required_cols <- c("unit", "geo", "aquaenv", "freq", "species", "fishreg", "values")
+  if (nrow(eu_df) == 0 || !all(required_cols %in% names(eu_df))) {
+    return(tibble::tibble(
+      country_code = character(),
+      year = integer(),
+      production_type = character(),
+      source = character(),
+      measure = character(),
+      values = numeric()
+    ))
+  }
+
   time_col <- if ("time" %in% names(eu_df)) {
     "time"
   } else if ("time_period" %in% names(eu_df)) {
@@ -99,10 +203,26 @@ harmonise_eurostat_low_anthropic <- function(eu_df) {
       fishreg == "0"
     )
 
-  species_lookup <- tibble(species_code = unique(eu_low$species_code)) %>%
-    mutate(
-      species_label = suppressWarnings(eurostat::label_eurostat(species_code, dic = "fishaq"))
-    )
+  if (nrow(eu_low) == 0) {
+    return(tibble::tibble(
+      country_code = character(),
+      year = integer(),
+      production_type = character(),
+      source = character(),
+      measure = character(),
+      values = numeric()
+    ))
+  }
+
+  species_lookup <- tibble(species_code = unique(eu_low$species_code))
+  if (requireNamespace("eurostat", quietly = TRUE)) {
+    species_lookup <- species_lookup %>%
+      mutate(
+        species_label = suppressWarnings(eurostat::label_eurostat(species_code, dic = "fishaq"))
+      )
+  } else {
+    species_lookup <- species_lookup %>% mutate(species_label = NA_character_)
+  }
 
   eu_low %>%
     left_join(species_lookup, by = "species_code") %>%
@@ -255,7 +375,7 @@ load_fx_table <- function(fx_path) {
 
   cli_h1("Loading FX rates from CSV")
 
-  fx_raw <- read_csv(fx_path, show_col_types = FALSE) %>% clean_names()
+  fx_raw <- read_csv_safe(fx_path) %>% clean_names()
 
   # Detect column names
   year_col <- if ("year" %in% names(fx_raw)) "year" else "period"
@@ -415,7 +535,7 @@ export_fw_consistency <- function(fw_summary,
     )
 
   # ---- Export CSV ----
-  write_csv(consistency_tbl, out_path)
+  write_csv_safe(consistency_tbl, out_path)
 
   message("✔ Consistency CSV written to: ", out_path)
   return(consistency_tbl)
