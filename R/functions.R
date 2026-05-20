@@ -11,6 +11,27 @@
   "fao_eur_production_value_eur"
 )
 
+# Resolve FAO UN country code to ISO2 using countrycode, with optional manual overrides.
+resolve_fao_country_code <- function(country_un_code, override_map = NULL) {
+  country_un_code <- as.character(country_un_code)
+
+  iso2_auto <- countrycode::countrycode(
+    sourcevar = suppressWarnings(as.integer(country_un_code)),
+    origin = "un",
+    destination = "iso2c",
+    warn = FALSE
+  )
+
+  if (!is.null(override_map)) {
+    stopifnot(all(c("country_un_code", "iso2") %in% names(override_map)))
+    override_idx <- match(country_un_code, as.character(override_map$country_un_code))
+    iso2_override <- override_map$iso2[override_idx]
+    return(dplyr::coalesce(iso2_override, iso2_auto, country_un_code))
+  }
+
+  dplyr::coalesce(iso2_auto, country_un_code)
+}
+
 # ============================================================
 # 1) HARMONISATION
 # ============================================================
@@ -52,7 +73,61 @@ harmonise_eurostat <- function(eu_df) {
     )
 }
 
-harmonise_fao_qty <- function(df, map) {
+harmonise_eurostat_low_anthropic <- function(eu_df) {
+  time_col <- if ("time" %in% names(eu_df)) {
+    "time"
+  } else if ("time_period" %in% names(eu_df)) {
+    "time_period"
+  } else {
+    stop("Eurostat: No time column found")
+  }
+
+  mussel_pattern <- "mussel|oyster|clam|cockle|scallop|bivalv|mollusc|mollusk"
+  algae_pattern <- "algae|alga|seaweed|kelp|wakame|spirulina|ulva|lettuce"
+
+  eu_low <- eu_df %>%
+    filter(unit %in% c("TLW", "EUR")) %>%
+    mutate(
+      year = as.integer(.data[[time_col]]),
+      country_code = geo,
+      environment = aquaenv,
+      species_code = species
+    ) %>%
+    filter(
+      freq == "A",
+      species_code != "F00",
+      fishreg == "0"
+    )
+
+  species_lookup <- tibble(species_code = unique(eu_low$species_code)) %>%
+    mutate(
+      species_label = suppressWarnings(eurostat::label_eurostat(species_code, dic = "fishaq"))
+    )
+
+  eu_low %>%
+    left_join(species_lookup, by = "species_code") %>%
+    mutate(
+      species_label = tolower(as.character(species_label)),
+      production_type = case_when(
+        str_detect(species_label %||% "", mussel_pattern) ~ "mussels_bivalves",
+        str_detect(species_label %||% "", algae_pattern) ~ "seaweed_algae",
+        TRUE ~ NA_character_
+      )
+    ) %>%
+    filter(!is.na(production_type)) %>%
+    group_by(country_code, year, unit, environment, production_type) %>%
+    summarise(values = sum(values, na.rm = TRUE), .groups = "drop") %>%
+    mutate(
+      measure = case_when(
+        unit == "TLW" ~ "production_tonnes",
+        unit == "EUR" ~ "production_value_eur"
+      ),
+      source = "eurostat_species"
+    ) %>%
+    select(country_code, year, production_type, source, measure, values)
+}
+
+harmonise_fao_qty <- function(df, map = NULL) {
   n_fail <- sum(is.na(suppressWarnings(as.numeric(df$value)))) - sum(is.na(df$value))
   if (n_fail > 0) cli_alert_warning("FAO quantity: {n_fail} non-numeric value(s) coerced to NA")
 
@@ -66,13 +141,12 @@ harmonise_fao_qty <- function(df, map) {
       values = suppressWarnings(as.numeric(value)),
       source = "fao_quantity"
     ) %>%
-    left_join(map, by = "country_un_code") %>%
-    mutate(country_code = coalesce(iso2, country_un_code)) %>%
+    mutate(country_code = resolve_fao_country_code(country_un_code, map)) %>%
     group_by(country_code, year, measure, unit, source, environment, country_un_code) %>%
     summarise(values = sum(values, na.rm = TRUE), .groups = "drop")
 }
 
-harmonise_fao_val <- function(df, map) {
+harmonise_fao_val <- function(df, map = NULL) {
   n_fail <- sum(is.na(suppressWarnings(as.numeric(df$value)))) - sum(is.na(df$value))
   if (n_fail > 0) cli_alert_warning("FAO value: {n_fail} non-numeric value(s) coerced to NA")
 
@@ -87,8 +161,7 @@ harmonise_fao_val <- function(df, map) {
       values_usd = suppressWarnings(as.numeric(value)) * 1000,
       source = "fao_value"
     ) %>%
-    left_join(map, by = "country_un_code") %>%
-    mutate(country_code = coalesce(iso2, country_un_code)) %>%
+    mutate(country_code = resolve_fao_country_code(country_un_code, map)) %>%
     select(
       country_code, year, measure,
       values = values_usd, unit, source, environment, country_un_code

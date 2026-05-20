@@ -26,16 +26,17 @@ years_target <- 2018:2024
 fao_qty_path <- "./data/FAO/Aquaculture_Quantity.csv"
 fao_val_path <- "./data/FAO/Aquaculture_Value.csv"
 eumofa_path  <- "./data/EUMOFA/Yearly_Aquaculture.csv"
+fao_species_path <- "./data/FAO/CL_FI_SPECIES_GROUPS.csv"
+fao_iso2_overrides_path <- "./data/FAO/fao_iso2_overrides.csv"
 
-# FAO → ISO2 mapping (expand later if needed)
-fao_to_iso2 <- tibble::tribble(
-  ~country_un_code, ~iso2,
-  "348", "HU",
-  "528", "NL",
-  "642", "RO",
-  "056", "BE",
-  "191", "HR"
-)
+# Optional FAO UN→ISO2 overrides (only if you need manual corrections)
+fao_to_iso2 <- if (file.exists(fao_iso2_overrides_path)) {
+  read_csv(fao_iso2_overrides_path, show_col_types = FALSE) %>%
+    clean_names() %>%
+    transmute(country_un_code = as.character(country_un_code), iso2 = toupper(iso2))
+} else {
+  NULL
+}
 
 # (Optional) diagnostics: find duplicates by country-year-source-measure
 inspect_duplicates <- function(long_tbl) {
@@ -51,10 +52,37 @@ inspect_duplicates <- function(long_tbl) {
 
 cli_h1("EUROSTAT AQUACULTURE — RAW DATA")
 
-eu_raw <- get_eurostat(
-  id = "fish_aq2a",
-  time_format = "num",
-  cache = TRUE
+eu_raw <- tryCatch(
+  {
+    get_eurostat(
+      id = "fish_aq2a",
+      time_format = "num",
+      cache = TRUE
+    )
+  },
+  error = function(e1) {
+    cli_alert_warning("Eurostat fetch failed on first attempt: {conditionMessage(e1)}")
+    cli_alert_info("Retrying with cache refresh enabled...")
+    tryCatch(
+      {
+        get_eurostat(
+          id = "fish_aq2a",
+          time_format = "num",
+          cache = TRUE,
+          update_cache = TRUE
+        )
+      },
+      error = function(e2) {
+        stop(
+          paste0(
+            "Eurostat download failed for dataset 'fish_aq2a'. ",
+            "Check internet/proxy/firewall and try again. Last error: ",
+            conditionMessage(e2)
+          )
+        )
+      }
+    )
+  }
 )
 
 eu_clean <- eu_raw %>% clean_names()
@@ -172,6 +200,138 @@ all_long_fx <- bind_rows(all_long, fao_v_long_fx)
 
 cli_h2("LONG table updated with FX‑converted FAO EUR values")
 print(head(all_long_fx, 20))
+
+
+# ============================================================
+# 4) LOW-ANTHROPIC CHECK (MUSSELS + SEAWEED/ALGAE)
+# ============================================================
+
+cli_h2("Building low-anthropic subset (mussels + seaweed/algae)")
+
+if (!file.exists(fao_species_path)) {
+  stop("FAO species lookup file missing: ", fao_species_path)
+}
+
+fao_species <- read_csv(fao_species_path, show_col_types = FALSE) %>%
+  clean_names() %>%
+  transmute(
+    species_alpha_3_code = x3a_code,
+    species_name_en = name_en,
+    major_group = major_group
+  )
+
+mussel_pattern <- "mussel|oyster|clam|cockle|scallop|bivalv|mollusc|mollusk"
+seaweed_pattern <- "seaweed|algae|kelp|wakame|spirulina|ulva|lettuce"
+
+# Eurostat species-level (non-F00) for low-anthropic subset
+eu_low <- harmonise_eurostat_low_anthropic(aquaculture_raw$eurostat)
+
+# FAO quantity/value filtered by explicit species metadata
+fao_qty_low <- aquaculture_raw$fao_quantity %>%
+  left_join(fao_species, by = "species_alpha_3_code") %>%
+  mutate(
+    production_type = case_when(
+      str_detect(tolower(species_name_en %||% ""), mussel_pattern) ~ "mussels_bivalves",
+      major_group == "PLANTAE AQUATICAE" |
+        str_detect(tolower(species_name_en %||% ""), seaweed_pattern) ~ "seaweed_algae",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  filter(!is.na(production_type)) %>%
+  transmute(
+    country_un_code = as.character(country_un_code),
+    year = as.integer(period),
+    production_type,
+    values = as.numeric(value),
+    source = "fao_quantity",
+    measure = "production_tonnes"
+  ) %>%
+  mutate(country_code = resolve_fao_country_code(country_un_code, fao_to_iso2)) %>%
+  select(country_code, year, production_type, source, measure, values)
+
+fao_val_low <- aquaculture_raw$fao_value %>%
+  left_join(fao_species, by = "species_alpha_3_code") %>%
+  mutate(
+    production_type = case_when(
+      str_detect(tolower(species_name_en %||% ""), mussel_pattern) ~ "mussels_bivalves",
+      major_group == "PLANTAE AQUATICAE" |
+        str_detect(tolower(species_name_en %||% ""), seaweed_pattern) ~ "seaweed_algae",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  filter(!is.na(production_type)) %>%
+  transmute(
+    country_un_code = as.character(country_un_code),
+    year = as.integer(period),
+    production_type,
+    values_usd = as.numeric(value) * 1000
+  ) %>%
+  mutate(country_code = resolve_fao_country_code(country_un_code, fao_to_iso2)) %>%
+  left_join(fx_tbl, by = "year") %>%
+  transmute(
+    country_code,
+    year,
+    production_type,
+    source = "fao_eur",
+    measure = "production_value_eur",
+    values = values_usd * eur_per_usd
+  )
+
+# EUMOFA filtered by commodity/species text
+eumo_low <- aquaculture_raw$eumofa %>%
+  mutate(
+    production_type = case_when(
+      str_detect(tolower(main_commercial_species %||% ""), mussel_pattern) |
+        str_detect(tolower(commodity_group %||% ""), "bivalv|mollusc|mollusk") ~ "mussels_bivalves",
+      str_detect(tolower(main_commercial_species %||% ""), seaweed_pattern) |
+        str_detect(tolower(commodity_group %||% ""), "seaweed|algae") ~ "seaweed_algae",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  filter(!is.na(production_type)) %>%
+  transmute(
+    country_code = toupper(country),
+    year = as.integer(year),
+    production_type,
+    volume_tonnes = as.numeric(volume_kg) / 1000,
+    value_eur = as.numeric(value_eur)
+  )
+
+eumo_low_tonnes <- eumo_low %>%
+  transmute(
+    country_code, year, production_type,
+    source = "eumofa", measure = "production_tonnes", values = volume_tonnes
+  )
+
+eumo_low_value <- eumo_low %>%
+  transmute(
+    country_code, year, production_type,
+    source = "eumofa", measure = "production_value_eur", values = value_eur
+  )
+
+low_anthropic_long <- bind_rows(
+  eu_low,
+  fao_qty_low,
+  fao_val_low,
+  eumo_low_tonnes,
+  eumo_low_value
+) %>%
+  group_by(country_code, year, production_type, source, measure) %>%
+  summarise(values = sum(values, na.rm = TRUE), .groups = "drop")
+
+low_anthropic_summary <- low_anthropic_long %>%
+  pivot_wider(
+    id_cols = c(country_code, year, production_type),
+    names_from = c(source, measure),
+    values_from = values
+  ) %>%
+  arrange(country_code, year, production_type)
+
+dir.create("./output", showWarnings = FALSE, recursive = TRUE)
+write.xlsx(low_anthropic_summary, "output/Europe_low_anthropic_summary.xlsx", sheetName = "data")
+
+cli_alert_success("Low-anthropic summary exported to output/Europe_low_anthropic_summary.xlsx")
+cli_alert_info("Eurostat species-level source is included as 'eurostat_species' (non-F00, fishreg=0)")
 
 
 # ============================================================
