@@ -107,6 +107,7 @@ test_that("pipeline outputs are computed from in-memory source tables", {
 
   expect_true(is.data.frame(result$observations))
   expect_equal(nrow(result$observations), 20L)
+  expect_length(unique(names(result$observations)), ncol(result$observations))
   expect_true(all(c(
     "source", "country_code", "native_country_code", "year", "measure",
     "native_value", "native_unit", "comparison_value", "comparison_unit",
