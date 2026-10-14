@@ -17,6 +17,8 @@ build_pipeline_outputs <- function(inputs, config) {
     stop("Missing pipeline configuration: ", paste(missing_config, collapse = ", "))
   }
 
+  observations <- build_normalized_observations(inputs)
+
   eu_long <- harmonise_eurostat(inputs$eurostat)
   fao_q_long <- harmonise_fao_qty(inputs$fao_quantity, inputs$fao_to_iso2)
   fao_v_long <- harmonise_fao_val(inputs$fao_value, inputs$fao_to_iso2)
@@ -72,6 +74,7 @@ build_pipeline_outputs <- function(inputs, config) {
   )
 
   list(
+    observations = observations,
     exports = list(
       general_summary = summary_europe,
       freshwater_summary = freshwater_summary,
