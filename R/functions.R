@@ -165,7 +165,7 @@ harmonise_eurostat <- function(eu_df) {
     )
 }
 
-harmonise_eurostat_low_anthropic <- function(eu_df) {
+harmonise_eurostat_low_anthropic <- function(eu_df, species_labels = NULL) {
   required_cols <- c("unit", "geo", "aquaenv", "freq", "species", "fishreg", "values")
   if (nrow(eu_df) == 0 || !all(required_cols %in% names(eu_df))) {
     return(tibble::tibble(
@@ -215,11 +215,24 @@ harmonise_eurostat_low_anthropic <- function(eu_df) {
   }
 
   species_lookup <- tibble(species_code = unique(eu_low$species_code))
-  if (requireNamespace("eurostat", quietly = TRUE)) {
+  if (!is.null(species_labels)) {
+    required_label_cols <- c("species_code", "species_label")
+    if (!all(required_label_cols %in% names(species_labels))) {
+      stop("Eurostat species labels must contain species_code and species_label")
+    }
     species_lookup <- species_lookup %>%
-      mutate(
-        species_label = suppressWarnings(eurostat::label_eurostat(species_code, dic = "fishaq"))
+      left_join(
+        species_labels %>%
+          transmute(
+            species_code = as.character(species_code),
+            species_label = as.character(species_label)
+          ) %>%
+          distinct(species_code, .keep_all = TRUE),
+        by = "species_code"
       )
+  } else if (requireNamespace("eurostat", quietly = TRUE)) {
+    species_lookup <- species_lookup %>%
+      mutate(species_label = suppressWarnings(eurostat::label_eurostat(species_code, dic = "SPECIES")))
   } else {
     species_lookup <- species_lookup %>% mutate(species_label = NA_character_)
   }
@@ -356,6 +369,18 @@ filter_freshwater <- function(long_tbl) {
 # 3) FX CONVERSION: USD → EUR (Improved)
 # ============================================================
 
+convert_fao_usd_values <- function(fao_usd, fx_rates) {
+  fao_usd %>%
+    left_join(fx_rates, by = "year") %>%
+    mutate(
+      unit = "EUR",
+      measure = "production_value_eur",
+      source = "fao_eur",
+      values = values * eur_per_usd
+    ) %>%
+    select(-eur_per_usd)
+}
+
 load_fx_table <- function(fx_path) {
   if (!file.exists(fx_path)) {
     cli_alert_warning("FX CSV not found — using fallback rates")
@@ -491,6 +516,28 @@ build_comparison <- function(long_tbl, years = NULL, countries = NULL, tolerance
 # FUNCTION: Create consistency metrics and export CSV
 # ============================================================
 
+build_fw_consistency <- function(fw_summary) {
+  fw_summary %>%
+    mutate(
+      ratio_es_fao = ifelse(!is.na(fao_production) & fao_production > 0,
+                            eurostat_production / fao_production, NA_real_),
+      ratio_es_eumo = ifelse(!is.na(eumofa_production) & eumofa_production > 0,
+                             eurostat_production / eumofa_production, NA_real_),
+      logdiff_es_fao = log1p(eurostat_production) - log1p(coalesce(fao_production, 0)),
+      logdiff_es_eumo = log1p(eurostat_production) - log1p(coalesce(eumofa_production, 0)),
+      flag_large_gap_fao = ifelse(!is.na(ratio_es_fao) & ratio_es_fao > 5, TRUE, FALSE),
+      flag_large_gap_eumo = ifelse(!is.na(ratio_es_eumo) & ratio_es_eumo > 5, TRUE, FALSE),
+      notes = case_when(
+        is.na(eurostat_production) & !is.na(fao_production) ~ "Eurostat missing, FAO present",
+        is.na(fao_production) & !is.na(eurostat_production) ~ "FAO missing, Eurostat present",
+        is.na(eumofa_production) & !is.na(eurostat_production) ~ "EUMOFA missing, Eurostat present",
+        ratio_es_eumo > 5 ~ "Eurostat >> EUMOFA (normal for pond countries)",
+        ratio_es_eumo < 0.2 ~ "Eurostat << EUMOFA (check)",
+        TRUE ~ ""
+      )
+    )
+}
+
 export_fw_consistency <- function(fw_summary,
                                   out_dir = "./output",
                                   filename = NULL) {
@@ -507,32 +554,7 @@ export_fw_consistency <- function(fw_summary,
   out_path <- file.path(out_dir, filename)
 
   # ---- Build consistency metrics table ----
-  consistency_tbl <- fw_summary %>%
-    mutate(
-      # Ratios (Eurostat / Other sources)
-      ratio_es_fao   = ifelse(!is.na(fao_production) & fao_production > 0,
-                              eurostat_production / fao_production, NA_real_),
-      ratio_es_eumo  = ifelse(!is.na(eumofa_production) & eumofa_production > 0,
-                              eurostat_production / eumofa_production, NA_real_),
-
-      # Log-differences (more stable indicator)
-      logdiff_es_fao  = log1p(eurostat_production) - log1p(coalesce(fao_production, 0)),
-      logdiff_es_eumo = log1p(eurostat_production) - log1p(coalesce(eumofa_production, 0)),
-
-      # Basic flags
-      flag_large_gap_fao  = ifelse(!is.na(ratio_es_fao)  & ratio_es_fao  > 5, TRUE, FALSE),
-      flag_large_gap_eumo = ifelse(!is.na(ratio_es_eumo) & ratio_es_eumo > 5, TRUE, FALSE),
-
-      # Human-readable notes
-      notes = case_when(
-        is.na(eurostat_production) & !is.na(fao_production) ~ "Eurostat missing, FAO present",
-        is.na(fao_production) & !is.na(eurostat_production) ~ "FAO missing, Eurostat present",
-        is.na(eumofa_production) & !is.na(eurostat_production) ~ "EUMOFA missing, Eurostat present",
-        ratio_es_eumo > 5  ~ "Eurostat >> EUMOFA (normal for pond countries)",
-        ratio_es_eumo < 0.2 ~ "Eurostat << EUMOFA (check)",
-        TRUE ~ ""
-      )
-    )
+  consistency_tbl <- build_fw_consistency(fw_summary)
 
   # ---- Export CSV ----
   write_csv_safe(consistency_tbl, out_path)
