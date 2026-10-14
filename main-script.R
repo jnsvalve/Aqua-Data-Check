@@ -235,7 +235,7 @@ eurostat_species_labels <- if (has_eurostat && nrow(aquaculture_raw$eurostat) > 
     tibble::tibble(species_code = unique(as.character(aquaculture_raw$eurostat$species))) |>
       mutate(
         species_label = suppressWarnings(
-          eurostat::label_eurostat(species_code, dic = "fishaq")
+          eurostat::label_eurostat(species_code, dic = "SPECIES")
         )
       ),
     error = function(error) {

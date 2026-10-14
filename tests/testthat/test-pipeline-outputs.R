@@ -25,14 +25,14 @@ test_that("pipeline outputs are computed from in-memory source tables", {
       geo = "DE",
       aquaenv = "FRW",
       freq = "A",
-      species = c("F00", "F00", "MUS", "MUS", "ALG", "ALG"),
+      species = c("F00", "F00", "F54", "F54", "F91", "F91"),
       fishreg = "0",
       values = c(100, 50000, 5, 2500, 2, 1000),
       time = 2020L
     ),
     eurostat_species_labels = tibble::tibble(
-      species_code = c("MUS", "ALG"),
-      species_label = c("Mussels", "Seaweed")
+      species_code = c("F54", "F91"),
+      species_label = c("Mussels", "Brown seaweeds")
     ),
     fao_quantity = tibble::tibble(
       country_un_code = rep("999", 4),

@@ -232,7 +232,7 @@ harmonise_eurostat_low_anthropic <- function(eu_df, species_labels = NULL) {
       )
   } else if (requireNamespace("eurostat", quietly = TRUE)) {
     species_lookup <- species_lookup %>%
-      mutate(species_label = suppressWarnings(eurostat::label_eurostat(species_code, dic = "fishaq")))
+      mutate(species_label = suppressWarnings(eurostat::label_eurostat(species_code, dic = "SPECIES")))
   } else {
     species_lookup <- species_lookup %>% mutate(species_label = NA_character_)
   }
