@@ -41,30 +41,30 @@ test_that("pipeline outputs are computed from in-memory source tables", {
       species_label = c("Mussels", "Brown seaweeds")
     ),
     fao_quantity = tibble::tibble(
-      country_un_code = rep("999", 4),
-      period = rep(2020L, 4),
+      country_un_code = rep("999", 5),
+      period = rep(2020L, 5),
       measure = "Q_tlw",
-      area_code = rep("04", 4),
-      environment_alpha_2_code = rep("IN", 4),
-      value = c(10, 4, 2, 40),
-      status = c("A", "B", "C", "D"),
-      species_alpha_3_code = c("OYS", "ALG", "SHR", "SAL")
+      area_code = rep("04", 5),
+      environment_alpha_2_code = rep("IN", 5),
+      value = c(10, 4, 2, 40, 0),
+      status = c("A", "B", "C", "D", "E"),
+      species_alpha_3_code = c("OYS", "ALG", "SHR", "SAL", "FCY")
     ),
     fao_value = tibble::tibble(
-      country_un_code = rep("999", 4),
-      period = rep(2020L, 4),
+      country_un_code = rep("999", 5),
+      period = rep(2020L, 5),
       measure = "V_USD_1000",
-      area_code = rep("04", 4),
-      environment_alpha_2_code = rep("IN", 4),
-      value = c(2, 1, 0.5, 3),
-      status = c("A", "B", "C", "D"),
-      species_alpha_3_code = c("OYS", "ALG", "SHR", "SAL")
+      area_code = rep("04", 5),
+      environment_alpha_2_code = rep("IN", 5),
+      value = c(2, 1, 0.5, 3, 0),
+      status = c("A", "B", "C", "D", "E"),
+      species_alpha_3_code = c("OYS", "ALG", "SHR", "SAL", "FCY")
     ),
     fao_species = tibble::tibble(
-      species_alpha_3_code = c("OYS", "ALG", "SHR", "SAL"),
-      species_name_en = c("Oyster", "Seaweed", "Shrimp", "Salmon"),
-      major_group = c("MOLLUSCA", "PLANTAE AQUATICAE", "CRUSTACEA", "FINFISH"),
-      taxonomic_code = c("350112601401", "724121001001", "228103103401", "175010401101")
+      species_alpha_3_code = c("OYS", "ALG", "SHR", "SAL", "FCY"),
+      species_name_en = c("Oyster", "Seaweed", "Shrimp", "Salmon", "Cyprinids NEI"),
+      major_group = c("MOLLUSCA", "PLANTAE AQUATICAE", "CRUSTACEA", "FINFISH", "PISCES"),
+      taxonomic_code = c("350112601401", "724121001001", "228103103401", "175010401101", "1400141XXXXX")
     ),
     fao_to_iso2 = tibble::tibble(country_un_code = "999", iso2 = "DE"),
     fx_rates = tibble::tibble(year = 2020L, eur_per_usd = 0.5),
@@ -106,7 +106,7 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   result <- build_pipeline_outputs(inputs, config)
 
   expect_true(is.data.frame(result$observations))
-  expect_equal(nrow(result$observations), 18L)
+  expect_equal(nrow(result$observations), 20L)
   expect_true(all(c(
     "source", "country_code", "native_country_code", "year", "measure",
     "native_value", "native_unit", "comparison_value", "comparison_unit",
@@ -137,6 +137,12 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   expect_equal(fao_value_oyster$comparison_value, 1000)
   expect_equal(fao_value_oyster$comparison_unit, "EUR")
   expect_equal(fao_value_oyster$fx_rate, 0.5)
+
+  fao_nei <- result$observations %>%
+    filter(source == "fao_quantity", fao_species_alpha_3_code == "FCY")
+  expect_equal(fao_nei$record_scope, "source_category")
+  expect_equal(fao_nei$fao_species_name_en, "Cyprinids NEI")
+  expect_equal(fao_nei$fao_taxonomic_code, "1400141XXXXX")
 
   eumofa_oyster_volume <- result$observations %>%
     filter(source == "eumofa", eumofa_ers_code == "OYS001", measure == "production_tonnes")
