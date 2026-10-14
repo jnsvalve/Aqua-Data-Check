@@ -32,6 +32,8 @@ suppressPackageStartupMessages({
 })
 
 source("R/functions.R")
+source("R/observations.R")
+source("R/output.R")
 source("R/low_anthropic.R")
 source("R/pipeline.R")
 
@@ -46,6 +48,7 @@ eumofa_path  <- "./data/EUMOFA/Yearly_Aquaculture.csv"
 fao_species_path <- "./data/FAO/CL_FI_SPECIES_GROUPS.csv"
 fao_iso2_overrides_path <- "./data/FAO/fao_iso2_overrides.csv"
 export_fao_diagnostics <- TRUE
+fao_diagnostics <- list()
 
 # Output organization: keep category-based "latest" files easy to browse.
 output_root <- "./output"
@@ -91,7 +94,8 @@ eu_raw <- if (has_eurostat) {
       get_eurostat(
         id = "fish_aq2a",
         time_format = "num",
-        cache = TRUE
+        cache = TRUE,
+        keepFlags = TRUE
       )
     },
     error = function(e1) {
@@ -103,7 +107,8 @@ eu_raw <- if (has_eurostat) {
             id = "fish_aq2a",
             time_format = "num",
             cache = TRUE,
-            update_cache = TRUE
+            update_cache = TRUE,
+            keepFlags = TRUE
           )
         },
         error = function(e2) {
@@ -120,6 +125,7 @@ eu_raw <- if (has_eurostat) {
 }
 
 eu_clean <- eu_raw |> clean_names()
+eu_retrieved_at_utc <- format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
 
 cli_alert_success("Eurostat: loaded {nrow(eu_clean)} rows, {ncol(eu_clean)} cols")
 print(head(eu_clean, 5))
@@ -174,12 +180,12 @@ if (export_fao_diagnostics && file.exists(fao_species_path)) {
   fao_major_group_qty_counts <- fao_qty_diag |> count(major_group, sort = TRUE)
   fao_major_group_val_counts <- fao_val_diag |> count(major_group, sort = TRUE)
 
-  write_csv_safe(fao_env_qty_counts, file.path(out_diagnostics, "fao_env_qty_counts.csv"))
-  write_csv_safe(fao_env_val_counts, file.path(out_diagnostics, "fao_env_val_counts.csv"))
-  write_csv_safe(fao_major_group_qty_counts, file.path(out_diagnostics, "fao_major_group_qty_counts.csv"))
-  write_csv_safe(fao_major_group_val_counts, file.path(out_diagnostics, "fao_major_group_val_counts.csv"))
-
-  cli_alert_success("FAO diagnostics exported to output/diagnostics/")
+  fao_diagnostics <- list(
+    fao_env_qty_counts = fao_env_qty_counts,
+    fao_env_val_counts = fao_env_val_counts,
+    fao_major_group_qty_counts = fao_major_group_qty_counts,
+    fao_major_group_val_counts = fao_major_group_val_counts
+  )
 }
 
 # ============================================================
@@ -212,7 +218,8 @@ aquaculture_raw <- list(
 cli_h2("RAW TABLES READY — NO FILTERS APPLIED")
 print(lapply(aquaculture_raw, head))
 
-fx_tbl <- load_fx_table("./data/FX/usd_eur_rates.csv")
+fx_path <- "./data/FX/usd_eur_rates.csv"
+fx_tbl <- load_fx_table(fx_path)
 
 if (!file.exists(fao_species_path)) {
   stop("FAO species lookup file missing: ", fao_species_path)
@@ -223,7 +230,8 @@ fao_species <- read_csv_safe(fao_species_path) |>
   transmute(
     species_alpha_3_code = x3a_code,
     species_name_en = name_en,
-    major_group = major_group
+    major_group = major_group,
+    taxonomic_code = taxonomic_code
   )
 
 empty_eurostat_species_labels <- tibble::tibble(
@@ -247,6 +255,13 @@ eurostat_species_labels <- if (has_eurostat && nrow(aquaculture_raw$eurostat) > 
   )
 } else {
   empty_eurostat_species_labels
+}
+eurostat_species_label_status <- if (nrow(eurostat_species_labels) == 0) {
+  "unavailable"
+} else if (all(!is.na(eurostat_species_labels$species_label))) {
+  "available"
+} else {
+  "partial"
 }
 
 years_consistent <- 2018:2024
@@ -284,42 +299,80 @@ pipeline_result <- build_pipeline_outputs(
   )
 )
 
-cli_h2("Comparison ready (FX focus, country-year totals)")
-print(head(pipeline_result$diagnostics$comparison_all, 20))
-cli_h2("Freshwater-only comparison ready")
-print(head(pipeline_result$diagnostics$comparison_freshwater, 20))
+source_status <- c(
+  eurostat = has_eurostat && nrow(aquaculture_raw$eurostat) > 0,
+  fao_quantity = nrow(aquaculture_raw$fao_quantity) > 0,
+  fao_value = nrow(aquaculture_raw$fao_value) > 0,
+  eumofa = nrow(aquaculture_raw$eumofa) > 0
+)
 
-cli_h2("Checking for unit inconsistencies (kg vs tonnes)")
-unit_check <- pipeline_result$diagnostics$unit_check
-suspicious <- pipeline_result$diagnostics$suspicious
-if (nrow(suspicious) > 0) {
-  cli_alert_danger("{nrow(suspicious)} suspicious unit mismatch(es) detected — verify raw data before using results")
+input_files <- list(
+  fao_quantity = fao_qty_path,
+  fao_value = fao_val_path,
+  eumofa = eumofa_path,
+  fao_species = fao_species_path
+)
+if (file.exists(fao_iso2_overrides_path)) {
+  input_files$fao_iso2_overrides <- fao_iso2_overrides_path
 }
-print(suspicious)
 
-exports <- pipeline_result$exports
-wb_low <- createWorkbook()
-addWorksheet(wb_low, "by_mode")
-writeData(wb_low, "by_mode", exports$low_anthropic_by_mode)
-addWorksheet(wb_low, "side_by_side")
-writeData(wb_low, "side_by_side", exports$low_anthropic_side_by_side)
-saveWorkbook(
-  wb_low,
-  file.path(out_low_anthropic, "Europe_low_anthropic_summary_latest.xlsx"),
-  overwrite = TRUE
+manifest <- build_observation_manifest(
+  source_status = source_status,
+  eurostat = list(
+    dataset_id = "fish_aq2a",
+    retrieval_status = if (source_status[["eurostat"]]) "available" else "unavailable",
+    species_label_status = eurostat_species_label_status,
+    row_count = nrow(aquaculture_raw$eurostat),
+    retrieved_at_utc = eu_retrieved_at_utc
+  ),
+  input_files = input_files,
+  fx = list(
+    source = if (file.exists(fx_path)) "csv" else "fallback",
+    path = if (file.exists(fx_path)) fx_path else NULL,
+    rates = fx_tbl
+  )
 )
-cli_alert_success("Low-anthropic summary exported to output/low_anthropic/Europe_low_anthropic_summary_latest.xlsx (sheets: by_mode, side_by_side)")
 
-write.xlsx(
-  exports$general_summary,
-  file.path(out_general, "Europe_summary_latest.xlsx"),
-  sheetName = "data"
+normalized_bundle <- list(
+  manifest = manifest,
+  observations = pipeline_result$observations
 )
-write.xlsx(
-  exports$freshwater_summary,
-  file.path(out_freshwater, "Europe_freshwater_summary_latest.xlsx"),
-  sheetName = "data"
+normalized_snapshot_path <- write_normalized_snapshot(
+  normalized_bundle,
+  file.path(output_root, "normalized")
 )
-fw_results <- exports$freshwater_consistency
-write_csv_safe(fw_results, file.path(out_freshwater, "freshwater_consistency_latest.csv"))
-message("✔ Consistency CSV written to: ", file.path(out_freshwater, "freshwater_consistency_latest.csv"))
+cli_alert_success("Normalized {manifest$coverage_status} snapshot saved to {normalized_snapshot_path}")
+
+if (manifest$coverage_status == "complete") {
+  cli_h2("Comparison ready (FX focus, country-year totals)")
+  print(head(pipeline_result$diagnostics$comparison_all, 20))
+  cli_h2("Freshwater-only comparison ready")
+  print(head(pipeline_result$diagnostics$comparison_freshwater, 20))
+
+  cli_h2("Checking for unit inconsistencies (kg vs tonnes)")
+  unit_check <- pipeline_result$diagnostics$unit_check
+  suspicious <- pipeline_result$diagnostics$suspicious
+  if (nrow(suspicious) > 0) {
+    cli_alert_danger("{nrow(suspicious)} suspicious unit mismatch(es) detected — verify raw data before using results")
+  }
+  print(suspicious)
+
+  output_written <- write_pipeline_exports(
+    exports = pipeline_result$exports,
+    output_dirs = list(
+      general = out_general,
+      freshwater = out_freshwater,
+      low_anthropic = out_low_anthropic,
+      diagnostics = out_diagnostics
+    ),
+    coverage_status = manifest$coverage_status,
+    fao_diagnostics = fao_diagnostics
+  )
+  if (output_written) {
+    cli_alert_success("Summary exports and diagnostics updated from complete source coverage")
+  }
+} else {
+  cli_alert_warning(
+    "Source coverage is partial; latest summaries, diagnostics, and workbooks were not updated."
+  )
+}

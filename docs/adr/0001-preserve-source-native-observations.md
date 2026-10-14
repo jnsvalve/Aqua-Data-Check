@@ -1,0 +1,3 @@
+# Preserve Source-Native Production Observations
+
+The normalized dataset preserves each source-reported observation per measure with its native category identifiers and units, alongside comparable values and units, instead of aggregating during harmonization. Eurostat `F00` remains a distinct published total; FAO and EUMOFA categories stay source-native, since labels and taxonomy prefixes alone do not reliably identify totals. Summary views must select a disjoint, source-specific set before aggregation so published totals and overlapping detail are never summed together.
