@@ -180,6 +180,29 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   expect_identical(result$observations, observations_before_membership)
   expect_equal(recomputed_memberships, result$memberships)
 
+  freshwater_memberships <- result$memberships %>%
+    filter(segment == "freshwater")
+  eurostat_freshwater_ids <- result$observations %>%
+    filter(source == "eurostat", eurostat_environment_code == "FRW") %>%
+    pull(observation_id)
+  fao_freshwater_ids <- result$observations %>%
+    filter(source %in% c("fao_quantity", "fao_value"), fao_environment_alpha_2_code == "IN") %>%
+    pull(observation_id)
+  eumofa_freshwater_ids <- result$observations %>%
+    filter(source == "eumofa", eumofa_commodity_group == "Freshwater finfish") %>%
+    pull(observation_id)
+  expect_true(all(eurostat_freshwater_ids %in% freshwater_memberships$observation_id))
+  expect_true(all(fao_freshwater_ids %in% freshwater_memberships$observation_id))
+  expect_true(all(eumofa_freshwater_ids %in% freshwater_memberships$observation_id))
+  expect_true(all(freshwater_memberships$matched_by[match(
+    c(eurostat_freshwater_ids, fao_freshwater_ids, eumofa_freshwater_ids),
+    freshwater_memberships$observation_id
+  )] %in% c(
+    "eurostat_environment_code",
+    "fao_environment_alpha_2_code",
+    "eumofa_commodity_group"
+  )))
+
   eumo_oyster_id <- eumofa_oyster_volume$observation_id
   oyster_memberships <- result$memberships %>%
     filter(observation_id == eumo_oyster_id)
