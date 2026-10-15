@@ -17,6 +17,7 @@ observations_path <- file.path(project_root, "R", "observations.R")
 if (file.exists(observations_path)) source(observations_path)
 output_path <- file.path(project_root, "R", "output.R")
 source(output_path)
+source(file.path(project_root, "R", "segments.R"))
 low_anthropic_path <- file.path(project_root, "R", "low_anthropic.R")
 if (file.exists(low_anthropic_path)) source(low_anthropic_path)
 pipeline_path <- file.path(project_root, "R", "pipeline.R")
@@ -92,6 +93,17 @@ test_that("pipeline outputs are computed from in-memory source tables", {
       ers_code = "UNK001",
       english_name = "Unspecified freshwater fish",
       weight = NA_character_
+    ),
+    tibble::tibble(
+      country = "DE",
+      year = 2020L,
+      volume_kg = NA_real_,
+      value_eur = NA_real_,
+      commodity_group = NA_character_,
+      main_commercial_species = "Unclassified",
+      ers_code = "UNK002",
+      english_name = "Unclassified aquaculture product",
+      weight = NA_character_
     )
   )
   config <- list(
@@ -106,7 +118,9 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   result <- build_pipeline_outputs(inputs, config)
 
   expect_true(is.data.frame(result$observations))
-  expect_equal(nrow(result$observations), 20L)
+  expect_equal(nrow(result$observations), 22L)
+  expect_true("observation_id" %in% names(result$observations))
+  expect_identical(result$observations$observation_id, seq_len(nrow(result$observations)))
   expect_length(unique(names(result$observations)), ncol(result$observations))
   expect_true(all(c(
     "source", "country_code", "native_country_code", "year", "measure",
@@ -156,7 +170,61 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   expect_equal(nrow(eumofa_missing), 2L)
   expect_true(all(is.na(eumofa_missing$native_value)))
 
-  expect_named(result, c("observations", "exports", "diagnostics"))
+  expect_named(result, c("observations", "memberships", "exports", "diagnostics"))
+  expect_true(all(c(
+    "observation_id", "segment", "profile", "category", "matched_by"
+  ) %in% names(result$memberships)))
+  expect_true(all(result$memberships$observation_id %in% result$observations$observation_id))
+  observations_before_membership <- result$observations
+  recomputed_memberships <- build_segment_memberships(result$observations)
+  expect_identical(result$observations, observations_before_membership)
+  expect_equal(recomputed_memberships, result$memberships)
+
+  eumo_oyster_id <- eumofa_oyster_volume$observation_id
+  oyster_memberships <- result$memberships %>%
+    filter(observation_id == eumo_oyster_id)
+  expect_true(any(oyster_memberships$segment == "freshwater"))
+  expect_true(any(
+    oyster_memberships$segment == "low_anthropic" &
+      oyster_memberships$profile == "strict" &
+      oyster_memberships$category == "mussels_bivalves"
+  ))
+  expect_true(any(
+    oyster_memberships$segment == "low_anthropic" &
+      oyster_memberships$profile == "broad" &
+      oyster_memberships$category == "mollusca_all"
+  ))
+
+  shrimp_id <- result$observations %>%
+    filter(source == "fao_quantity", fao_species_alpha_3_code == "SHR") %>%
+    pull(observation_id)
+  default_crustacea_membership <- result$memberships %>%
+    filter(
+      observation_id == shrimp_id,
+      segment == "low_anthropic",
+      category == "crustacea_subset"
+    )
+  expect_equal(nrow(default_crustacea_membership), 0L)
+  crustacea_memberships <- build_segment_memberships(
+    result$observations,
+    include_crustacea_subset = TRUE
+  )
+  expect_true(any(
+    crustacea_memberships$observation_id == shrimp_id &
+      crustacea_memberships$segment == "low_anthropic" &
+      crustacea_memberships$profile == "broad" &
+      crustacea_memberships$category == "crustacea_subset"
+  ))
+
+  unclassified_id <- result$observations %>%
+    filter(source == "eumofa", eumofa_ers_code == "UNK002", measure == "production_tonnes") %>%
+    pull(observation_id)
+  expect_true(all(is.na(result$observations$native_value[match(
+    unclassified_id,
+    result$observations$observation_id
+  )])))
+  expect_false(any(result$memberships$observation_id %in% unclassified_id))
+
   expect_named(
     result$exports,
     c(
@@ -307,6 +375,13 @@ test_that("partial snapshots do not replace the latest complete snapshot", {
       measure = "production_tonnes",
       native_value = 100,
       native_unit = "TLW"
+    ),
+    memberships = tibble::tibble(
+      observation_id = 1L,
+      segment = "freshwater",
+      profile = NA_character_,
+      category = NA_character_,
+      matched_by = "eurostat_environment_code"
     )
   )
   complete_path <- write_normalized_snapshot(complete_bundle, output_dir)
@@ -348,6 +423,7 @@ test_that("observation manifest records provenance and partial source coverage",
       retrieved_at_utc = "2026-10-14T00:00:00Z"
     ),
     input_files = list(fao_quantity = source_file),
+    segment_rules_version = SEGMENT_RULES_VERSION,
     fx = list(
       source = "csv",
       path = fx_file,
@@ -357,6 +433,7 @@ test_that("observation manifest records provenance and partial source coverage",
   )
 
   expect_equal(manifest$schema_version, "1.0.0")
+  expect_equal(manifest$segment_rules_version, SEGMENT_RULES_VERSION)
   expect_equal(manifest$coverage_status, "complete")
   expect_equal(manifest$eurostat$dataset_id, "fish_aq2a")
   expect_equal(manifest$input_files$fao_quantity$md5, unname(tools::md5sum(source_file)))
@@ -377,6 +454,7 @@ test_that("observation manifest records provenance and partial source coverage",
       retrieved_at_utc = NA_character_
     ),
     input_files = list(fao_quantity = source_file),
+    segment_rules_version = SEGMENT_RULES_VERSION,
     fx = list(source = "fallback", path = NULL, rates = tibble::tibble()),
     generated_at_utc = "2026-10-14T00:01:00Z"
   )
