@@ -25,6 +25,17 @@ Rscript main-script.R
 
 Eurostat is optional for partial data collection. A complete run refreshes the latest summaries and diagnostics. A partial run saves a separate partial snapshot and leaves the latest outputs unchanged.
 
+## Updating Source Data
+
+Check for new annual releases at [FAO FishStatJ](https://www.fao.org/fishery/en/statistics/software/fishstatj) and the [EUMOFA aquaculture dashboard](https://fishery-aquaculture-market-observatory.ec.europa.eu/en/data/dashboards/aquaculture). No supported public API is currently documented for these exports, so refresh them from the official downloads:
+
+1. Export FAO quantity and value CSVs, plus the yearly EUMOFA CSV. Keep dated copies of the original downloads for reproducibility.
+2. Check that the files cover the expected years and that row counts or schema changes are understood.
+3. Replace the active files in `data/FAO/` and `data/EUMOFA/`. The importers check required columns and types, including numeric parse failures.
+4. From the repository root, run the tests and then `Rscript main-script.R`. Review the source row counts and confirm the complete outputs were refreshed.
+
+Refresh when a new annual release is published; do not automate dashboard scraping unless the source provides a stable, documented download endpoint.
+
 ## Outputs
 
 - `output/normalized/aquaculture_observations_latest.rds` — complete snapshot with observations, segment memberships, and source/FX manifest.

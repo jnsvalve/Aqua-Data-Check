@@ -61,6 +61,189 @@ read_delim_safe <- function(path, delim = ";", decimal_mark = ".") {
   )
 }
 
+read_source_delimited <- function(path, delim, source, column_types, required_columns, decimal_mark = ".") {
+  if (!file.exists(path)) {
+    stop(source, " input file does not exist: ", path, call. = FALSE)
+  }
+  file_size <- file.info(path)$size
+  if (is.na(file_size) || file_size == 0) {
+    stop(source, " input file is empty: ", path, call. = FALSE)
+  }
+
+  out <- NULL
+  if (requireNamespace("readr", quietly = TRUE)) {
+    parser_types <- lapply(column_types, function(type) {
+      switch(
+        type,
+        character = readr::col_character(),
+        integer = readr::col_integer(),
+        double = readr::col_double(),
+        stop("Unsupported import type: ", type, call. = FALSE)
+      )
+    })
+    names(parser_types) <- names(column_types)
+    col_spec <- do.call(
+      readr::cols,
+      c(list(.default = readr::col_character()), parser_types)
+    )
+
+    out <- tryCatch(
+      suppressWarnings(
+        readr::read_delim(
+          path,
+          delim = delim,
+          col_types = col_spec,
+          locale = readr::locale(decimal_mark = decimal_mark, grouping_mark = ""),
+          trim_ws = TRUE,
+          show_col_types = FALSE,
+          name_repair = "minimal"
+        )
+      ),
+      error = function(error) {
+        cli::cli_alert_warning(
+          "{source} readr import failed for {path}; retrying with base R. {conditionMessage(error)}"
+        )
+        NULL
+      }
+    )
+
+    if (!is.null(out)) {
+      parse_problems <- readr::problems(out)
+      if (nrow(parse_problems) > 0) {
+        problem_columns <- unique(parse_problems$col)
+        stop(
+          source, " import found ", nrow(parse_problems),
+          " parsing problem(s) in column(s): ",
+          paste(problem_columns, collapse = ", "),
+          call. = FALSE
+        )
+      }
+    }
+  }
+
+  if (is.null(out)) {
+    out <- tibble::as_tibble(
+      utils::read.table(
+        path,
+        sep = delim,
+        header = TRUE,
+        stringsAsFactors = FALSE,
+        check.names = FALSE,
+        colClasses = "character",
+        na.strings = c("", "NA"),
+        dec = decimal_mark,
+        quote = "\"",
+        comment.char = ""
+      )
+    )
+
+    for (column in names(column_types)) {
+      if (!column %in% names(out)) next
+      values <- out[[column]]
+      type <- column_types[[column]]
+      if (type == "character") next
+
+      numeric_input <- if (decimal_mark == ".") {
+        values
+      } else {
+        gsub(decimal_mark, ".", values, fixed = TRUE)
+      }
+      numeric_values <- suppressWarnings(as.numeric(numeric_input))
+      invalid <- !is.na(values) & nzchar(trimws(values)) & is.na(numeric_values)
+      if (type == "integer") {
+        invalid <- invalid | (!is.na(numeric_values) & numeric_values != trunc(numeric_values))
+        parsed_values <- as.integer(numeric_values)
+      } else {
+        parsed_values <- numeric_values
+      }
+      if (any(invalid)) {
+        stop(
+          source, " import found invalid ", type, " value(s) in column '",
+          column, "'.",
+          call. = FALSE
+        )
+      }
+      out[[column]] <- parsed_values
+    }
+  }
+
+  out <- janitor::clean_names(out)
+  missing_columns <- setdiff(required_columns, names(out))
+  if (length(missing_columns) > 0) {
+    stop(
+      source, " input is missing required column(s): ",
+      paste(missing_columns, collapse = ", "),
+      call. = FALSE
+    )
+  }
+  expected_types <- unname(c(character = "character", integer = "integer", double = "double")[column_types])
+  names(expected_types) <- janitor::make_clean_names(names(column_types))
+  incorrect_types <- names(expected_types)[vapply(names(expected_types), function(column) {
+    typeof(out[[column]]) != expected_types[[column]]
+  }, logical(1))]
+  if (length(incorrect_types) > 0) {
+    stop(
+      source, " input has unexpected type(s) for column(s): ",
+      paste(incorrect_types, collapse = ", "),
+      call. = FALSE
+    )
+  }
+  if (nrow(out) == 0) {
+    stop(source, " input contains no data rows: ", path, call. = FALSE)
+  }
+
+  out
+}
+
+read_fao_export <- function(path) {
+  column_types <- c(
+    "COUNTRY.UN_CODE" = "character",
+    "SPECIES.ALPHA_3_CODE" = "character",
+    "AREA.CODE" = "character",
+    "ENVIRONMENT.ALPHA_2_CODE" = "character",
+    MEASURE = "character",
+    PERIOD = "integer",
+    VALUE = "double",
+    STATUS = "character"
+  )
+  read_source_delimited(
+    path = path,
+    delim = ",",
+    source = "FAO",
+    column_types = column_types,
+    required_columns = c(
+      "country_un_code", "species_alpha_3_code", "area_code",
+      "environment_alpha_2_code", "measure", "period", "value", "status"
+    )
+  )
+}
+
+read_eumofa_export <- function(path) {
+  column_types <- c(
+    year = "integer",
+    country = "character",
+    "desc country" = "character",
+    "commodity group" = "character",
+    "main commercial species" = "character",
+    "ers code" = "character",
+    "english name" = "character",
+    "volume(kg)" = "double",
+    weight = "character",
+    "value(eur)" = "double"
+  )
+  read_source_delimited(
+    path = path,
+    delim = ";",
+    source = "EUMOFA",
+    column_types = column_types,
+    required_columns = c(
+      "year", "country", "desc_country", "commodity_group",
+      "main_commercial_species", "ers_code", "english_name",
+      "volume_kg", "weight", "value_eur"
+    )
+  )
+}
+
 write_csv_safe <- function(df, path) {
   if (requireNamespace("readr", quietly = TRUE)) {
     ok <- tryCatch(

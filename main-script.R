@@ -137,10 +137,7 @@ print(head(eu_clean, 5))
 
 cli_h1("FAO AQUACULTURE — RAW QUANTITY")
 
-fao_qty_raw <- read_csv_safe(
-  fao_qty_path,
-  decimal_mark = "."
-) |> clean_names()
+fao_qty_raw <- read_fao_export(fao_qty_path)
 
 cli_alert_info("FAO Quantity columns:")
 print(names(fao_qty_raw))
@@ -148,10 +145,7 @@ cli_alert_success("FAO Quantity rows: {nrow(fao_qty_raw)}")
 
 cli_h1("FAO AQUACULTURE — RAW VALUE")
 
-fao_val_raw <- read_csv_safe(
-  fao_val_path,
-  decimal_mark = "."
-) |> clean_names()
+fao_val_raw <- read_fao_export(fao_val_path)
 
 cli_alert_info("FAO Value columns:")
 print(names(fao_val_raw))
@@ -195,11 +189,7 @@ if (export_fao_diagnostics && file.exists(fao_species_path)) {
 
 cli_h1("EUMOFA AQUACULTURE — RAW DATA")
 
-eumofa_raw <- read_delim_safe(
-  eumofa_path,
-  delim = ";",
-  decimal_mark = "."
-) |> clean_names()
+eumofa_raw <- read_eumofa_export(eumofa_path)
 
 cli_alert_info("EUMOFA columns:")
 print(names(eumofa_raw))

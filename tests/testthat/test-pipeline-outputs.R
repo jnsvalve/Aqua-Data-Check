@@ -23,6 +23,51 @@ if (file.exists(low_anthropic_path)) source(low_anthropic_path)
 pipeline_path <- file.path(project_root, "R", "pipeline.R")
 if (file.exists(pipeline_path)) source(pipeline_path)
 
+test_that("FAO and EUMOFA imports enforce source schemas and preserve identifiers", {
+  fao_path <- tempfile(fileext = ".csv")
+  on.exit(unlink(fao_path), add = TRUE)
+  writeLines(c(
+    '"COUNTRY.UN_CODE","SPECIES.ALPHA_3_CODE","AREA.CODE","ENVIRONMENT.ALPHA_2_CODE","MEASURE","PERIOD","VALUE","STATUS"',
+    '"004","FCY","04","IN","Q_tlw",2020,12.5,"A"'
+  ), fao_path)
+
+  fao <- read_fao_export(fao_path)
+  expect_identical(fao$country_un_code, "004")
+  expect_type(fao$period, "integer")
+  expect_type(fao$value, "double")
+
+  eumofa_path <- tempfile(fileext = ".csv")
+  on.exit(unlink(eumofa_path), add = TRUE)
+  writeLines(c(
+    "year;country;desc country;commodity group;main commercial species;ers code;english name;volume(kg);weight;value(eur)",
+    "2023;BG;Bulgaria;Freshwater fish;Pike-perch;FPP;Pike-perch;25660;Live weight;120970"
+  ), eumofa_path)
+
+  eumofa <- read_eumofa_export(eumofa_path)
+  expect_identical(eumofa$country, "BG")
+  expect_type(eumofa$year, "integer")
+  expect_type(eumofa$volume_kg, "double")
+  expect_type(eumofa$value_eur, "double")
+})
+
+test_that("source imports reject missing schemas and malformed numeric fields", {
+  missing_column_path <- tempfile(fileext = ".csv")
+  on.exit(unlink(missing_column_path), add = TRUE)
+  writeLines(c(
+    "year;country;value(eur)",
+    "2023;BG;120970"
+  ), missing_column_path)
+  expect_error(read_eumofa_export(missing_column_path), "missing required column")
+
+  malformed_path <- tempfile(fileext = ".csv")
+  on.exit(unlink(malformed_path), add = TRUE)
+  writeLines(c(
+    '"COUNTRY.UN_CODE","SPECIES.ALPHA_3_CODE","AREA.CODE","ENVIRONMENT.ALPHA_2_CODE","MEASURE","PERIOD","VALUE","STATUS"',
+    '"004","FCY","04","IN","Q_tlw","unknown",12.5,"A"'
+  ), malformed_path)
+  expect_error(read_fao_export(malformed_path), "parsing problem|invalid integer")
+})
+
 test_that("pipeline outputs are computed from in-memory source tables", {
   inputs <- list(
     eurostat = tibble::tibble(
