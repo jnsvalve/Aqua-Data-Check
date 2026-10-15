@@ -34,6 +34,7 @@ suppressPackageStartupMessages({
 source("R/functions.R")
 source("R/observations.R")
 source("R/output.R")
+source("R/segments.R")
 source("R/low_anthropic.R")
 source("R/pipeline.R")
 
@@ -326,6 +327,7 @@ manifest <- build_observation_manifest(
     retrieved_at_utc = eu_retrieved_at_utc
   ),
   input_files = input_files,
+  segment_rules_version = SEGMENT_RULES_VERSION,
   fx = list(
     source = if (file.exists(fx_path)) "csv" else "fallback",
     path = if (file.exists(fx_path)) fx_path else NULL,
@@ -335,7 +337,8 @@ manifest <- build_observation_manifest(
 
 normalized_bundle <- list(
   manifest = manifest,
-  observations = pipeline_result$observations
+  observations = pipeline_result$observations,
+  memberships = pipeline_result$memberships
 )
 normalized_snapshot_path <- write_normalized_snapshot(
   normalized_bundle,

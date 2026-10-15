@@ -369,6 +369,7 @@ build_observation_manifest <- function(source_status,
                                        eurostat,
                                        input_files,
                                        fx,
+                                       segment_rules_version = NA_character_,
                                        generated_at_utc = NULL) {
   source_status <- unlist(source_status, use.names = TRUE)
   if (is.null(names(source_status)) || any(!nzchar(names(source_status)))) {
@@ -384,6 +385,7 @@ build_observation_manifest <- function(source_status,
 
   list(
     schema_version = "1.0.0",
+    segment_rules_version = segment_rules_version,
     generated_at_utc = generated_at_utc,
     coverage_status = if (all(source_status)) "complete" else "partial",
     source_status = as.list(source_status),
