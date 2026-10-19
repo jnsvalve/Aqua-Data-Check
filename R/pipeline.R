@@ -77,6 +77,45 @@ build_pipeline_outputs <- function(inputs, config) {
     config$summary_years,
     config$europe_codes
   )
+  comparison_tables <- list(
+    all_production = build_comparison_table(
+      observations,
+      years = config$comparison_years,
+      countries = config$comparison_countries
+    ),
+    freshwater = build_comparison_table(
+      observations,
+      years = config$comparison_years,
+      countries = config$comparison_countries,
+      memberships = memberships %>%
+        filter(segment == "freshwater") %>%
+        select(observation_id)
+    ),
+    low_anthropic = build_comparison_table(
+      observations,
+      years = config$comparison_years,
+      countries = config$comparison_countries,
+      memberships = memberships %>%
+        filter(segment == "low_anthropic") %>%
+        select(observation_id, profile, category),
+      membership_dimensions = c("profile", "category")
+    )
+  )
+  comparison_plots <- list()
+  plot_measures <- c(
+    production_tonnes = "quantity",
+    production_value_eur = "value"
+  )
+  for (segment in names(comparison_tables)) {
+    for (measure in names(plot_measures)) {
+      plot_name <- paste(segment, plot_measures[[measure]], sep = "_")
+      comparison_plots[[plot_name]] <- build_comparison_plot(
+        comparison_tables[[segment]],
+        measure = measure,
+        segment = segment
+      )
+    }
+  }
 
   list(
     observations = observations,
@@ -87,30 +126,8 @@ build_pipeline_outputs <- function(inputs, config) {
       low_anthropic_by_mode = low_anthropic$by_mode,
       low_anthropic_side_by_side = low_anthropic$side_by_side,
       freshwater_consistency = build_fw_consistency(freshwater_summary),
-      comparison_tables = list(
-        all_production = build_comparison_table(
-          observations,
-          years = config$comparison_years,
-          countries = config$comparison_countries
-        ),
-        freshwater = build_comparison_table(
-          observations,
-          years = config$comparison_years,
-          countries = config$comparison_countries,
-          memberships = memberships %>%
-            filter(segment == "freshwater") %>%
-            select(observation_id)
-        ),
-        low_anthropic = build_comparison_table(
-          observations,
-          years = config$comparison_years,
-          countries = config$comparison_countries,
-          memberships = memberships %>%
-            filter(segment == "low_anthropic") %>%
-            select(observation_id, profile, category),
-          membership_dimensions = c("profile", "category")
-        )
-      )
+      comparison_tables = comparison_tables,
+      comparison_plots = comparison_plots
     ),
     diagnostics = list(
       comparison_all = build_comparison(

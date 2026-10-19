@@ -301,7 +301,8 @@ test_that("pipeline outputs are computed from in-memory source tables", {
       "low_anthropic_by_mode",
       "low_anthropic_side_by_side",
       "freshwater_consistency",
-      "comparison_tables"
+      "comparison_tables",
+      "comparison_plots"
     )
   )
   expect_equal(result$exports$general_summary$eurostat_production, 100)
@@ -366,6 +367,20 @@ test_that("pipeline outputs are computed from in-memory source tables", {
       eumofa_value = 5000
     )
   )
+  expect_setequal(
+    names(result$exports$comparison_plots),
+    c(
+      "all_production_quantity", "all_production_value",
+      "freshwater_quantity", "freshwater_value",
+      "low_anthropic_quantity", "low_anthropic_value"
+    )
+  )
+  expect_equal(
+    result$exports$comparison_plots$all_production_quantity$data %>%
+      filter(year == 2020L, source == "FAO") %>%
+      pull(value),
+    56
+  )
 
   scoped_inputs <- inputs
   scoped_inputs$fao_to_iso2 <- bind_rows(
@@ -406,6 +421,14 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   all_production <- scoped_result$exports$comparison_tables$all_production
   expect_equal(
     all_production %>% select(country_code, year),
+    tibble::tibble(
+      country_code = c("DE", "DE", "FR"),
+      year = c(2020L, 2021L, 2021L)
+    )
+  )
+  expect_equal(
+    scoped_result$exports$comparison_plots$all_production_quantity$data %>%
+      distinct(country_code, year),
     tibble::tibble(
       country_code = c("DE", "DE", "FR"),
       year = c(2020L, 2021L, 2021L)
@@ -668,6 +691,17 @@ test_that("partial runs do not overwrite latest exports or diagnostics", {
       "fao_major_group_val_counts.csv"
     )
   )
+  plot_names <- c(
+    "all_production_quantity", "all_production_value",
+    "freshwater_quantity", "freshwater_value",
+    "low_anthropic_quantity", "low_anthropic_value"
+  )
+  comparison_plot_dir <- file.path(output_dirs$general, "comparison_plots")
+  dir.create(comparison_plot_dir, recursive = TRUE)
+  existing_paths <- c(
+    existing_paths,
+    file.path(comparison_plot_dir, paste0(plot_names, "_latest.png"))
+  )
   for (path in existing_paths) writeLines("previous complete output", path)
   before_hashes <- unname(tools::md5sum(existing_paths))
 
@@ -691,6 +725,26 @@ test_that("complete runs write summaries and diagnostics", {
     low_anthropic = file.path(output_root, "low_anthropic"),
     diagnostics = file.path(output_root, "diagnostics")
   )
+  plot_names <- c(
+    "all_production_quantity", "all_production_value",
+    "freshwater_quantity", "freshwater_value",
+    "low_anthropic_quantity", "low_anthropic_value"
+  )
+  comparison_plot <- build_comparison_plot(
+    tibble::tibble(
+      country_code = "DE",
+      year = 2020L,
+      eurostat_production = 100,
+      fao_production = 80,
+      eumofa_production = 70
+    ),
+    measure = "production_tonnes",
+    segment = "all_production"
+  )
+  comparison_plots <- stats::setNames(
+    rep(list(comparison_plot), length(plot_names)),
+    plot_names
+  )
   exports <- list(
     general_summary = tibble::tibble(country_code = "DE", year = 2020L),
     freshwater_summary = tibble::tibble(country_code = "DE", year = 2020L),
@@ -704,7 +758,8 @@ test_that("complete runs write summaries and diagnostics", {
         profile = "strict", category = "mussels_bivalves",
         country_code = "DE", year = 2020L, eurostat_production = 5
       )
-    )
+    ),
+    comparison_plots = comparison_plots
   )
   fao_diagnostics <- list(
     fao_env_qty_counts = tibble::tibble(environment_alpha_2_code = "IN", n = 1L),
@@ -721,7 +776,15 @@ test_that("complete runs write summaries and diagnostics", {
   )
 
   expect_true(published)
-  expect_length(list.files(output_root, recursive = TRUE), 9L)
+  expect_length(list.files(output_root, recursive = TRUE), 15L)
+  comparison_plot_dir <- file.path(output_dirs$general, "comparison_plots")
+  expect_setequal(
+    list.files(comparison_plot_dir),
+    paste0(plot_names, "_latest.png")
+  )
+  expect_true(all(
+    file.info(file.path(comparison_plot_dir, paste0(plot_names, "_latest.png")))$size > 0
+  ))
   comparison_path <- file.path(output_dirs$general, "production_comparisons_latest.xlsx")
   expect_setequal(
     openxlsx::getSheetNames(comparison_path),
@@ -751,4 +814,117 @@ test_that("complete runs write summaries and diagnostics", {
     nrow(read.csv(file.path(output_dirs$diagnostics, "fao_env_qty_counts.csv"))),
     1L
   )
+})
+
+test_that("comparison plots preserve values and label quantity units", {
+  comparison_table <- tibble::tibble(
+    country_code = c("DE", "DE"),
+    year = c(2020L, 2021L),
+    eurostat_production = c(100, NA_real_),
+    fao_production = c(80, 0),
+    eumofa_production = c(NA_real_, NA_real_)
+  )
+
+  plot <- build_comparison_plot(
+    comparison_table,
+    measure = "production_tonnes",
+    segment = "all_production"
+  )
+
+  expect_s3_class(plot, "ggplot")
+  expect_identical(plot$labels$title, "All production")
+  expect_equal(
+    plot$data %>% select(country_code, year, source, measure, unit, value),
+    tibble::tibble(
+      country_code = rep("DE", 6),
+      year = rep(c(2020L, 2021L), each = 3),
+      source = rep(c("Eurostat", "FAO", "EUMOFA"), 2),
+      measure = rep("production_tonnes", 6),
+      unit = rep("tonnes", 6),
+      value = c(100, 80, NA_real_, NA_real_, 0, NA_real_)
+    )
+  )
+  expect_identical(plot$labels$x, "Year")
+  expect_identical(plot$labels$y, "Production quantity (tonnes)")
+  expect_identical(plot$labels$colour, "Source")
+})
+
+test_that("comparison value plots use compatible EUR values", {
+  comparison_table <- tibble::tibble(
+    country_code = c("DE", "DE"),
+    year = c(2020L, 2021L),
+    eurostat_value = c(3000, NA_real_),
+    fao_value = c(1500, 0),
+    eumofa_value = c(NA_real_, 1000)
+  )
+
+  plot <- build_comparison_plot(
+    comparison_table,
+    measure = "production_value_eur",
+    segment = "all_production"
+  )
+
+  expect_equal(
+    plot$data %>% select(country_code, year, source, measure, unit, value),
+    tibble::tibble(
+      country_code = rep("DE", 6),
+      year = rep(c(2020L, 2021L), each = 3),
+      source = rep(c("Eurostat", "FAO", "EUMOFA"), 2),
+      measure = rep("production_value_eur", 6),
+      unit = rep("EUR", 6),
+      value = c(3000, 1500, NA_real_, NA_real_, 0, 1000)
+    )
+  )
+  expect_identical(plot$labels$y, "Production value (EUR)")
+  expect_identical(plot$labels$colour, "Source")
+})
+
+test_that("low-anthropic plots retain profile and category values", {
+  comparison_table <- tibble::tibble(
+    profile = c("strict", "broad"),
+    category = c("mussels_bivalves", "mollusca_all"),
+    country_code = c("DE", "DE"),
+    year = c(2020L, 2020L),
+    eurostat_production = c(5, 7),
+    fao_production = c(10, 12),
+    eumofa_production = c(3, 4)
+  )
+
+  plot <- build_comparison_plot(
+    comparison_table,
+    measure = "production_tonnes",
+    segment = "low_anthropic"
+  )
+
+  expect_equal(
+    plot$data %>% select(profile, category, country_code, year, source, value),
+    tibble::tibble(
+      profile = rep(c("strict", "broad"), each = 3),
+      category = rep(c("mussels_bivalves", "mollusca_all"), each = 3),
+      country_code = rep("DE", 6),
+      year = rep(2020L, 6),
+      source = rep(c("Eurostat", "FAO", "EUMOFA"), 2),
+      value = c(5, 10, 3, 7, 12, 4)
+    )
+  )
+})
+
+test_that("empty segment plots can be built without facet values", {
+  comparison_table <- tibble::tibble(
+    profile = character(),
+    category = character(),
+    country_code = character(),
+    year = integer(),
+    eurostat_production = double(),
+    fao_production = double(),
+    eumofa_production = double()
+  )
+
+  plot <- build_comparison_plot(
+    comparison_table,
+    measure = "production_tonnes",
+    segment = "low_anthropic"
+  )
+
+  expect_no_error(ggplot2::ggplot_build(plot))
 })

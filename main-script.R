@@ -7,7 +7,7 @@
 
 suppressPackageStartupMessages({
   required_pkgs <- c(
-    "dplyr", "readr", "tidyr", "janitor", "stringr", "cli", "openxlsx", "countrycode"
+    "dplyr", "readr", "tidyr", "janitor", "stringr", "cli", "openxlsx", "countrycode", "ggplot2"
   )
   missing_pkgs <- required_pkgs[!vapply(required_pkgs, requireNamespace, logical(1), quietly = TRUE)]
   if (length(missing_pkgs) > 0) {
@@ -362,7 +362,7 @@ if (manifest$coverage_status == "complete") {
     fao_diagnostics = fao_diagnostics
   )
   if (output_written) {
-    cli_alert_success("Summary exports and diagnostics updated from complete source coverage")
+    cli_alert_success("Summary exports, comparison tables, plots, and diagnostics updated from complete source coverage")
   }
 } else {
   cli_alert_warning(
