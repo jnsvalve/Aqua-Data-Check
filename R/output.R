@@ -25,6 +25,20 @@ write_pipeline_exports <- function(exports,
     file.path(output_dirs$general, "Europe_summary_latest.xlsx"),
     sheetName = "data"
   )
+  comparison_workbook <- openxlsx::createWorkbook()
+  for (table_name in names(exports$comparison_tables)) {
+    openxlsx::addWorksheet(comparison_workbook, table_name)
+    openxlsx::writeData(
+      comparison_workbook,
+      table_name,
+      exports$comparison_tables[[table_name]]
+    )
+  }
+  openxlsx::saveWorkbook(
+    comparison_workbook,
+    file.path(output_dirs$general, "production_comparisons_latest.xlsx"),
+    overwrite = TRUE
+  )
   openxlsx::write.xlsx(
     exports$freshwater_summary,
     file.path(output_dirs$freshwater, "Europe_freshwater_summary_latest.xlsx"),

@@ -300,7 +300,8 @@ test_that("pipeline outputs are computed from in-memory source tables", {
       "freshwater_summary",
       "low_anthropic_by_mode",
       "low_anthropic_side_by_side",
-      "freshwater_consistency"
+      "freshwater_consistency",
+      "comparison_tables"
     )
   )
   expect_equal(result$exports$general_summary$eurostat_production, 100)
@@ -311,6 +312,116 @@ test_that("pipeline outputs are computed from in-memory source tables", {
     result$diagnostics$comparison_all$fao_value_production_value_usd,
     6500
   )
+  expect_equal(
+    result$exports$comparison_tables$all_production %>%
+      select(
+        country_code, year, eurostat_production, fao_production,
+        eumofa_production, eurostat_value, fao_value, eumofa_value
+      ),
+    tibble::tibble(
+      country_code = "DE",
+      year = 2020L,
+      eurostat_production = 100,
+      fao_production = 56,
+      eumofa_production = 3,
+      eurostat_value = 50000,
+      fao_value = 3250,
+      eumofa_value = 5000
+    )
+  )
+  expect_equal(
+    result$exports$comparison_tables$freshwater %>%
+      select(
+        country_code, year, eurostat_production, fao_production,
+        eumofa_production, eurostat_value, fao_value, eumofa_value
+      ),
+    tibble::tibble(
+      country_code = "DE",
+      year = 2020L,
+      eurostat_production = 100,
+      fao_production = 56,
+      eumofa_production = 3,
+      eurostat_value = 50000,
+      fao_value = 3250,
+      eumofa_value = 5000
+    )
+  )
+  expect_equal(
+    result$exports$comparison_tables$low_anthropic %>%
+      filter(profile == "strict", category == "mussels_bivalves") %>%
+      select(
+        profile, category, country_code, year, eurostat_production,
+        fao_production, eumofa_production, eurostat_value, fao_value, eumofa_value
+      ),
+    tibble::tibble(
+      profile = "strict",
+      category = "mussels_bivalves",
+      country_code = "DE",
+      year = 2020L,
+      eurostat_production = 5,
+      fao_production = 10,
+      eumofa_production = 3,
+      eurostat_value = 2500,
+      fao_value = 1000,
+      eumofa_value = 5000
+    )
+  )
+
+  scoped_inputs <- inputs
+  scoped_inputs$fao_to_iso2 <- bind_rows(
+    inputs$fao_to_iso2,
+    tibble::tibble(country_un_code = c("250", "356"), iso2 = c("FR", "IN"))
+  )
+  scoped_inputs$fao_quantity <- bind_rows(
+    inputs$fao_quantity,
+    tibble::tibble(
+      country_un_code = c("999", "250", "356"),
+      period = c(2021L, 2022L, 2021L),
+      measure = "Q_tlw",
+      area_code = "04",
+      environment_alpha_2_code = "IN",
+      value = c(0, 99, 88),
+      status = "A",
+      species_alpha_3_code = "SAL"
+    )
+  )
+  scoped_inputs$eumofa <- bind_rows(
+    inputs$eumofa,
+    tibble::tibble(
+      country = c("DE", "FR"),
+      year = c(2021L, 2021L),
+      volume_kg = NA_real_,
+      value_eur = NA_real_,
+      commodity_group = "Freshwater finfish",
+      main_commercial_species = "Unreported",
+      ers_code = c("MISS-DE", "MISS-FR"),
+      english_name = "Unreported freshwater fish",
+      weight = NA_character_
+    )
+  )
+  scoped_config <- config
+  scoped_config$comparison_years <- 2020:2021
+  scoped_config$comparison_countries <- c("DE", "FR")
+  scoped_result <- build_pipeline_outputs(scoped_inputs, scoped_config)
+  all_production <- scoped_result$exports$comparison_tables$all_production
+  expect_equal(
+    all_production %>% select(country_code, year),
+    tibble::tibble(
+      country_code = c("DE", "DE", "FR"),
+      year = c(2020L, 2021L, 2021L)
+    )
+  )
+  expect_equal(
+    all_production %>%
+      filter(country_code == "DE", year == 2021L) %>%
+      select(fao_production, eumofa_production),
+    tibble::tibble(fao_production = 0, eumofa_production = NA_real_)
+  )
+  expect_true(is.na(
+    all_production %>%
+      filter(country_code == "FR", year == 2021L) %>%
+      pull(eumofa_production)
+  ))
 
   low_anthropic_types <- result$exports$low_anthropic_by_mode$production_type
   expect_setequal(
@@ -542,11 +653,12 @@ test_that("partial runs do not overwrite latest exports or diagnostics", {
   lapply(output_dirs, dir.create, recursive = TRUE)
 
   existing_paths <- file.path(
-    c(output_dirs$general, output_dirs$freshwater, output_dirs$low_anthropic,
+    c(output_dirs$general, output_dirs$general, output_dirs$freshwater, output_dirs$low_anthropic,
       output_dirs$freshwater, output_dirs$diagnostics, output_dirs$diagnostics,
       output_dirs$diagnostics, output_dirs$diagnostics),
     c(
       "Europe_summary_latest.xlsx",
+      "production_comparisons_latest.xlsx",
       "Europe_freshwater_summary_latest.xlsx",
       "Europe_low_anthropic_summary_latest.xlsx",
       "freshwater_consistency_latest.csv",
@@ -584,7 +696,15 @@ test_that("complete runs write summaries and diagnostics", {
     freshwater_summary = tibble::tibble(country_code = "DE", year = 2020L),
     low_anthropic_by_mode = tibble::tibble(mode = "strict", country_code = "DE"),
     low_anthropic_side_by_side = tibble::tibble(country_code = "DE"),
-    freshwater_consistency = tibble::tibble(country_code = "DE", year = 2020L)
+    freshwater_consistency = tibble::tibble(country_code = "DE", year = 2020L),
+    comparison_tables = list(
+      all_production = tibble::tibble(country_code = "DE", year = 2020L, eurostat_production = 100),
+      freshwater = tibble::tibble(country_code = "DE", year = 2020L, eurostat_production = 80),
+      low_anthropic = tibble::tibble(
+        profile = "strict", category = "mussels_bivalves",
+        country_code = "DE", year = 2020L, eurostat_production = 5
+      )
+    )
   )
   fao_diagnostics <- list(
     fao_env_qty_counts = tibble::tibble(environment_alpha_2_code = "IN", n = 1L),
@@ -601,7 +721,24 @@ test_that("complete runs write summaries and diagnostics", {
   )
 
   expect_true(published)
-  expect_length(list.files(output_root, recursive = TRUE), 8L)
+  expect_length(list.files(output_root, recursive = TRUE), 9L)
+  comparison_path <- file.path(output_dirs$general, "production_comparisons_latest.xlsx")
+  expect_setequal(
+    openxlsx::getSheetNames(comparison_path),
+    c("all_production", "freshwater", "low_anthropic")
+  )
+  expect_equal(
+    openxlsx::read.xlsx(comparison_path, sheet = "all_production")$eurostat_production,
+    100
+  )
+  expect_equal(
+    openxlsx::read.xlsx(comparison_path, sheet = "freshwater")$eurostat_production,
+    80
+  )
+  expect_equal(
+    openxlsx::read.xlsx(comparison_path, sheet = "low_anthropic")$category,
+    "mussels_bivalves"
+  )
   expect_setequal(
     openxlsx::getSheetNames(file.path(output_dirs$low_anthropic, "Europe_low_anthropic_summary_latest.xlsx")),
     c("by_mode", "side_by_side")

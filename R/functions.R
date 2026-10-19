@@ -789,3 +789,70 @@ build_summary_table <- function(long_fx, years, europe_codes) {
     ungroup() %>%
     arrange(country_code, year)
 }
+
+build_comparison_table <- function(observations,
+                                  years,
+                                  countries,
+                                  memberships = NULL,
+                                  membership_dimensions = character()) {
+  scoped_observations <- observations %>%
+    filter(year %in% years, country_code %in% countries)
+  if (!is.null(memberships)) {
+    scoped_observations <- scoped_observations %>%
+      inner_join(memberships, by = "observation_id")
+  }
+  scope_columns <- c(membership_dimensions, "country_code", "year")
+
+  eurostat_totals <- scoped_observations %>%
+    filter(source == "eurostat", record_scope == "published_total") %>%
+    distinct(country_code, year, measure)
+  eurostat_observations <- scoped_observations %>%
+    filter(source == "eurostat")
+  eurostat_categories <- eurostat_observations %>%
+    filter(record_scope != "published_total") %>%
+    anti_join(eurostat_totals, by = c("country_code", "year", "measure"))
+
+  comparison_values <- bind_rows(
+    filter(scoped_observations, source != "eurostat"),
+    filter(eurostat_observations, record_scope == "published_total"),
+    eurostat_categories
+  ) %>%
+    group_by(across(all_of(c(scope_columns, "source", "measure")))) %>%
+    summarise(
+      values = if (all(is.na(comparison_value))) {
+        NA_real_
+      } else {
+        sum(comparison_value, na.rm = TRUE)
+      },
+      .groups = "drop"
+    ) %>%
+    pivot_wider(
+      id_cols = all_of(scope_columns),
+      names_from = c(source, measure),
+      values_from = values
+    )
+
+  expected_columns <- c(
+    "eurostat_production_tonnes",
+    "fao_quantity_production_tonnes",
+    "eumofa_production_tonnes",
+    "eurostat_production_value_eur",
+    "fao_value_production_value_eur",
+    "eumofa_production_value_eur"
+  )
+  for (column in expected_columns) {
+    if (!column %in% names(comparison_values)) comparison_values[[column]] <- NA_real_
+  }
+
+  comparison_values %>%
+    select(
+      all_of(scope_columns),
+      eurostat_production = eurostat_production_tonnes,
+      fao_production = fao_quantity_production_tonnes,
+      eumofa_production = eumofa_production_tonnes,
+      eurostat_value = eurostat_production_value_eur,
+      fao_value = fao_value_production_value_eur,
+      eumofa_value = eumofa_production_value_eur
+    ) %>%
+    arrange(across(all_of(scope_columns)))
+}
