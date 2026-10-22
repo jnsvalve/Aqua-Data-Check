@@ -860,7 +860,7 @@ test_that("comparison plots preserve values and label quantity units", {
   )
 
   expect_s3_class(plot, "ggplot")
-  expect_identical(plot$labels$title, "Production quantity (tonnes)")
+  expect_identical(plot$labels$title, "Production quantity (million tonnes)")
   expect_identical(plot$labels$subtitle, "All production")
   expect_equal(
     plot$data |> select(country_code, year, source, measure, unit, value),
@@ -873,12 +873,12 @@ test_that("comparison plots preserve values and label quantity units", {
       value = c(100, 80, NA_real_, NA_real_, 0, NA_real_)
     )
   )
-  expect_identical(plot$labels$x, "Year")
+  expect_null(plot$labels$x)
   expect_null(plot$labels$y)
   expect_identical(plot$labels$colour, "Source")
   expect_identical(
     plot$scales$get_scales("y")$get_labels(c(0, 1000, 1000000)),
-    c("0", "1,000", "1,000,000")
+    c("0.000", "0.001", "1.000")
   )
 })
 
@@ -920,7 +920,7 @@ test_that("comparison value plots use compatible EUR values", {
 })
 
 test_that("comparison year labels adapt to the span without fractional years", {
-  for (year_range in list(2020:2023, 2010:2024, 1990:2025, 1950:2025, 2020L, integer())) {
+  for (year_range in list(2020:2023, 2006:2024, 2008:2023, 2010:2024, 1990:2025, 1950:2025, 2020L, integer())) {
     comparison_table <- tibble::tibble(
       country_code = rep("DE", length(year_range)),
       year = year_range,
@@ -931,10 +931,14 @@ test_that("comparison year labels adapt to the span without fractional years", {
     plot <- build_comparison_plot(comparison_table, "production_tonnes", "all_production")
     built <- ggplot2::ggplot_build(plot)
     axis <- built$layout$panel_params[[1]]$x
+    expect_length(axis$minor_breaks, 0L)
     breaks <- axis$get_breaks()
     breaks <- breaks[is.finite(breaks)]
     expect_equal(breaks, round(breaks))
-    expect_lte(length(breaks), 9L)
+    expect_lte(length(breaks), 10L)
+    if (length(year_range) >= 14) {
+      expect_gte(length(breaks), 7L)
+    }
     expect_equal(
       axis$scale$get_labels(breaks),
       format(breaks, scientific = FALSE, trim = TRUE)
@@ -963,7 +967,7 @@ test_that("low-anthropic plots retain profile and category values", {
     facet_countries = TRUE
   )
 
-  expect_identical(plot$labels$title, "Production quantity (tonnes)")
+  expect_identical(plot$labels$title, "Production quantity (million tonnes)")
   expect_identical(plot$labels$subtitle, "Low-anthropic")
   expect_null(plot$labels$y)
   expect_named(plot$facet$params$facets, c("category", "country_code"))

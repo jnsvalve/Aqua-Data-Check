@@ -8,8 +8,8 @@ build_comparison_plot <- function(comparison_table, measure, segment, facet_coun
         eumofa_production = "EUMOFA"
       ),
       unit = "tonnes",
-      label_scale = 1,
-      axis_label = "Production quantity (tonnes)"
+      label_scale = 1e-6,
+      axis_label = "Production quantity (million tonnes)"
     ),
     production_value_eur = list(
       source_columns = c(
@@ -62,8 +62,7 @@ build_comparison_plot <- function(comparison_table, measure, segment, facet_coun
   )
   years <- plot_data$year[is.finite(plot_data$year)]
   year_span <- if (length(years) > 0) diff(range(years)) else 0
-  year_steps <- as.vector(outer(c(1, 2, 5), 10^(0:3)))
-  year_step <- min(year_steps[year_steps >= max(1, year_span / 7)])
+  year_step <- max(1, round(year_span / 8))
 
   plot <- ggplot2::ggplot(
     plot_data,
@@ -78,6 +77,7 @@ build_comparison_plot <- function(comparison_table, measure, segment, facet_coun
     ggplot2::geom_point(na.rm = TRUE) +
     ggplot2::scale_x_continuous(
       breaks = scales::breaks_width(year_step),
+      minor_breaks = NULL,
       labels = scales::label_number(accuracy = 1, big.mark = "")
     ) +
     ggplot2::scale_y_continuous(
@@ -86,7 +86,7 @@ build_comparison_plot <- function(comparison_table, measure, segment, facet_coun
     ggplot2::labs(
       title = plot_spec$axis_label,
       subtitle = segment_title,
-      x = "Year",
+      x = NULL,
       y = NULL,
       colour = "Source"
     )
