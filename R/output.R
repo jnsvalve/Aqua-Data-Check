@@ -79,7 +79,26 @@ write_pipeline_exports <- function(exports,
                                    output_dirs,
                                    coverage_status,
                                    fao_diagnostics = list()) {
-  if (!identical(coverage_status, "complete")) return(invisible(FALSE))
+  if (!identical(coverage_status, "complete")) {
+    if (identical(coverage_status, "partial") && length(exports$comparison_plots) > 0) {
+      comparison_plot_dir <- file.path(output_dirs$general, "comparison_plots")
+      dir.create(comparison_plot_dir, recursive = TRUE, showWarnings = FALSE)
+      for (plot_name in names(exports$comparison_plots)) {
+        ggplot2::ggsave(
+          filename = file.path(
+            comparison_plot_dir,
+            paste0(plot_name, "_partial_latest.png")
+          ),
+          plot = exports$comparison_plots[[plot_name]],
+          width = 10,
+          height = 6,
+          units = "in",
+          dpi = 150
+        )
+      }
+    }
+    return(invisible(FALSE))
+  }
 
   dir.create(output_dirs$general, recursive = TRUE, showWarnings = FALSE)
   dir.create(output_dirs$freshwater, recursive = TRUE, showWarnings = FALSE)

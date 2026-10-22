@@ -704,15 +704,32 @@ test_that("partial runs do not overwrite latest exports or diagnostics", {
   )
   for (path in existing_paths) writeLines("previous complete output", path)
   before_hashes <- unname(tools::md5sum(existing_paths))
+  partial_plot <- build_comparison_plot(
+    tibble::tibble(
+      country_code = "DE",
+      year = 2020L,
+      eurostat_production = 100,
+      fao_production = 80,
+      eumofa_production = 70
+    ),
+    measure = "production_tonnes",
+    segment = "all_production"
+  )
 
   published <- write_pipeline_exports(
-    exports = list(),
+    exports = list(comparison_plots = list(all_production_quantity = partial_plot)),
     output_dirs = output_dirs,
     coverage_status = "partial"
   )
 
   expect_false(published)
   expect_identical(unname(tools::md5sum(existing_paths)), before_hashes)
+  partial_plot_path <- file.path(
+    comparison_plot_dir,
+    "all_production_quantity_partial_latest.png"
+  )
+  expect_true(file.exists(partial_plot_path))
+  expect_gt(file.info(partial_plot_path)$size, 0)
 })
 
 test_that("complete runs write summaries and diagnostics", {

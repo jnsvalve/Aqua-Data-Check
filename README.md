@@ -42,7 +42,7 @@ Refresh when a new annual release is published; do not automate dashboard scrapi
 - `output/normalized/aquaculture_observations_partial_latest.rds` — latest partial snapshot, when a source is unavailable.
 - `output/general/Europe_summary_latest.xlsx`
 - `output/general/production_comparisons_latest.xlsx` — all-production, freshwater, and low-anthropic comparisons for the configured years and countries.
-- `output/general/comparison_plots/` — quantity and value charts for each comparison segment.
+- `output/general/comparison_plots/` — quantity and value charts for each comparison segment; complete runs use `_latest.png`, while partial runs use `_partial_latest.png` without replacing complete-run charts.
 - `output/freshwater/Europe_freshwater_summary_latest.xlsx`
 - `output/low_anthropic/Europe_low_anthropic_summary_latest.xlsx`
 - `output/freshwater/freshwater_consistency_latest.csv`
