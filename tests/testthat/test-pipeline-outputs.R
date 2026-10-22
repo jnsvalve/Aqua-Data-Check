@@ -428,11 +428,21 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   )
   expect_equal(
     scoped_result$exports$comparison_plots$all_production_quantity$data |>
-      distinct(country_code, year),
-    tibble::tibble(
-      country_code = c("DE", "DE", "FR"),
-      year = c(2020L, 2021L, 2021L)
-    )
+      distinct(year),
+    tibble::tibble(year = c(2020L, 2021L))
+  )
+  all_country_config <- scoped_config
+  all_country_config["comparison_countries"] <- list(NULL)
+  all_country_result <- build_pipeline_outputs(scoped_inputs, all_country_config)
+  expect_setequal(
+    all_country_result$exports$comparison_tables$all_production$country_code,
+    c("DE", "FR", "IN")
+  )
+  expect_equal(
+    all_country_result$exports$comparison_plots$all_production_quantity$data |>
+      filter(year == 2021L, source == "FAO") |>
+      pull(value),
+    88
   )
   expect_equal(
     all_production |>
@@ -845,11 +855,13 @@ test_that("comparison plots preserve values and label quantity units", {
   plot <- build_comparison_plot(
     comparison_table,
     measure = "production_tonnes",
-    segment = "all_production"
+    segment = "all_production",
+    facet_countries = TRUE
   )
 
   expect_s3_class(plot, "ggplot")
-  expect_identical(plot$labels$title, "All production")
+  expect_identical(plot$labels$title, "Production quantity (tonnes)")
+  expect_identical(plot$labels$subtitle, "All production")
   expect_equal(
     plot$data |> select(country_code, year, source, measure, unit, value),
     tibble::tibble(
@@ -862,8 +874,12 @@ test_that("comparison plots preserve values and label quantity units", {
     )
   )
   expect_identical(plot$labels$x, "Year")
-  expect_identical(plot$labels$y, "Production quantity (tonnes)")
+  expect_null(plot$labels$y)
   expect_identical(plot$labels$colour, "Source")
+  expect_identical(
+    plot$scales$get_scales("y")$get_labels(c(0, 1000, 1000000)),
+    c("0", "1,000", "1,000,000")
+  )
 })
 
 test_that("comparison value plots use compatible EUR values", {
@@ -878,7 +894,8 @@ test_that("comparison value plots use compatible EUR values", {
   plot <- build_comparison_plot(
     comparison_table,
     measure = "production_value_eur",
-    segment = "all_production"
+    segment = "all_production",
+    facet_countries = TRUE
   )
 
   expect_equal(
@@ -892,8 +909,14 @@ test_that("comparison value plots use compatible EUR values", {
       value = c(3000, 1500, NA_real_, NA_real_, 0, 1000)
     )
   )
-  expect_identical(plot$labels$y, "Production value (EUR)")
+  expect_identical(plot$labels$title, "Production value (EUR)")
+  expect_identical(plot$labels$subtitle, "All production")
+  expect_null(plot$labels$y)
   expect_identical(plot$labels$colour, "Source")
+  expect_identical(
+    plot$scales$get_scales("y")$get_labels(c(0, 1000, 1000000000)),
+    c("0", "1,000", "1,000,000,000")
+  )
 })
 
 test_that("low-anthropic plots retain profile and category values", {
@@ -910,9 +933,16 @@ test_that("low-anthropic plots retain profile and category values", {
   plot <- build_comparison_plot(
     comparison_table,
     measure = "production_tonnes",
-    segment = "low_anthropic"
+    segment = "low_anthropic",
+    facet_countries = TRUE
   )
 
+  expect_identical(plot$labels$title, "Production quantity (tonnes)")
+  expect_identical(plot$labels$subtitle, "Low-anthropic")
+  expect_null(plot$labels$y)
+  expect_named(plot$facet$params$facets, c("category", "country_code"))
+  expect_equal(length(unique(plot$data$series)), 6L)
+  expect_equal(nrow(ggplot2::ggplot_build(plot)$layout$layout), 2L)
   expect_equal(
     plot$data |> select(profile, category, country_code, year, source, value),
     tibble::tibble(
@@ -923,6 +953,57 @@ test_that("low-anthropic plots retain profile and category values", {
       source = rep(c("Eurostat", "FAO", "EUMOFA"), 2),
       value = c(5, 10, 3, 7, 12, 4)
     )
+  )
+})
+
+test_that("overview plots sum countries separately by source, year and category", {
+  comparison_table <- tibble::tibble(
+    profile = "broad",
+    category = c("mollusca_all", "mollusca_all", "aquatic_plants_all",
+                 "aquatic_plants_all", "mollusca_all", "mollusca_all"),
+    country_code = rep(c("DE", "FR"), 3),
+    year = c(2020L, 2020L, 2020L, 2020L, 2021L, 2021L),
+    eurostat_production = c(10, 20, 100, 200, NA_real_, NA_real_),
+    fao_production = c(1, NA_real_, 3, 4, 0, NA_real_),
+    eumofa_production = NA_real_
+  ) |>
+    mutate(
+      eurostat_value = eurostat_production * 1000,
+      fao_value = fao_production * 1000,
+      eumofa_value = eumofa_production
+    )
+
+  for (measure in c("production_tonnes", "production_value_eur")) {
+    plot <- build_comparison_plot(comparison_table, measure, "low_anthropic")
+    multiplier <- if (measure == "production_tonnes") 1 else 1000
+    molluscs <- plot$data |>
+      filter(category == "mollusca_all") |>
+      arrange(year)
+
+    expect_false("country_code" %in% names(plot$data))
+    expect_named(plot$facet$params$facets, "category")
+    expect_equal(molluscs$value[molluscs$source == "Eurostat"], c(30, NA_real_) * multiplier)
+    expect_equal(molluscs$value[molluscs$source == "FAO"], c(1, 0) * multiplier)
+    expect_true(all(is.na(plot$data$value[plot$data$source == "EUMOFA"])))
+    expect_equal(
+      plot$data$value[plot$data$category == "aquatic_plants_all" & plot$data$source == "Eurostat"],
+      300 * multiplier
+    )
+    expect_equal(nrow(ggplot2::ggplot_build(plot)$layout$layout), 2L)
+  }
+
+  country_plot <- build_comparison_plot(
+    comparison_table, "production_tonnes", "low_anthropic", facet_countries = TRUE
+  )
+  expect_equal(nrow(country_plot$data), 18L)
+  expect_equal(nrow(ggplot2::ggplot_build(country_plot)$layout$layout), 4L)
+
+  total_plot <- build_comparison_plot(
+    select(comparison_table, -profile, -category), "production_tonnes", "all_production"
+  )
+  expect_s3_class(total_plot$facet, "FacetNull")
+  expect_equal(
+    total_plot$data$value[total_plot$data$source == "Eurostat"], c(330, NA_real_)
   )
 })
 
@@ -944,4 +1025,17 @@ test_that("empty segment plots can be built without facet values", {
   )
 
   expect_no_error(ggplot2::ggplot_build(plot))
+})
+
+test_that("default comparison window covers the latest 20 completed years", {
+  script <- parse(file.path(project_root, "main-script.R"))
+  year_assignment <- Filter(function(expression) {
+    is.call(expression) && identical(expression[[1]], as.name("<-")) &&
+      identical(expression[[2]], as.name("years_target"))
+  }, as.list(script))
+  config <- new.env()
+  eval(year_assignment[[1]], envir = config)
+  latest_year <- as.integer(format(Sys.Date(), "%Y")) - 1L
+
+  expect_equal(config$years_target, seq.int(latest_year - 19L, latest_year))
 })

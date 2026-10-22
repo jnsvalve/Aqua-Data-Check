@@ -42,7 +42,7 @@ source("R/pipeline.R")
 # 0) USER PARAMETERS
 # ============================================================
 
-years_target <- 2018:2025
+years_target <- seq.int(to = as.integer(format(Sys.Date(), "%Y")) - 1L, length.out = 20L)
 fao_qty_path <- "./data/FAO/Aquaculture_Quantity.csv"
 fao_val_path <- "./data/FAO/Aquaculture_Value.csv"
 eumofa_path  <- "./data/EUMOFA/Yearly_Aquaculture.csv"
@@ -283,7 +283,7 @@ pipeline_result <- build_pipeline_outputs(
   config = list(
     summary_years = years_consistent,
     comparison_years = years_target,
-    comparison_countries = c("HU", "NL", "RO", "BE", "HR"),
+    comparison_countries = NULL,
     europe_codes = europe_codes,
     tolerance = 0.30,
     include_crustacea_subset = FALSE

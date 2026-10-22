@@ -19,6 +19,9 @@ build_pipeline_outputs <- function(inputs, config) {
 
   observations <- build_normalized_observations(inputs) |>
     mutate(observation_id = seq_len(n()), .before = 1)
+  if (is.null(config$comparison_countries)) {
+    config$comparison_countries <- unique(observations$country_code)
+  }
   memberships <- build_segment_memberships(
     observations,
     include_crustacea_subset = config$include_crustacea_subset %||% FALSE

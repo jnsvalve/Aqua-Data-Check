@@ -1,4 +1,4 @@
-build_comparison_plot <- function(comparison_table, measure, segment) {
+build_comparison_plot <- function(comparison_table, measure, segment, facet_countries = FALSE) {
   plot_spec <- switch(
     measure,
     production_tonnes = list(
@@ -36,13 +36,21 @@ build_comparison_plot <- function(comparison_table, measure, segment) {
       unit = plot_spec$unit
     ) |>
     select(all_of(dimensions), country_code, year, source, measure, unit, value)
-  group_columns <- c("country_code", dimensions, "source")
+  country_dimensions <- if (facet_countries) "country_code" else character()
+  if (!facet_countries) {
+    plot_data <- plot_data |>
+      group_by(across(all_of(c(dimensions, "year", "source", "measure", "unit")))) |>
+      summarise(
+        value = if (all(is.na(value))) NA_real_ else sum(value, na.rm = TRUE),
+        .groups = "drop"
+      )
+  }
+  group_columns <- c(country_dimensions, dimensions, "source")
   plot_data$series <- do.call(
     interaction,
     c(unname(as.list(plot_data[group_columns])), list(drop = TRUE))
   )
-  facet_columns <- c(dimensions, "country_code")
-  facet_formula <- stats::reformulate(facet_columns)
+  facet_columns <- c(setdiff(dimensions, "profile"), country_dimensions)
   segment_title <- switch(
     segment,
     all_production = "All production",
@@ -62,15 +70,17 @@ build_comparison_plot <- function(comparison_table, measure, segment) {
   ) +
     ggplot2::geom_line(na.rm = TRUE) +
     ggplot2::geom_point(na.rm = TRUE) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma()) +
     ggplot2::labs(
-      title = segment_title,
+      title = plot_spec$axis_label,
+      subtitle = segment_title,
       x = "Year",
-      y = plot_spec$axis_label,
+      y = NULL,
       colour = "Source"
     )
 
-  if (nrow(plot_data) > 0) {
-    plot <- plot + ggplot2::facet_wrap(facet_formula)
+  if (nrow(plot_data) > 0 && length(facet_columns) > 0) {
+    plot <- plot + ggplot2::facet_wrap(stats::reformulate(facet_columns))
   }
   plot
 }
