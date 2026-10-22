@@ -23,18 +23,18 @@ build_comparison_plot <- function(comparison_table, measure, segment) {
   )
   source_columns <- plot_spec$source_columns
   dimensions <- intersect(c("profile", "category"), names(comparison_table))
-  plot_data <- comparison_table %>%
-    select(all_of(c(dimensions, "country_code", "year", names(source_columns)))) %>%
+  plot_data <- comparison_table |>
+    select(all_of(c(dimensions, "country_code", "year", names(source_columns)))) |>
     pivot_longer(
       cols = all_of(names(source_columns)),
       names_to = "source_column",
       values_to = "value"
-    ) %>%
+    ) |>
     mutate(
       source = unname(source_columns[source_column]),
       measure = measure,
       unit = plot_spec$unit
-    ) %>%
+    ) |>
     select(all_of(dimensions), country_code, year, source, measure, unit, value)
   group_columns <- c("country_code", dimensions, "source")
   plot_data$series <- do.call(

@@ -17,6 +17,8 @@ An in-progress R workflow for collecting and comparing aquaculture production da
 
 ## Run
 
+Requires R 4.1 or newer for the native pipe operator.
+
 From the repository root:
 
 ```powershell

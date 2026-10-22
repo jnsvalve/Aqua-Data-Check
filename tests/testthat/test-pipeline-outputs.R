@@ -179,18 +179,18 @@ test_that("pipeline outputs are computed from in-memory source tables", {
     "eumofa_main_commercial_species", "eumofa_weight"
   ) %in% names(result$observations)))
 
-  eurostat_total_tonnes <- result$observations %>%
+  eurostat_total_tonnes <- result$observations |>
     filter(source == "eurostat", eurostat_species_code == "F00", measure == "production_tonnes")
   expect_equal(eurostat_total_tonnes$record_scope, "published_total")
   expect_equal(eurostat_total_tonnes$native_value, 100)
   expect_equal(eurostat_total_tonnes$comparison_value, 100)
 
-  eurostat_detail_tonnes <- result$observations %>%
+  eurostat_detail_tonnes <- result$observations |>
     filter(source == "eurostat", eurostat_species_code == "F54", measure == "production_tonnes")
   expect_equal(eurostat_detail_tonnes$record_scope, "source_category")
   expect_equal(eurostat_detail_tonnes$eurostat_flags, "p")
 
-  fao_value_oyster <- result$observations %>%
+  fao_value_oyster <- result$observations |>
     filter(source == "fao_value", fao_species_alpha_3_code == "OYS")
   expect_equal(fao_value_oyster$native_value, 2)
   expect_equal(fao_value_oyster$native_unit, "THOUSAND_USD")
@@ -198,19 +198,19 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   expect_equal(fao_value_oyster$comparison_unit, "EUR")
   expect_equal(fao_value_oyster$fx_rate, 0.5)
 
-  fao_nei <- result$observations %>%
+  fao_nei <- result$observations |>
     filter(source == "fao_quantity", fao_species_alpha_3_code == "FCY")
   expect_equal(fao_nei$record_scope, "source_category")
   expect_equal(fao_nei$fao_species_name_en, "Cyprinids NEI")
   expect_equal(fao_nei$fao_taxonomic_code, "1400141XXXXX")
 
-  eumofa_oyster_volume <- result$observations %>%
+  eumofa_oyster_volume <- result$observations |>
     filter(source == "eumofa", eumofa_ers_code == "OYS001", measure == "production_tonnes")
   expect_equal(eumofa_oyster_volume$native_value, 3000)
   expect_equal(eumofa_oyster_volume$native_unit, "KG")
   expect_equal(eumofa_oyster_volume$comparison_value, 3)
   expect_equal(eumofa_oyster_volume$eumofa_english_name, "Oyster, live")
-  eumofa_missing <- result$observations %>%
+  eumofa_missing <- result$observations |>
     filter(source == "eumofa", eumofa_ers_code == "UNK001")
   expect_equal(nrow(eumofa_missing), 2L)
   expect_true(all(is.na(eumofa_missing$native_value)))
@@ -225,16 +225,16 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   expect_identical(result$observations, observations_before_membership)
   expect_equal(recomputed_memberships, result$memberships)
 
-  freshwater_memberships <- result$memberships %>%
+  freshwater_memberships <- result$memberships |>
     filter(segment == "freshwater")
-  eurostat_freshwater_ids <- result$observations %>%
-    filter(source == "eurostat", eurostat_environment_code == "FRW") %>%
+  eurostat_freshwater_ids <- result$observations |>
+    filter(source == "eurostat", eurostat_environment_code == "FRW") |>
     pull(observation_id)
-  fao_freshwater_ids <- result$observations %>%
-    filter(source %in% c("fao_quantity", "fao_value"), fao_environment_alpha_2_code == "IN") %>%
+  fao_freshwater_ids <- result$observations |>
+    filter(source %in% c("fao_quantity", "fao_value"), fao_environment_alpha_2_code == "IN") |>
     pull(observation_id)
-  eumofa_freshwater_ids <- result$observations %>%
-    filter(source == "eumofa", eumofa_commodity_group == "Freshwater finfish") %>%
+  eumofa_freshwater_ids <- result$observations |>
+    filter(source == "eumofa", eumofa_commodity_group == "Freshwater finfish") |>
     pull(observation_id)
   expect_true(all(eurostat_freshwater_ids %in% freshwater_memberships$observation_id))
   expect_true(all(fao_freshwater_ids %in% freshwater_memberships$observation_id))
@@ -249,7 +249,7 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   )))
 
   eumo_oyster_id <- eumofa_oyster_volume$observation_id
-  oyster_memberships <- result$memberships %>%
+  oyster_memberships <- result$memberships |>
     filter(observation_id == eumo_oyster_id)
   expect_true(any(oyster_memberships$segment == "freshwater"))
   expect_true(any(
@@ -263,10 +263,10 @@ test_that("pipeline outputs are computed from in-memory source tables", {
       oyster_memberships$category == "mollusca_all"
   ))
 
-  shrimp_id <- result$observations %>%
-    filter(source == "fao_quantity", fao_species_alpha_3_code == "SHR") %>%
+  shrimp_id <- result$observations |>
+    filter(source == "fao_quantity", fao_species_alpha_3_code == "SHR") |>
     pull(observation_id)
-  default_crustacea_membership <- result$memberships %>%
+  default_crustacea_membership <- result$memberships |>
     filter(
       observation_id == shrimp_id,
       segment == "low_anthropic",
@@ -284,8 +284,8 @@ test_that("pipeline outputs are computed from in-memory source tables", {
       crustacea_memberships$category == "crustacea_subset"
   ))
 
-  unclassified_id <- result$observations %>%
-    filter(source == "eumofa", eumofa_ers_code == "UNK002", measure == "production_tonnes") %>%
+  unclassified_id <- result$observations |>
+    filter(source == "eumofa", eumofa_ers_code == "UNK002", measure == "production_tonnes") |>
     pull(observation_id)
   expect_true(all(is.na(result$observations$native_value[match(
     unclassified_id,
@@ -314,7 +314,7 @@ test_that("pipeline outputs are computed from in-memory source tables", {
     6500
   )
   expect_equal(
-    result$exports$comparison_tables$all_production %>%
+    result$exports$comparison_tables$all_production |>
       select(
         country_code, year, eurostat_production, fao_production,
         eumofa_production, eurostat_value, fao_value, eumofa_value
@@ -331,7 +331,7 @@ test_that("pipeline outputs are computed from in-memory source tables", {
     )
   )
   expect_equal(
-    result$exports$comparison_tables$freshwater %>%
+    result$exports$comparison_tables$freshwater |>
       select(
         country_code, year, eurostat_production, fao_production,
         eumofa_production, eurostat_value, fao_value, eumofa_value
@@ -348,8 +348,8 @@ test_that("pipeline outputs are computed from in-memory source tables", {
     )
   )
   expect_equal(
-    result$exports$comparison_tables$low_anthropic %>%
-      filter(profile == "strict", category == "mussels_bivalves") %>%
+    result$exports$comparison_tables$low_anthropic |>
+      filter(profile == "strict", category == "mussels_bivalves") |>
       select(
         profile, category, country_code, year, eurostat_production,
         fao_production, eumofa_production, eurostat_value, fao_value, eumofa_value
@@ -376,8 +376,8 @@ test_that("pipeline outputs are computed from in-memory source tables", {
     )
   )
   expect_equal(
-    result$exports$comparison_plots$all_production_quantity$data %>%
-      filter(year == 2020L, source == "FAO") %>%
+    result$exports$comparison_plots$all_production_quantity$data |>
+      filter(year == 2020L, source == "FAO") |>
       pull(value),
     56
   )
@@ -420,14 +420,14 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   scoped_result <- build_pipeline_outputs(scoped_inputs, scoped_config)
   all_production <- scoped_result$exports$comparison_tables$all_production
   expect_equal(
-    all_production %>% select(country_code, year),
+    all_production |> select(country_code, year),
     tibble::tibble(
       country_code = c("DE", "DE", "FR"),
       year = c(2020L, 2021L, 2021L)
     )
   )
   expect_equal(
-    scoped_result$exports$comparison_plots$all_production_quantity$data %>%
+    scoped_result$exports$comparison_plots$all_production_quantity$data |>
       distinct(country_code, year),
     tibble::tibble(
       country_code = c("DE", "DE", "FR"),
@@ -435,14 +435,14 @@ test_that("pipeline outputs are computed from in-memory source tables", {
     )
   )
   expect_equal(
-    all_production %>%
-      filter(country_code == "DE", year == 2021L) %>%
+    all_production |>
+      filter(country_code == "DE", year == 2021L) |>
       select(fao_production, eumofa_production),
     tibble::tibble(fao_production = 0, eumofa_production = NA_real_)
   )
   expect_true(is.na(
-    all_production %>%
-      filter(country_code == "FR", year == 2021L) %>%
+    all_production |>
+      filter(country_code == "FR", year == 2021L) |>
       pull(eumofa_production)
   ))
 
@@ -452,13 +452,13 @@ test_that("pipeline outputs are computed from in-memory source tables", {
     c("mussels_bivalves", "seaweed_algae", "mollusca_all", "aquatic_plants_all")
   )
   low_anthropic <- result$exports$low_anthropic_by_mode
-  strict_mussels <- low_anthropic %>%
+  strict_mussels <- low_anthropic |>
     filter(mode == "strict", production_type == "mussels_bivalves")
-  broad_mollusca <- low_anthropic %>%
+  broad_mollusca <- low_anthropic |>
     filter(mode == "broad", production_type == "mollusca_all")
-  strict_seaweed <- low_anthropic %>%
+  strict_seaweed <- low_anthropic |>
     filter(mode == "strict", production_type == "seaweed_algae")
-  broad_plants <- low_anthropic %>%
+  broad_plants <- low_anthropic |>
     filter(mode == "broad", production_type == "aquatic_plants_all")
   expect_equal(strict_mussels$eurostat_species_production_tonnes, 5)
   expect_equal(strict_mussels$fao_quantity_production_tonnes, 10)
@@ -485,7 +485,7 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   crustacea_config <- config
   crustacea_config$include_crustacea_subset <- TRUE
   crustacea_result <- build_pipeline_outputs(crustacea_inputs, crustacea_config)
-  crustacea_rows <- crustacea_result$exports$low_anthropic_by_mode %>%
+  crustacea_rows <- crustacea_result$exports$low_anthropic_by_mode |>
     filter(mode == "broad", production_type == "crustacea_subset")
   expect_equal(crustacea_rows$fao_quantity_production_tonnes, 2)
   expect_equal(crustacea_rows$eumofa_production_tonnes, 5)
@@ -851,7 +851,7 @@ test_that("comparison plots preserve values and label quantity units", {
   expect_s3_class(plot, "ggplot")
   expect_identical(plot$labels$title, "All production")
   expect_equal(
-    plot$data %>% select(country_code, year, source, measure, unit, value),
+    plot$data |> select(country_code, year, source, measure, unit, value),
     tibble::tibble(
       country_code = rep("DE", 6),
       year = rep(c(2020L, 2021L), each = 3),
@@ -882,7 +882,7 @@ test_that("comparison value plots use compatible EUR values", {
   )
 
   expect_equal(
-    plot$data %>% select(country_code, year, source, measure, unit, value),
+    plot$data |> select(country_code, year, source, measure, unit, value),
     tibble::tibble(
       country_code = rep("DE", 6),
       year = rep(c(2020L, 2021L), each = 3),
@@ -914,7 +914,7 @@ test_that("low-anthropic plots retain profile and category values", {
   )
 
   expect_equal(
-    plot$data %>% select(profile, category, country_code, year, source, value),
+    plot$data |> select(profile, category, country_code, year, source, value),
     tibble::tibble(
       profile = rep(c("strict", "broad"), each = 3),
       category = rep(c("mussels_bivalves", "mollusca_all"), each = 3),

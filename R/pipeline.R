@@ -17,7 +17,7 @@ build_pipeline_outputs <- function(inputs, config) {
     stop("Missing pipeline configuration: ", paste(missing_config, collapse = ", "))
   }
 
-  observations <- build_normalized_observations(inputs) %>%
+  observations <- build_normalized_observations(inputs) |>
     mutate(observation_id = seq_len(n()), .before = 1)
   memberships <- build_segment_memberships(
     observations,
@@ -29,7 +29,7 @@ build_pipeline_outputs <- function(inputs, config) {
   fao_v_long <- harmonise_fao_val(inputs$fao_value, inputs$fao_to_iso2)
   eumo_long <- harmonise_eumofa(inputs$eumofa)
 
-  all_long <- bind_rows(eu_long, fao_q_long, fao_v_long, eumo_long) %>%
+  all_long <- bind_rows(eu_long, fao_q_long, fao_v_long, eumo_long) |>
     arrange(country_code, year, measure, source)
 
   fao_v_long_fx <- convert_fao_usd_values(fao_v_long, inputs$fx_rates)
@@ -41,10 +41,10 @@ build_pipeline_outputs <- function(inputs, config) {
     include_crustacea_subset = config$include_crustacea_subset %||% FALSE
   )
 
-  unit_check <- all_long_fx %>%
-    filter(measure == "production_tonnes") %>%
-    group_by(country_code, year, source) %>%
-    summarise(value_tonnes = sum(values, na.rm = TRUE), .groups = "drop") %>%
+  unit_check <- all_long_fx |>
+    filter(measure == "production_tonnes") |>
+    group_by(country_code, year, source) |>
+    summarise(value_tonnes = sum(values, na.rm = TRUE), .groups = "drop") |>
     pivot_wider(
       id_cols = c(country_code, year),
       names_from = source,
@@ -55,12 +55,12 @@ build_pipeline_outputs <- function(inputs, config) {
     if (!source_col %in% names(unit_check)) unit_check[[source_col]] <- NA_real_
   }
 
-  unit_check <- unit_check %>%
+  unit_check <- unit_check |>
     mutate(
       eurostat = coalesce(eurostat, 0),
       fao_quantity = coalesce(fao_quantity, 0),
       eumofa = coalesce(eumofa, 0)
-    ) %>%
+    ) |>
     mutate(
       suspicious_fao = (fao_quantity > 1e6) & (eurostat < 1e4),
       suspicious_eumo = (eumofa > 1e6) & (eurostat < 1e4)
@@ -87,16 +87,16 @@ build_pipeline_outputs <- function(inputs, config) {
       observations,
       years = config$comparison_years,
       countries = config$comparison_countries,
-      memberships = memberships %>%
-        filter(segment == "freshwater") %>%
+      memberships = memberships |>
+        filter(segment == "freshwater") |>
         select(observation_id)
     ),
     low_anthropic = build_comparison_table(
       observations,
       years = config$comparison_years,
       countries = config$comparison_countries,
-      memberships = memberships %>%
-        filter(segment == "low_anthropic") %>%
+      memberships = memberships |>
+        filter(segment == "low_anthropic") |>
         select(observation_id, profile, category),
       membership_dimensions = c("profile", "category")
     )

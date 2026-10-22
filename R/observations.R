@@ -80,14 +80,14 @@ normalize_eurostat_observations <- function(eurostat, species_labels) {
     stop("Eurostat: No time column found")
   }
 
-  labels <- species_labels %>%
+  labels <- species_labels |>
     transmute(
       eurostat_species_code = as.character(species_code),
       eurostat_species_label = as.character(species_label)
-    ) %>%
+    ) |>
     distinct(eurostat_species_code, .keep_all = TRUE)
 
-  eurostat %>%
+  eurostat |>
     mutate(
       eurostat_species_code = as.character(species),
       eurostat_frequency = optional_character(eurostat, "freq"),
@@ -96,8 +96,8 @@ normalize_eurostat_observations <- function(eurostat, species_labels) {
       eurostat_fishreg = optional_character(eurostat, "fishreg"),
       eurostat_aquameth = optional_character(eurostat, "aquameth"),
       eurostat_flags = optional_character(eurostat, "flags")
-    ) %>%
-    left_join(labels, by = "eurostat_species_code") %>%
+    ) |>
+    left_join(labels, by = "eurostat_species_code") |>
     transmute(
       source = "eurostat",
       native_country_code = as.character(geo),
@@ -142,20 +142,20 @@ prepare_fao_species <- function(fao_species) {
   if (!"taxonomic_code" %in% names(fao_species)) {
     fao_species$taxonomic_code <- NA_character_
   }
-  fao_species %>%
+  fao_species |>
     transmute(
       fao_species_alpha_3_code = as.character(species_alpha_3_code),
       fao_species_name_en = as.character(species_name_en),
       fao_major_group = as.character(major_group),
       fao_taxonomic_code = as.character(taxonomic_code)
-    ) %>%
+    ) |>
     distinct(fao_species_alpha_3_code, .keep_all = TRUE)
 }
 
 normalize_fao_quantity_observations <- function(fao_quantity, fao_species, country_map) {
   if (nrow(fao_quantity) == 0) return(observation_prototype())
 
-  fao_quantity %>%
+  fao_quantity |>
     transmute(
       native_country_code = as.character(country_un_code),
       country_code = resolve_fao_country_code(country_un_code, country_map),
@@ -166,8 +166,8 @@ normalize_fao_quantity_observations <- function(fao_quantity, fao_species, count
       fao_status = optional_character(fao_quantity, "status"),
       fao_measure = optional_character(fao_quantity, "measure"),
       native_value = optional_numeric(fao_quantity, "value")
-    ) %>%
-    left_join(prepare_fao_species(fao_species), by = "fao_species_alpha_3_code") %>%
+    ) |>
+    left_join(prepare_fao_species(fao_species), by = "fao_species_alpha_3_code") |>
     transmute(
       source = "fao_quantity",
       native_country_code,
@@ -196,11 +196,11 @@ normalize_fao_quantity_observations <- function(fao_quantity, fao_species, count
 normalize_fao_value_observations <- function(fao_value, fao_species, country_map, fx_rates) {
   if (nrow(fao_value) == 0) return(observation_prototype())
 
-  rate_table <- fx_rates %>%
-    transmute(year = as.integer(year), fx_rate = as.numeric(eur_per_usd)) %>%
+  rate_table <- fx_rates |>
+    transmute(year = as.integer(year), fx_rate = as.numeric(eur_per_usd)) |>
     distinct(year, .keep_all = TRUE)
 
-  fao_value %>%
+  fao_value |>
     transmute(
       native_country_code = as.character(country_un_code),
       country_code = resolve_fao_country_code(country_un_code, country_map),
@@ -211,9 +211,9 @@ normalize_fao_value_observations <- function(fao_value, fao_species, country_map
       fao_status = optional_character(fao_value, "status"),
       fao_measure = optional_character(fao_value, "measure"),
       native_value = optional_numeric(fao_value, "value")
-    ) %>%
-    left_join(prepare_fao_species(fao_species), by = "fao_species_alpha_3_code") %>%
-    left_join(rate_table, by = "year") %>%
+    ) |>
+    left_join(prepare_fao_species(fao_species), by = "fao_species_alpha_3_code") |>
+    left_join(rate_table, by = "year") |>
     transmute(
       source = "fao_value",
       native_country_code,
@@ -242,7 +242,7 @@ normalize_fao_value_observations <- function(fao_value, fao_species, country_map
 normalize_eumofa_observations <- function(eumofa) {
   if (nrow(eumofa) == 0) return(observation_prototype())
 
-  common <- eumofa %>%
+  common <- eumofa |>
     transmute(
       native_country_code = as.character(country),
       country_code = toupper(as.character(country)),
@@ -258,7 +258,7 @@ normalize_eumofa_observations <- function(eumofa) {
       value_eur = optional_numeric(eumofa, "value_eur")
     )
 
-  volume_observations <- common %>%
+  volume_observations <- common |>
     transmute(
       source = "eumofa",
       native_country_code,
@@ -282,7 +282,7 @@ normalize_eumofa_observations <- function(eumofa) {
       eumofa_weight
     )
 
-  value_observations <- common %>%
+  value_observations <- common |>
     transmute(
       source = "eumofa",
       native_country_code,

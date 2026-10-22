@@ -39,7 +39,7 @@ build_segment_memberships <- function(observations,
     stop("include_crustacea_subset must be one non-missing logical value")
   }
 
-  observations <- observations %>%
+  observations <- observations |>
     mutate(
       source = as.character(source),
       eurostat_species_label_text = tolower(coalesce(eurostat_species_label, "")),
@@ -123,6 +123,6 @@ build_segment_memberships <- function(observations,
     freshwater_memberships,
     strict_memberships,
     broad_memberships
-  ) %>%
+  ) |>
     arrange(observation_id, segment, profile, category)
 }
