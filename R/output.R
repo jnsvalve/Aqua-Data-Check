@@ -8,6 +8,7 @@ build_comparison_plot <- function(comparison_table, measure, segment, facet_coun
         eumofa_production = "EUMOFA"
       ),
       unit = "tonnes",
+      label_scale = 1,
       axis_label = "Production quantity (tonnes)"
     ),
     production_value_eur = list(
@@ -17,7 +18,8 @@ build_comparison_plot <- function(comparison_table, measure, segment, facet_coun
         eumofa_value = "EUMOFA"
       ),
       unit = "EUR",
-      axis_label = "Production value (EUR)"
+      label_scale = 1e-6,
+      axis_label = "Production value (million EUR)"
     ),
     stop("Unsupported comparison measure: ", measure, call. = FALSE)
   )
@@ -58,6 +60,10 @@ build_comparison_plot <- function(comparison_table, measure, segment, facet_coun
     low_anthropic = "Low-anthropic",
     segment
   )
+  years <- plot_data$year[is.finite(plot_data$year)]
+  year_span <- if (length(years) > 0) diff(range(years)) else 0
+  year_steps <- as.vector(outer(c(1, 2, 5), 10^(0:3)))
+  year_step <- min(year_steps[year_steps >= max(1, year_span / 7)])
 
   plot <- ggplot2::ggplot(
     plot_data,
@@ -70,7 +76,13 @@ build_comparison_plot <- function(comparison_table, measure, segment, facet_coun
   ) +
     ggplot2::geom_line(na.rm = TRUE) +
     ggplot2::geom_point(na.rm = TRUE) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma()) +
+    ggplot2::scale_x_continuous(
+      breaks = scales::breaks_width(year_step),
+      labels = scales::label_number(accuracy = 1, big.mark = "")
+    ) +
+    ggplot2::scale_y_continuous(
+      labels = scales::label_comma(scale = plot_spec$label_scale)
+    ) +
     ggplot2::labs(
       title = plot_spec$axis_label,
       subtitle = segment_title,
