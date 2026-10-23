@@ -1,18 +1,20 @@
 # Universal Aquaculture Data Harvest & Harmonisation
 
-An in-progress R workflow for collecting and comparing aquaculture production data from Eurostat, FAO, and EUMOFA. The data model and analysis outputs are evolving.
+An in-progress R workflow for collecting and comparing aquaculture production data from Eurostat, FAO, and EUMOFA, with separate economic, social, and sales records from the EU Data Collection Framework (EUDCF). The data model and analysis outputs are evolving.
 
 ## Sources
 
 - **Eurostat**: `fish_aq2a` annual production data.
 - **FAO**: FishStatJ quantity and value CSV exports, with species and country reference tables.
 - **EUMOFA**: yearly aquaculture CSV, including commodity and species details.
+- **EUDCF**: EU aquaculture economic, social, and sales data-call workbook, including historical DCF sales records.
 
 ## Workflow
 
 - Source records are normalized into a long observation table while retaining native category identifiers, source values/units, flags/status, and comparison values in tonnes/EUR.
 - Published Eurostat `F00` totals remain distinct from species observations. FAO and EUMOFA categories are kept source-native; summaries choose their aggregation rules downstream.
 - Freshwater and low-anthropic memberships are derived separately, so observations remain available even when they match no segment.
+- EUDCF rows retain their workbook tables, variable codes, segments, values, and units as a separate dataset; sales and economic measures are not included in production comparisons.
 - Current summaries and diagnostics are produced from the normalized observations.
 
 ## Run
@@ -26,6 +28,7 @@ Rscript main-script.R
 ```
 
 Eurostat is optional for partial data collection. A complete run refreshes the latest summaries and diagnostics. A partial run saves a separate partial snapshot and leaves the latest outputs unchanged.
+The EUDCF workbook is optional and does not affect production coverage status. Place the official workbook in `data/EUDCF/` using the configured filename in `main-script.R`.
 
 ## R Code Style
 
@@ -49,11 +52,13 @@ Check for new annual releases at [FAO FishStatJ](https://www.fao.org/fishery/en/
 3. Replace the active files in `data/FAO/` and `data/EUMOFA/`. The importers check required columns and types, including numeric parse failures.
 4. From the repository root, run the tests and then `Rscript main-script.R`. Review the source row counts and confirm the complete outputs were refreshed.
 
+For EUDCF, download the workbook from the [EU aquaculture data call](https://dcf.ec.europa.eu/data-calls/aquaculture_en) and retain its original sheet names and columns. The importer keeps economic, social, current sales, and historical sales rows separate; workbook pivot sheets are not imported.
+
 Refresh when a new annual release is published; do not automate dashboard scraping unless the source provides a stable, documented download endpoint.
 
 ## Outputs
 
-- `output/normalized/aquaculture_observations_latest.rds` — complete snapshot with observations, segment memberships, and source/FX manifest.
+- `output/normalized/aquaculture_observations_latest.rds` — complete snapshot with production observations, segment memberships, separate EUDCF workbook tables when available, and source/FX manifest.
 - `output/normalized/aquaculture_observations_partial_latest.rds` — latest partial snapshot, when a source is unavailable.
 - `output/general/Europe_summary_latest.xlsx`
 - `output/general/production_comparisons_latest.xlsx` — all-production, freshwater, and low-anthropic comparisons for the configured years and countries.

@@ -18,8 +18,8 @@ if (file.exists(observations_path)) source(observations_path)
 output_path <- file.path(project_root, "R", "output.R")
 source(output_path)
 source(file.path(project_root, "R", "segments.R"))
-low_anthropic_path <- file.path(project_root, "R", "low_anthropic.R")
-if (file.exists(low_anthropic_path)) source(low_anthropic_path)
+source(file.path(project_root, "R", "production_views.R"))
+source(file.path(project_root, "R", "eudcf.R"))
 pipeline_path <- file.path(project_root, "R", "pipeline.R")
 if (file.exists(pipeline_path)) source(pipeline_path)
 
@@ -66,6 +66,81 @@ testthat::test_that("source imports reject missing schemas and malformed numeric
     '"004","FCY","04","IN","Q_tlw","unknown",12.5,"A"'
   ), malformed_path)
   testthat::expect_error(read_fao_export(malformed_path), "parsing problem|invalid integer")
+})
+
+testthat::test_that("EUDCF workbook keeps economic, social, and sales tables distinct", {
+  make_row <- function(columns, values) {
+    row <- stats::setNames(as.list(rep(NA, length(columns))), columns)
+    row[names(values)] <- values
+    as.data.frame(row, check.names = FALSE, stringsAsFactors = FALSE)
+  }
+
+  economic_columns <- c(
+    "country_code", "country_name", "environment", "environment_hn", "technique",
+    "species_group", "segment_name", "segment_code", "year", "variable_group",
+    "variable_name", "variable_code", "value", "unit", "framework"
+  )
+  social_columns <- c(
+    "country_code", "country_name", "year", "variable_group", "variable_code", "value",
+    "unit", "environment_uploaded", "species", "technique_uploaded", "geo_indicator",
+    "segment_name", "segment_uploaded", "farmer", "gender_uploaded", "age_code",
+    "education_uploaded", "nationality_uploaded", "employment_status_uploaded",
+    "population_farm", "responses_farm", "population_farmer", "responses_farmer",
+    "sampling_strategy", "comments", "upload_date"
+  )
+  sales_columns <- c(
+    "country_code", "country_name", "scientific_name", "common_name", "species_name",
+    "species_code", "variable_group", "variable_name", "variable_code", "value", "unit",
+    "year", "environment", "environment_hn", "technique", "species_group", "segment_name",
+    "segment_code", "sample", "population", "achieved_sample", "precision_level",
+    "sampling_strategy", "comments", "log_upload_id", "upload_date", "framework", "unit_legend"
+  )
+  historical_sales_columns <- c(
+    "country_code", "country_name", "species", "common_name", "scientific_name",
+    "variable_group", "variable_code", "variable_name", "environment", "environment_hn",
+    "segment_code", "segment_name", "value", "unit", "year", "sample", "population",
+    "sample_rate", "sampling_strategy", "precision_level", "comments", "ordering", "date", "template"
+  )
+
+  workbook_path <- tempfile(fileext = ".xlsx")
+  on.exit(unlink(workbook_path), add = TRUE)
+  openxlsx::write.xlsx(
+    list(
+      "Economic data" = make_row(economic_columns, list(
+        country_code = "DEU", segment_code = "tot", year = 2023, variable_code = "GST",
+        value = 120.5, unit = "EURO", framework = "eum"
+      )),
+      "Social data" = make_row(social_columns, list(
+        country_code = "DEU", year = 2023, variable_code = "socfte", value = "NULL", unit = "NUMBER"
+      )),
+      "Sales data" = make_row(sales_columns, list(
+        country_code = "DEU", species_code = "SAL", segment_code = "tot", year = 2023,
+        variable_code = "TWS", value = 900, unit = "KG", framework = "eum"
+      )),
+      "old DCF Sales data" = make_row(historical_sales_columns, list(
+        country_code = "DEU", species = "SAL", segment_code = "seg.01_1", year = 2008,
+        variable_code = "TPD", value = 750, unit = "EURO"
+      ))
+    ),
+    workbook_path,
+    overwrite = TRUE
+  )
+
+  eudcf <- read_eudcf_workbook(workbook_path)
+
+  testthat::expect_named(
+    eudcf,
+    c("economic", "social", "sales", "historical_sales", "metadata")
+  )
+  testthat::expect_identical(eudcf$economic$segment_code, "tot")
+  testthat::expect_identical(eudcf$economic$variable_code, "GST")
+  testthat::expect_equal(eudcf$economic$value, 120.5)
+  testthat::expect_identical(eudcf$social$value, "NULL")
+  testthat::expect_identical(eudcf$sales$variable_code, "TWS")
+  testthat::expect_equal(eudcf$sales$value, 900)
+  testthat::expect_identical(eudcf$historical_sales$variable_code, "TPD")
+  testthat::expect_equal(eudcf$historical_sales$value, 750)
+  testthat::expect_error(read_eudcf_workbook(paste0(workbook_path, ".missing")), "does not exist")
 })
 
 testthat::test_that("pipeline outputs are computed from in-memory source tables", {
@@ -513,6 +588,22 @@ testthat::test_that("pipeline outputs are computed from in-memory source tables"
   testthat::expect_equal(labels_unavailable_result$exports$freshwater_summary$eurostat_production, 100)
   testthat::expect_true("unit_check" %in% names(result$diagnostics))
   testthat::expect_true("comparison_freshwater" %in% names(result$diagnostics))
+
+  no_total_inputs <- inputs
+  no_total_inputs$eurostat <- dplyr::filter(inputs$eurostat, species != "F00")
+  no_total_result <- build_pipeline_outputs(no_total_inputs, config)
+  testthat::expect_true(is.na(no_total_result$exports$general_summary$eurostat_production))
+  testthat::expect_true(is.na(no_total_result$exports$freshwater_summary$eurostat_production))
+  testthat::expect_equal(
+    no_total_result$exports$comparison_tables$all_production$eurostat_production,
+    7
+  )
+  testthat::expect_equal(
+    no_total_result$exports$low_anthropic_by_mode |>
+      dplyr::filter(mode == "strict", production_type == "mussels_bivalves") |>
+      dplyr::pull(eurostat_species_production_tonnes),
+    5
+  )
 })
 
 testthat::test_that("pipeline outputs remain available when Eurostat is empty", {
@@ -641,12 +732,16 @@ testthat::test_that("observation manifest records provenance and partial source 
       path = fx_file,
       rates = tibble::tibble(year = 2020L, eur_per_usd = 0.5)
     ),
-    generated_at_utc = "2026-10-14T00:00:00Z"
+    generated_at_utc = "2026-10-14T00:00:00Z",
+    optional_sources = list(
+      eudcf = list(status = "unavailable", sheet_row_counts = integer())
+    )
   )
 
-  testthat::expect_equal(manifest$schema_version, "1.0.0")
+  testthat::expect_equal(manifest$schema_version, "1.1.0")
   testthat::expect_equal(manifest$segment_rules_version, SEGMENT_RULES_VERSION)
   testthat::expect_equal(manifest$coverage_status, "complete")
+  testthat::expect_equal(manifest$optional_sources$eudcf$status, "unavailable")
   testthat::expect_equal(manifest$eurostat$dataset_id, "fish_aq2a")
   testthat::expect_equal(manifest$input_files$fao_quantity$md5, unname(tools::md5sum(source_file)))
   testthat::expect_equal(manifest$fx$source, "csv")

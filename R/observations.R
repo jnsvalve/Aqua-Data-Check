@@ -370,7 +370,8 @@ build_observation_manifest <- function(source_status,
                                        input_files,
                                        fx,
                                        segment_rules_version = NA_character_,
-                                       generated_at_utc = NULL) {
+                                       generated_at_utc = NULL,
+                                       optional_sources = list()) {
   source_status <- unlist(source_status, use.names = TRUE)
   if (is.null(names(source_status)) || any(!nzchar(names(source_status)))) {
     stop("Source status must be a named logical vector")
@@ -382,15 +383,26 @@ build_observation_manifest <- function(source_status,
   if (is.null(generated_at_utc)) {
     generated_at_utc <- format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
   }
+  invalid_optional_sources <- names(optional_sources)[!vapply(optional_sources, function(source) {
+    is.list(source) && length(source$status) == 1L &&
+      source$status %in% c("available", "unavailable")
+  }, logical(1))]
+  if (length(invalid_optional_sources) > 0) {
+    stop(
+      "Optional source status must be available or unavailable: ",
+      paste(invalid_optional_sources, collapse = ", ")
+    )
+  }
 
   list(
-    schema_version = "1.0.0",
+    schema_version = "1.1.0",
     segment_rules_version = segment_rules_version,
     generated_at_utc = generated_at_utc,
     coverage_status = if (all(source_status)) "complete" else "partial",
     source_status = as.list(source_status),
     eurostat = eurostat,
     input_files = lapply(input_files, observation_file_provenance),
+    optional_sources = optional_sources,
     fx = list(
       source = fx$source,
       file = observation_file_provenance(fx$path),

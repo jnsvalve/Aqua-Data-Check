@@ -32,10 +32,11 @@ suppressPackageStartupMessages({
 })
 
 source("R/functions.R")
+source("R/eudcf.R")
 source("R/observations.R")
 source("R/output.R")
 source("R/segments.R")
-source("R/low_anthropic.R")
+source("R/production_views.R")
 source("R/pipeline.R")
 
 # ============================================================
@@ -46,6 +47,7 @@ years_target <- seq.int(to = as.integer(format(Sys.Date(), "%Y")) - 1L, length.o
 fao_qty_path <- "./data/FAO/Aquaculture_Quantity.csv"
 fao_val_path <- "./data/FAO/Aquaculture_Value.csv"
 eumofa_path  <- "./data/EUMOFA/Yearly_Aquaculture.csv"
+eudcf_path <- "./data/EUDCF/STECF_24-14_EU Aquaculture economic sector data tables.xlsx"
 fao_species_path <- "./data/FAO/CL_FI_SPECIES_GROUPS.csv"
 fao_iso2_overrides_path <- "./data/FAO/fao_iso2_overrides.csv"
 export_fao_diagnostics <- TRUE
@@ -211,6 +213,20 @@ print(lapply(aquaculture_raw, head))
 
 fx_path <- "./data/FX/usd_eur_rates.csv"
 fx_tbl <- load_fx_table(fx_path)
+eudcf_data <- if (file.exists(eudcf_path)) {
+  read_eudcf_workbook(eudcf_path)
+} else {
+  cli::cli_alert_warning("EUDCF workbook not found; continuing without EUDCF data.")
+  NULL
+}
+eudcf_table_names <- c("economic", "social", "sales", "historical_sales")
+eudcf_sheet_row_counts <- if (is.null(eudcf_data)) {
+  stats::setNames(integer(length(eudcf_table_names)), eudcf_table_names)
+} else {
+  vapply(eudcf_data[eudcf_table_names], function(table) {
+    if (is.null(table)) 0L else nrow(table)
+  }, integer(1))
+}
 
 if (!file.exists(fao_species_path)) {
   stop("FAO species lookup file missing: ", fao_species_path)
@@ -301,6 +317,7 @@ input_files <- list(
   fao_quantity = fao_qty_path,
   fao_value = fao_val_path,
   eumofa = eumofa_path,
+  eudcf = eudcf_path,
   fao_species = fao_species_path
 )
 if (file.exists(fao_iso2_overrides_path)) {
@@ -322,13 +339,20 @@ manifest <- build_observation_manifest(
     source = if (file.exists(fx_path)) "csv" else "fallback",
     path = if (file.exists(fx_path)) fx_path else NULL,
     rates = fx_tbl
+  ),
+  optional_sources = list(
+    eudcf = list(
+      status = if (is.null(eudcf_data)) "unavailable" else "available",
+      sheet_row_counts = eudcf_sheet_row_counts
+    )
   )
 )
 
 normalized_bundle <- list(
   manifest = manifest,
   observations = pipeline_result$observations,
-  memberships = pipeline_result$memberships
+  memberships = pipeline_result$memberships,
+  eudcf = eudcf_data
 )
 normalized_snapshot_path <- write_normalized_snapshot(
   normalized_bundle,
