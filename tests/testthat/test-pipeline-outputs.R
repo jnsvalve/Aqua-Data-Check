@@ -23,7 +23,7 @@ if (file.exists(low_anthropic_path)) source(low_anthropic_path)
 pipeline_path <- file.path(project_root, "R", "pipeline.R")
 if (file.exists(pipeline_path)) source(pipeline_path)
 
-test_that("FAO and EUMOFA imports enforce source schemas and preserve identifiers", {
+testthat::test_that("FAO and EUMOFA imports enforce source schemas and preserve identifiers", {
   fao_path <- tempfile(fileext = ".csv")
   on.exit(unlink(fao_path), add = TRUE)
   writeLines(c(
@@ -32,9 +32,9 @@ test_that("FAO and EUMOFA imports enforce source schemas and preserve identifier
   ), fao_path)
 
   fao <- read_fao_export(fao_path)
-  expect_identical(fao$country_un_code, "004")
-  expect_type(fao$period, "integer")
-  expect_type(fao$value, "double")
+  testthat::expect_identical(fao$country_un_code, "004")
+  testthat::expect_type(fao$period, "integer")
+  testthat::expect_type(fao$value, "double")
 
   eumofa_path <- tempfile(fileext = ".csv")
   on.exit(unlink(eumofa_path), add = TRUE)
@@ -44,20 +44,20 @@ test_that("FAO and EUMOFA imports enforce source schemas and preserve identifier
   ), eumofa_path)
 
   eumofa <- read_eumofa_export(eumofa_path)
-  expect_identical(eumofa$country, "BG")
-  expect_type(eumofa$year, "integer")
-  expect_type(eumofa$volume_kg, "double")
-  expect_type(eumofa$value_eur, "double")
+  testthat::expect_identical(eumofa$country, "BG")
+  testthat::expect_type(eumofa$year, "integer")
+  testthat::expect_type(eumofa$volume_kg, "double")
+  testthat::expect_type(eumofa$value_eur, "double")
 })
 
-test_that("source imports reject missing schemas and malformed numeric fields", {
+testthat::test_that("source imports reject missing schemas and malformed numeric fields", {
   missing_column_path <- tempfile(fileext = ".csv")
   on.exit(unlink(missing_column_path), add = TRUE)
   writeLines(c(
     "year;country;value(eur)",
     "2023;BG;120970"
   ), missing_column_path)
-  expect_error(read_eumofa_export(missing_column_path), "missing required column")
+  testthat::expect_error(read_eumofa_export(missing_column_path), "missing required column")
 
   malformed_path <- tempfile(fileext = ".csv")
   on.exit(unlink(malformed_path), add = TRUE)
@@ -65,10 +65,10 @@ test_that("source imports reject missing schemas and malformed numeric fields", 
     '"COUNTRY.UN_CODE","SPECIES.ALPHA_3_CODE","AREA.CODE","ENVIRONMENT.ALPHA_2_CODE","MEASURE","PERIOD","VALUE","STATUS"',
     '"004","FCY","04","IN","Q_tlw","unknown",12.5,"A"'
   ), malformed_path)
-  expect_error(read_fao_export(malformed_path), "parsing problem|invalid integer")
+  testthat::expect_error(read_fao_export(malformed_path), "parsing problem|invalid integer")
 })
 
-test_that("pipeline outputs are computed from in-memory source tables", {
+testthat::test_that("pipeline outputs are computed from in-memory source tables", {
   inputs <- list(
     eurostat = tibble::tibble(
       unit = c("TLW", "EUR", "TLW", "EUR", "TLW", "EUR"),
@@ -126,7 +126,7 @@ test_that("pipeline outputs are computed from in-memory source tables", {
       weight = "live"
     )
   )
-  inputs$eumofa <- bind_rows(
+  inputs$eumofa <- dplyr::bind_rows(
     inputs$eumofa,
     tibble::tibble(
       country = "DE",
@@ -162,12 +162,12 @@ test_that("pipeline outputs are computed from in-memory source tables", {
 
   result <- build_pipeline_outputs(inputs, config)
 
-  expect_true(is.data.frame(result$observations))
-  expect_equal(nrow(result$observations), 22L)
-  expect_true("observation_id" %in% names(result$observations))
-  expect_identical(result$observations$observation_id, seq_len(nrow(result$observations)))
-  expect_length(unique(names(result$observations)), ncol(result$observations))
-  expect_true(all(c(
+  testthat::expect_true(is.data.frame(result$observations))
+  testthat::expect_equal(nrow(result$observations), 22L)
+  testthat::expect_true("observation_id" %in% names(result$observations))
+  testthat::expect_identical(result$observations$observation_id, seq_len(nrow(result$observations)))
+  testthat::expect_length(unique(names(result$observations)), ncol(result$observations))
+  testthat::expect_true(all(c(
     "source", "country_code", "native_country_code", "year", "measure",
     "native_value", "native_unit", "comparison_value", "comparison_unit",
     "conversion_factor", "fx_rate", "record_scope",
@@ -180,66 +180,66 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   ) %in% names(result$observations)))
 
   eurostat_total_tonnes <- result$observations |>
-    filter(source == "eurostat", eurostat_species_code == "F00", measure == "production_tonnes")
-  expect_equal(eurostat_total_tonnes$record_scope, "published_total")
-  expect_equal(eurostat_total_tonnes$native_value, 100)
-  expect_equal(eurostat_total_tonnes$comparison_value, 100)
+    dplyr::filter(source == "eurostat", eurostat_species_code == "F00", measure == "production_tonnes")
+  testthat::expect_equal(eurostat_total_tonnes$record_scope, "published_total")
+  testthat::expect_equal(eurostat_total_tonnes$native_value, 100)
+  testthat::expect_equal(eurostat_total_tonnes$comparison_value, 100)
 
   eurostat_detail_tonnes <- result$observations |>
-    filter(source == "eurostat", eurostat_species_code == "F54", measure == "production_tonnes")
-  expect_equal(eurostat_detail_tonnes$record_scope, "source_category")
-  expect_equal(eurostat_detail_tonnes$eurostat_flags, "p")
+    dplyr::filter(source == "eurostat", eurostat_species_code == "F54", measure == "production_tonnes")
+  testthat::expect_equal(eurostat_detail_tonnes$record_scope, "source_category")
+  testthat::expect_equal(eurostat_detail_tonnes$eurostat_flags, "p")
 
   fao_value_oyster <- result$observations |>
-    filter(source == "fao_value", fao_species_alpha_3_code == "OYS")
-  expect_equal(fao_value_oyster$native_value, 2)
-  expect_equal(fao_value_oyster$native_unit, "THOUSAND_USD")
-  expect_equal(fao_value_oyster$comparison_value, 1000)
-  expect_equal(fao_value_oyster$comparison_unit, "EUR")
-  expect_equal(fao_value_oyster$fx_rate, 0.5)
+    dplyr::filter(source == "fao_value", fao_species_alpha_3_code == "OYS")
+  testthat::expect_equal(fao_value_oyster$native_value, 2)
+  testthat::expect_equal(fao_value_oyster$native_unit, "THOUSAND_USD")
+  testthat::expect_equal(fao_value_oyster$comparison_value, 1000)
+  testthat::expect_equal(fao_value_oyster$comparison_unit, "EUR")
+  testthat::expect_equal(fao_value_oyster$fx_rate, 0.5)
 
   fao_nei <- result$observations |>
-    filter(source == "fao_quantity", fao_species_alpha_3_code == "FCY")
-  expect_equal(fao_nei$record_scope, "source_category")
-  expect_equal(fao_nei$fao_species_name_en, "Cyprinids NEI")
-  expect_equal(fao_nei$fao_taxonomic_code, "1400141XXXXX")
+    dplyr::filter(source == "fao_quantity", fao_species_alpha_3_code == "FCY")
+  testthat::expect_equal(fao_nei$record_scope, "source_category")
+  testthat::expect_equal(fao_nei$fao_species_name_en, "Cyprinids NEI")
+  testthat::expect_equal(fao_nei$fao_taxonomic_code, "1400141XXXXX")
 
   eumofa_oyster_volume <- result$observations |>
-    filter(source == "eumofa", eumofa_ers_code == "OYS001", measure == "production_tonnes")
-  expect_equal(eumofa_oyster_volume$native_value, 3000)
-  expect_equal(eumofa_oyster_volume$native_unit, "KG")
-  expect_equal(eumofa_oyster_volume$comparison_value, 3)
-  expect_equal(eumofa_oyster_volume$eumofa_english_name, "Oyster, live")
+    dplyr::filter(source == "eumofa", eumofa_ers_code == "OYS001", measure == "production_tonnes")
+  testthat::expect_equal(eumofa_oyster_volume$native_value, 3000)
+  testthat::expect_equal(eumofa_oyster_volume$native_unit, "KG")
+  testthat::expect_equal(eumofa_oyster_volume$comparison_value, 3)
+  testthat::expect_equal(eumofa_oyster_volume$eumofa_english_name, "Oyster, live")
   eumofa_missing <- result$observations |>
-    filter(source == "eumofa", eumofa_ers_code == "UNK001")
-  expect_equal(nrow(eumofa_missing), 2L)
-  expect_true(all(is.na(eumofa_missing$native_value)))
+    dplyr::filter(source == "eumofa", eumofa_ers_code == "UNK001")
+  testthat::expect_equal(nrow(eumofa_missing), 2L)
+  testthat::expect_true(all(is.na(eumofa_missing$native_value)))
 
-  expect_named(result, c("observations", "memberships", "exports", "diagnostics"))
-  expect_true(all(c(
+  testthat::expect_named(result, c("observations", "memberships", "exports", "diagnostics"))
+  testthat::expect_true(all(c(
     "observation_id", "segment", "profile", "category", "matched_by"
   ) %in% names(result$memberships)))
-  expect_true(all(result$memberships$observation_id %in% result$observations$observation_id))
+  testthat::expect_true(all(result$memberships$observation_id %in% result$observations$observation_id))
   observations_before_membership <- result$observations
   recomputed_memberships <- build_segment_memberships(result$observations)
-  expect_identical(result$observations, observations_before_membership)
-  expect_equal(recomputed_memberships, result$memberships)
+  testthat::expect_identical(result$observations, observations_before_membership)
+  testthat::expect_equal(recomputed_memberships, result$memberships)
 
   freshwater_memberships <- result$memberships |>
-    filter(segment == "freshwater")
+    dplyr::filter(segment == "freshwater")
   eurostat_freshwater_ids <- result$observations |>
-    filter(source == "eurostat", eurostat_environment_code == "FRW") |>
-    pull(observation_id)
+    dplyr::filter(source == "eurostat", eurostat_environment_code == "FRW") |>
+    dplyr::pull(observation_id)
   fao_freshwater_ids <- result$observations |>
-    filter(source %in% c("fao_quantity", "fao_value"), fao_environment_alpha_2_code == "IN") |>
-    pull(observation_id)
+    dplyr::filter(source %in% c("fao_quantity", "fao_value"), fao_environment_alpha_2_code == "IN") |>
+    dplyr::pull(observation_id)
   eumofa_freshwater_ids <- result$observations |>
-    filter(source == "eumofa", eumofa_commodity_group == "Freshwater finfish") |>
-    pull(observation_id)
-  expect_true(all(eurostat_freshwater_ids %in% freshwater_memberships$observation_id))
-  expect_true(all(fao_freshwater_ids %in% freshwater_memberships$observation_id))
-  expect_true(all(eumofa_freshwater_ids %in% freshwater_memberships$observation_id))
-  expect_true(all(freshwater_memberships$matched_by[match(
+    dplyr::filter(source == "eumofa", eumofa_commodity_group == "Freshwater finfish") |>
+    dplyr::pull(observation_id)
+  testthat::expect_true(all(eurostat_freshwater_ids %in% freshwater_memberships$observation_id))
+  testthat::expect_true(all(fao_freshwater_ids %in% freshwater_memberships$observation_id))
+  testthat::expect_true(all(eumofa_freshwater_ids %in% freshwater_memberships$observation_id))
+  testthat::expect_true(all(freshwater_memberships$matched_by[match(
     c(eurostat_freshwater_ids, fao_freshwater_ids, eumofa_freshwater_ids),
     freshwater_memberships$observation_id
   )] %in% c(
@@ -250,34 +250,34 @@ test_that("pipeline outputs are computed from in-memory source tables", {
 
   eumo_oyster_id <- eumofa_oyster_volume$observation_id
   oyster_memberships <- result$memberships |>
-    filter(observation_id == eumo_oyster_id)
-  expect_true(any(oyster_memberships$segment == "freshwater"))
-  expect_true(any(
+    dplyr::filter(observation_id == eumo_oyster_id)
+  testthat::expect_true(any(oyster_memberships$segment == "freshwater"))
+  testthat::expect_true(any(
     oyster_memberships$segment == "low_anthropic" &
       oyster_memberships$profile == "strict" &
       oyster_memberships$category == "mussels_bivalves"
   ))
-  expect_true(any(
+  testthat::expect_true(any(
     oyster_memberships$segment == "low_anthropic" &
       oyster_memberships$profile == "broad" &
       oyster_memberships$category == "mollusca_all"
   ))
 
   shrimp_id <- result$observations |>
-    filter(source == "fao_quantity", fao_species_alpha_3_code == "SHR") |>
-    pull(observation_id)
+    dplyr::filter(source == "fao_quantity", fao_species_alpha_3_code == "SHR") |>
+    dplyr::pull(observation_id)
   default_crustacea_membership <- result$memberships |>
-    filter(
+    dplyr::filter(
       observation_id == shrimp_id,
       segment == "low_anthropic",
       category == "crustacea_subset"
     )
-  expect_equal(nrow(default_crustacea_membership), 0L)
+  testthat::expect_equal(nrow(default_crustacea_membership), 0L)
   crustacea_memberships <- build_segment_memberships(
     result$observations,
     include_crustacea_subset = TRUE
   )
-  expect_true(any(
+  testthat::expect_true(any(
     crustacea_memberships$observation_id == shrimp_id &
       crustacea_memberships$segment == "low_anthropic" &
       crustacea_memberships$profile == "broad" &
@@ -285,15 +285,15 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   ))
 
   unclassified_id <- result$observations |>
-    filter(source == "eumofa", eumofa_ers_code == "UNK002", measure == "production_tonnes") |>
-    pull(observation_id)
-  expect_true(all(is.na(result$observations$native_value[match(
+    dplyr::filter(source == "eumofa", eumofa_ers_code == "UNK002", measure == "production_tonnes") |>
+    dplyr::pull(observation_id)
+  testthat::expect_true(all(is.na(result$observations$native_value[match(
     unclassified_id,
     result$observations$observation_id
   )])))
-  expect_false(any(result$memberships$observation_id %in% unclassified_id))
+  testthat::expect_false(any(result$memberships$observation_id %in% unclassified_id))
 
-  expect_named(
+  testthat::expect_named(
     result$exports,
     c(
       "general_summary",
@@ -305,17 +305,17 @@ test_that("pipeline outputs are computed from in-memory source tables", {
       "comparison_plots"
     )
   )
-  expect_equal(result$exports$general_summary$eurostat_production, 100)
-  expect_equal(result$exports$general_summary$fao_production, 56)
-  expect_equal(result$exports$general_summary$eumofa_production, 3)
-  expect_equal(result$exports$general_summary$fao_value, 3250)
-  expect_equal(
+  testthat::expect_equal(result$exports$general_summary$eurostat_production, 100)
+  testthat::expect_equal(result$exports$general_summary$fao_production, 56)
+  testthat::expect_equal(result$exports$general_summary$eumofa_production, 3)
+  testthat::expect_equal(result$exports$general_summary$fao_value, 3250)
+  testthat::expect_equal(
     result$diagnostics$comparison_all$fao_value_production_value_usd,
     6500
   )
-  expect_equal(
+  testthat::expect_equal(
     result$exports$comparison_tables$all_production |>
-      select(
+      dplyr::select(
         country_code, year, eurostat_production, fao_production,
         eumofa_production, eurostat_value, fao_value, eumofa_value
       ),
@@ -330,9 +330,9 @@ test_that("pipeline outputs are computed from in-memory source tables", {
       eumofa_value = 5000
     )
   )
-  expect_equal(
+  testthat::expect_equal(
     result$exports$comparison_tables$freshwater |>
-      select(
+      dplyr::select(
         country_code, year, eurostat_production, fao_production,
         eumofa_production, eurostat_value, fao_value, eumofa_value
       ),
@@ -347,10 +347,10 @@ test_that("pipeline outputs are computed from in-memory source tables", {
       eumofa_value = 5000
     )
   )
-  expect_equal(
+  testthat::expect_equal(
     result$exports$comparison_tables$low_anthropic |>
-      filter(profile == "strict", category == "mussels_bivalves") |>
-      select(
+      dplyr::filter(profile == "strict", category == "mussels_bivalves") |>
+      dplyr::select(
         profile, category, country_code, year, eurostat_production,
         fao_production, eumofa_production, eurostat_value, fao_value, eumofa_value
       ),
@@ -367,7 +367,7 @@ test_that("pipeline outputs are computed from in-memory source tables", {
       eumofa_value = 5000
     )
   )
-  expect_setequal(
+  testthat::expect_setequal(
     names(result$exports$comparison_plots),
     c(
       "all_production_quantity", "all_production_value",
@@ -375,19 +375,19 @@ test_that("pipeline outputs are computed from in-memory source tables", {
       "low_anthropic_quantity", "low_anthropic_value"
     )
   )
-  expect_equal(
+  testthat::expect_equal(
     result$exports$comparison_plots$all_production_quantity$data |>
-      filter(year == 2020L, source == "FAO") |>
-      pull(value),
+      dplyr::filter(year == 2020L, source == "FAO") |>
+      dplyr::pull(value),
     56
   )
 
   scoped_inputs <- inputs
-  scoped_inputs$fao_to_iso2 <- bind_rows(
+  scoped_inputs$fao_to_iso2 <- dplyr::bind_rows(
     inputs$fao_to_iso2,
     tibble::tibble(country_un_code = c("250", "356"), iso2 = c("FR", "IN"))
   )
-  scoped_inputs$fao_quantity <- bind_rows(
+  scoped_inputs$fao_quantity <- dplyr::bind_rows(
     inputs$fao_quantity,
     tibble::tibble(
       country_un_code = c("999", "250", "356"),
@@ -400,7 +400,7 @@ test_that("pipeline outputs are computed from in-memory source tables", {
       species_alpha_3_code = "SAL"
     )
   )
-  scoped_inputs$eumofa <- bind_rows(
+  scoped_inputs$eumofa <- dplyr::bind_rows(
     inputs$eumofa,
     tibble::tibble(
       country = c("DE", "FR"),
@@ -419,69 +419,69 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   scoped_config$comparison_countries <- c("DE", "FR")
   scoped_result <- build_pipeline_outputs(scoped_inputs, scoped_config)
   all_production <- scoped_result$exports$comparison_tables$all_production
-  expect_equal(
-    all_production |> select(country_code, year),
+  testthat::expect_equal(
+    all_production |> dplyr::select(country_code, year),
     tibble::tibble(
       country_code = c("DE", "DE", "FR"),
       year = c(2020L, 2021L, 2021L)
     )
   )
-  expect_equal(
+  testthat::expect_equal(
     scoped_result$exports$comparison_plots$all_production_quantity$data |>
-      distinct(year),
+      dplyr::distinct(year),
     tibble::tibble(year = c(2020L, 2021L))
   )
   all_country_config <- scoped_config
   all_country_config["comparison_countries"] <- list(NULL)
   all_country_result <- build_pipeline_outputs(scoped_inputs, all_country_config)
-  expect_setequal(
+  testthat::expect_setequal(
     all_country_result$exports$comparison_tables$all_production$country_code,
     c("DE", "FR", "IN")
   )
-  expect_equal(
+  testthat::expect_equal(
     all_country_result$exports$comparison_plots$all_production_quantity$data |>
-      filter(year == 2021L, source == "FAO") |>
-      pull(value),
+      dplyr::filter(year == 2021L, source == "FAO") |>
+      dplyr::pull(value),
     88
   )
-  expect_equal(
+  testthat::expect_equal(
     all_production |>
-      filter(country_code == "DE", year == 2021L) |>
-      select(fao_production, eumofa_production),
+      dplyr::filter(country_code == "DE", year == 2021L) |>
+      dplyr::select(fao_production, eumofa_production),
     tibble::tibble(fao_production = 0, eumofa_production = NA_real_)
   )
-  expect_true(is.na(
+  testthat::expect_true(is.na(
     all_production |>
-      filter(country_code == "FR", year == 2021L) |>
-      pull(eumofa_production)
+      dplyr::filter(country_code == "FR", year == 2021L) |>
+      dplyr::pull(eumofa_production)
   ))
 
   low_anthropic_types <- result$exports$low_anthropic_by_mode$production_type
-  expect_setequal(
+  testthat::expect_setequal(
     low_anthropic_types,
     c("mussels_bivalves", "seaweed_algae", "mollusca_all", "aquatic_plants_all")
   )
   low_anthropic <- result$exports$low_anthropic_by_mode
   strict_mussels <- low_anthropic |>
-    filter(mode == "strict", production_type == "mussels_bivalves")
+    dplyr::filter(mode == "strict", production_type == "mussels_bivalves")
   broad_mollusca <- low_anthropic |>
-    filter(mode == "broad", production_type == "mollusca_all")
+    dplyr::filter(mode == "broad", production_type == "mollusca_all")
   strict_seaweed <- low_anthropic |>
-    filter(mode == "strict", production_type == "seaweed_algae")
+    dplyr::filter(mode == "strict", production_type == "seaweed_algae")
   broad_plants <- low_anthropic |>
-    filter(mode == "broad", production_type == "aquatic_plants_all")
-  expect_equal(strict_mussels$eurostat_species_production_tonnes, 5)
-  expect_equal(strict_mussels$fao_quantity_production_tonnes, 10)
-  expect_equal(strict_mussels$fao_eur_production_value_eur, 1000)
-  expect_equal(strict_mussels$eumofa_production_tonnes, 3)
-  expect_equal(broad_mollusca$eumofa_production_tonnes, 3)
-  expect_equal(strict_seaweed$eurostat_species_production_tonnes, 2)
-  expect_equal(strict_seaweed$fao_quantity_production_tonnes, 4)
-  expect_equal(broad_mollusca$fao_quantity_production_tonnes, 10)
-  expect_equal(broad_plants$fao_quantity_production_tonnes, 4)
+    dplyr::filter(mode == "broad", production_type == "aquatic_plants_all")
+  testthat::expect_equal(strict_mussels$eurostat_species_production_tonnes, 5)
+  testthat::expect_equal(strict_mussels$fao_quantity_production_tonnes, 10)
+  testthat::expect_equal(strict_mussels$fao_eur_production_value_eur, 1000)
+  testthat::expect_equal(strict_mussels$eumofa_production_tonnes, 3)
+  testthat::expect_equal(broad_mollusca$eumofa_production_tonnes, 3)
+  testthat::expect_equal(strict_seaweed$eurostat_species_production_tonnes, 2)
+  testthat::expect_equal(strict_seaweed$fao_quantity_production_tonnes, 4)
+  testthat::expect_equal(broad_mollusca$fao_quantity_production_tonnes, 10)
+  testthat::expect_equal(broad_plants$fao_quantity_production_tonnes, 4)
 
   crustacea_inputs <- inputs
-  crustacea_inputs$eumofa <- bind_rows(
+  crustacea_inputs$eumofa <- dplyr::bind_rows(
     inputs$eumofa,
     tibble::tibble(
       country = "DE",
@@ -496,9 +496,9 @@ test_that("pipeline outputs are computed from in-memory source tables", {
   crustacea_config$include_crustacea_subset <- TRUE
   crustacea_result <- build_pipeline_outputs(crustacea_inputs, crustacea_config)
   crustacea_rows <- crustacea_result$exports$low_anthropic_by_mode |>
-    filter(mode == "broad", production_type == "crustacea_subset")
-  expect_equal(crustacea_rows$fao_quantity_production_tonnes, 2)
-  expect_equal(crustacea_rows$eumofa_production_tonnes, 5)
+    dplyr::filter(mode == "broad", production_type == "crustacea_subset")
+  testthat::expect_equal(crustacea_rows$fao_quantity_production_tonnes, 2)
+  testthat::expect_equal(crustacea_rows$eumofa_production_tonnes, 5)
 
   labels_unavailable_inputs <- inputs
   labels_unavailable_inputs$eurostat_species_labels <- tibble::tibble(
@@ -509,13 +509,13 @@ test_that("pipeline outputs are computed from in-memory source tables", {
     labels_unavailable_inputs,
     config
   )
-  expect_equal(labels_unavailable_result$exports$general_summary$eurostat_production, 100)
-  expect_equal(labels_unavailable_result$exports$freshwater_summary$eurostat_production, 100)
-  expect_true("unit_check" %in% names(result$diagnostics))
-  expect_true("comparison_freshwater" %in% names(result$diagnostics))
+  testthat::expect_equal(labels_unavailable_result$exports$general_summary$eurostat_production, 100)
+  testthat::expect_equal(labels_unavailable_result$exports$freshwater_summary$eurostat_production, 100)
+  testthat::expect_true("unit_check" %in% names(result$diagnostics))
+  testthat::expect_true("comparison_freshwater" %in% names(result$diagnostics))
 })
 
-test_that("pipeline outputs remain available when Eurostat is empty", {
+testthat::test_that("pipeline outputs remain available when Eurostat is empty", {
   inputs <- list(
     eurostat = tibble::tibble(),
     eurostat_species_labels = tibble::tibble(
@@ -563,13 +563,13 @@ test_that("pipeline outputs remain available when Eurostat is empty", {
 
   result <- build_pipeline_outputs(inputs, config)
 
-  expect_equal(result$exports$general_summary$fao_production, 10)
-  expect_equal(result$exports$general_summary$eumofa_production, 3)
-  expect_true(is.na(result$exports$general_summary$eurostat_production))
-  expect_equal(result$exports$freshwater_summary$fao_production, 10)
+  testthat::expect_equal(result$exports$general_summary$fao_production, 10)
+  testthat::expect_equal(result$exports$general_summary$eumofa_production, 3)
+  testthat::expect_true(is.na(result$exports$general_summary$eurostat_production))
+  testthat::expect_equal(result$exports$freshwater_summary$fao_production, 10)
 })
 
-test_that("partial snapshots do not replace the latest complete snapshot", {
+testthat::test_that("partial snapshots do not replace the latest complete snapshot", {
   output_dir <- tempfile("normalized-observations-")
   dir.create(output_dir)
   on.exit(unlink(output_dir, recursive = TRUE), add = TRUE)
@@ -598,8 +598,8 @@ test_that("partial snapshots do not replace the latest complete snapshot", {
   )
   complete_path <- write_normalized_snapshot(complete_bundle, output_dir)
 
-  expect_equal(basename(complete_path), "aquaculture_observations_latest.rds")
-  expect_equal(readRDS(complete_path), complete_bundle)
+  testthat::expect_equal(basename(complete_path), "aquaculture_observations_latest.rds")
+  testthat::expect_equal(readRDS(complete_path), complete_bundle)
   complete_checksum <- unname(tools::md5sum(complete_path))
 
   partial_bundle <- complete_bundle
@@ -607,12 +607,12 @@ test_that("partial snapshots do not replace the latest complete snapshot", {
   partial_bundle$observations$source <- "fao_quantity"
   partial_path <- write_normalized_snapshot(partial_bundle, output_dir)
 
-  expect_equal(basename(partial_path), "aquaculture_observations_partial_latest.rds")
-  expect_equal(readRDS(partial_path), partial_bundle)
-  expect_identical(unname(tools::md5sum(complete_path)), complete_checksum)
+  testthat::expect_equal(basename(partial_path), "aquaculture_observations_partial_latest.rds")
+  testthat::expect_equal(readRDS(partial_path), partial_bundle)
+  testthat::expect_identical(unname(tools::md5sum(complete_path)), complete_checksum)
 })
 
-test_that("observation manifest records provenance and partial source coverage", {
+testthat::test_that("observation manifest records provenance and partial source coverage", {
   source_dir <- tempfile("observation-provenance-")
   dir.create(source_dir)
   on.exit(unlink(source_dir, recursive = TRUE), add = TRUE)
@@ -644,13 +644,13 @@ test_that("observation manifest records provenance and partial source coverage",
     generated_at_utc = "2026-10-14T00:00:00Z"
   )
 
-  expect_equal(manifest$schema_version, "1.0.0")
-  expect_equal(manifest$segment_rules_version, SEGMENT_RULES_VERSION)
-  expect_equal(manifest$coverage_status, "complete")
-  expect_equal(manifest$eurostat$dataset_id, "fish_aq2a")
-  expect_equal(manifest$input_files$fao_quantity$md5, unname(tools::md5sum(source_file)))
-  expect_equal(manifest$fx$source, "csv")
-  expect_equal(manifest$fx$rates$eur_per_usd, 0.5)
+  testthat::expect_equal(manifest$schema_version, "1.0.0")
+  testthat::expect_equal(manifest$segment_rules_version, SEGMENT_RULES_VERSION)
+  testthat::expect_equal(manifest$coverage_status, "complete")
+  testthat::expect_equal(manifest$eurostat$dataset_id, "fish_aq2a")
+  testthat::expect_equal(manifest$input_files$fao_quantity$md5, unname(tools::md5sum(source_file)))
+  testthat::expect_equal(manifest$fx$source, "csv")
+  testthat::expect_equal(manifest$fx$rates$eur_per_usd, 0.5)
 
   partial_manifest <- build_observation_manifest(
     source_status = c(
@@ -670,11 +670,11 @@ test_that("observation manifest records provenance and partial source coverage",
     fx = list(source = "fallback", path = NULL, rates = tibble::tibble()),
     generated_at_utc = "2026-10-14T00:01:00Z"
   )
-  expect_equal(partial_manifest$coverage_status, "partial")
-  expect_equal(partial_manifest$fx$source, "fallback")
+  testthat::expect_equal(partial_manifest$coverage_status, "partial")
+  testthat::expect_equal(partial_manifest$fx$source, "fallback")
 })
 
-test_that("partial runs do not overwrite latest exports or diagnostics", {
+testthat::test_that("partial runs do not overwrite latest exports or diagnostics", {
   output_root <- tempfile("partial-output-guard-")
   output_dirs <- list(
     root = output_root,
@@ -732,17 +732,17 @@ test_that("partial runs do not overwrite latest exports or diagnostics", {
     coverage_status = "partial"
   )
 
-  expect_false(published)
-  expect_identical(unname(tools::md5sum(existing_paths)), before_hashes)
+  testthat::expect_false(published)
+  testthat::expect_identical(unname(tools::md5sum(existing_paths)), before_hashes)
   partial_plot_path <- file.path(
     comparison_plot_dir,
     "all_production_quantity_partial_latest.png"
   )
-  expect_true(file.exists(partial_plot_path))
-  expect_gt(file.info(partial_plot_path)$size, 0)
+  testthat::expect_true(file.exists(partial_plot_path))
+  testthat::expect_gt(file.info(partial_plot_path)$size, 0)
 })
 
-test_that("complete runs write summaries and diagnostics", {
+testthat::test_that("complete runs write summaries and diagnostics", {
   output_root <- tempfile("complete-output-")
   on.exit(unlink(output_root, recursive = TRUE), add = TRUE)
   output_dirs <- list(
@@ -802,48 +802,48 @@ test_that("complete runs write summaries and diagnostics", {
     fao_diagnostics = fao_diagnostics
   )
 
-  expect_true(published)
-  expect_length(list.files(output_root, recursive = TRUE), 15L)
+  testthat::expect_true(published)
+  testthat::expect_length(list.files(output_root, recursive = TRUE), 15L)
   comparison_plot_dir <- file.path(output_dirs$general, "comparison_plots")
-  expect_setequal(
+  testthat::expect_setequal(
     list.files(comparison_plot_dir),
     paste0(plot_names, "_latest.png")
   )
-  expect_true(all(
+  testthat::expect_true(all(
     file.info(file.path(comparison_plot_dir, paste0(plot_names, "_latest.png")))$size > 0
   ))
   comparison_path <- file.path(output_dirs$general, "production_comparisons_latest.xlsx")
-  expect_setequal(
+  testthat::expect_setequal(
     openxlsx::getSheetNames(comparison_path),
     c("all_production", "freshwater", "low_anthropic")
   )
-  expect_equal(
+  testthat::expect_equal(
     openxlsx::read.xlsx(comparison_path, sheet = "all_production")$eurostat_production,
     100
   )
-  expect_equal(
+  testthat::expect_equal(
     openxlsx::read.xlsx(comparison_path, sheet = "freshwater")$eurostat_production,
     80
   )
-  expect_equal(
+  testthat::expect_equal(
     openxlsx::read.xlsx(comparison_path, sheet = "low_anthropic")$category,
     "mussels_bivalves"
   )
-  expect_setequal(
+  testthat::expect_setequal(
     openxlsx::getSheetNames(file.path(output_dirs$low_anthropic, "Europe_low_anthropic_summary_latest.xlsx")),
     c("by_mode", "side_by_side")
   )
-  expect_equal(
+  testthat::expect_equal(
     nrow(openxlsx::read.xlsx(file.path(output_dirs$general, "Europe_summary_latest.xlsx"), sheet = "data")),
     1L
   )
-  expect_equal(
-    nrow(read.csv(file.path(output_dirs$diagnostics, "fao_env_qty_counts.csv"))),
+  testthat::expect_equal(
+    nrow(utils::read.csv(file.path(output_dirs$diagnostics, "fao_env_qty_counts.csv"))),
     1L
   )
 })
 
-test_that("comparison plots preserve values and label quantity units", {
+testthat::test_that("comparison plots preserve values and label quantity units", {
   comparison_table <- tibble::tibble(
     country_code = c("DE", "DE"),
     year = c(2020L, 2021L),
@@ -859,11 +859,11 @@ test_that("comparison plots preserve values and label quantity units", {
     facet_countries = TRUE
   )
 
-  expect_s3_class(plot, "ggplot")
-  expect_identical(plot$labels$title, "Production quantity (million tonnes)")
-  expect_identical(plot$labels$subtitle, "All production")
-  expect_equal(
-    plot$data |> select(country_code, year, source, measure, unit, value),
+  testthat::expect_s3_class(plot, "ggplot")
+  testthat::expect_identical(plot$labels$title, "Production quantity (million tonnes)")
+  testthat::expect_identical(plot$labels$subtitle, "All production")
+  testthat::expect_equal(
+    plot$data |> dplyr::select(country_code, year, source, measure, unit, value),
     tibble::tibble(
       country_code = rep("DE", 6),
       year = rep(c(2020L, 2021L), each = 3),
@@ -873,16 +873,16 @@ test_that("comparison plots preserve values and label quantity units", {
       value = c(100, 80, NA_real_, NA_real_, 0, NA_real_)
     )
   )
-  expect_null(plot$labels$x)
-  expect_null(plot$labels$y)
-  expect_identical(plot$labels$colour, "Source")
-  expect_identical(
+  testthat::expect_null(plot$labels$x)
+  testthat::expect_null(plot$labels$y)
+  testthat::expect_identical(plot$labels$colour, "Source")
+  testthat::expect_identical(
     plot$scales$get_scales("y")$get_labels(c(0, 1000, 1000000)),
     c("0.000", "0.001", "1.000")
   )
 })
 
-test_that("comparison value plots use compatible EUR values", {
+testthat::test_that("comparison value plots use compatible EUR values", {
   comparison_table <- tibble::tibble(
     country_code = c("DE", "DE"),
     year = c(2020L, 2021L),
@@ -898,8 +898,8 @@ test_that("comparison value plots use compatible EUR values", {
     facet_countries = TRUE
   )
 
-  expect_equal(
-    plot$data |> select(country_code, year, source, measure, unit, value),
+  testthat::expect_equal(
+    plot$data |> dplyr::select(country_code, year, source, measure, unit, value),
     tibble::tibble(
       country_code = rep("DE", 6),
       year = rep(c(2020L, 2021L), each = 3),
@@ -909,17 +909,17 @@ test_that("comparison value plots use compatible EUR values", {
       value = c(3000, 1500, NA_real_, NA_real_, 0, 1000)
     )
   )
-  expect_identical(plot$labels$title, "Production value (million EUR)")
-  expect_identical(plot$labels$subtitle, "All production")
-  expect_null(plot$labels$y)
-  expect_identical(plot$labels$colour, "Source")
-  expect_identical(
+  testthat::expect_identical(plot$labels$title, "Production value (million EUR)")
+  testthat::expect_identical(plot$labels$subtitle, "All production")
+  testthat::expect_null(plot$labels$y)
+  testthat::expect_identical(plot$labels$colour, "Source")
+  testthat::expect_identical(
     plot$scales$get_scales("y")$get_labels(c(0, 1000, 1000000000)),
     c("0.000", "0.001", "1,000.000")
   )
 })
 
-test_that("comparison year labels adapt to the span without fractional years", {
+testthat::test_that("comparison year labels adapt to the span without fractional years", {
   for (year_range in list(2020:2023, 2006:2024, 2008:2023, 2010:2024, 1990:2025, 1950:2025, 2020L, integer())) {
     comparison_table <- tibble::tibble(
       country_code = rep("DE", length(year_range)),
@@ -931,25 +931,25 @@ test_that("comparison year labels adapt to the span without fractional years", {
     plot <- build_comparison_plot(comparison_table, "production_tonnes", "all_production")
     built <- ggplot2::ggplot_build(plot)
     axis <- built$layout$panel_params[[1]]$x
-    expect_length(axis$minor_breaks, 0L)
+    testthat::expect_length(axis$minor_breaks, 0L)
     breaks <- axis$get_breaks()
     breaks <- breaks[is.finite(breaks)]
-    expect_equal(breaks, round(breaks))
-    expect_lte(length(breaks), 10L)
+    testthat::expect_equal(breaks, round(breaks))
+    testthat::expect_lte(length(breaks), 10L)
     if (length(year_range) >= 14) {
-      expect_gte(length(breaks), 7L)
+      testthat::expect_gte(length(breaks), 7L)
     }
-    expect_equal(
+    testthat::expect_equal(
       axis$scale$get_labels(breaks),
       format(breaks, scientific = FALSE, trim = TRUE)
     )
     if (length(year_range) > 0 && length(year_range) <= 4) {
-      expect_true(all(year_range %in% breaks))
+      testthat::expect_true(all(year_range %in% breaks))
     }
   }
 })
 
-test_that("low-anthropic plots retain profile and category values", {
+testthat::test_that("low-anthropic plots retain profile and category values", {
   comparison_table <- tibble::tibble(
     profile = c("strict", "broad"),
     category = c("mussels_bivalves", "mollusca_all"),
@@ -967,14 +967,14 @@ test_that("low-anthropic plots retain profile and category values", {
     facet_countries = TRUE
   )
 
-  expect_identical(plot$labels$title, "Production quantity (million tonnes)")
-  expect_identical(plot$labels$subtitle, "Low-anthropic")
-  expect_null(plot$labels$y)
-  expect_named(plot$facet$params$facets, c("category", "country_code"))
-  expect_equal(length(unique(plot$data$series)), 6L)
-  expect_equal(nrow(ggplot2::ggplot_build(plot)$layout$layout), 2L)
-  expect_equal(
-    plot$data |> select(profile, category, country_code, year, source, value),
+  testthat::expect_identical(plot$labels$title, "Production quantity (million tonnes)")
+  testthat::expect_identical(plot$labels$subtitle, "Low-anthropic")
+  testthat::expect_null(plot$labels$y)
+  testthat::expect_named(plot$facet$params$facets, c("category", "country_code"))
+  testthat::expect_equal(length(unique(plot$data$series)), 6L)
+  testthat::expect_equal(nrow(ggplot2::ggplot_build(plot)$layout$layout), 2L)
+  testthat::expect_equal(
+    plot$data |> dplyr::select(profile, category, country_code, year, source, value),
     tibble::tibble(
       profile = rep(c("strict", "broad"), each = 3),
       category = rep(c("mussels_bivalves", "mollusca_all"), each = 3),
@@ -986,7 +986,7 @@ test_that("low-anthropic plots retain profile and category values", {
   )
 })
 
-test_that("overview plots sum countries separately by source, year and category", {
+testthat::test_that("overview plots sum countries separately by source, year and category", {
   comparison_table <- tibble::tibble(
     profile = "broad",
     category = c("mollusca_all", "mollusca_all", "aquatic_plants_all",
@@ -997,7 +997,7 @@ test_that("overview plots sum countries separately by source, year and category"
     fao_production = c(1, NA_real_, 3, 4, 0, NA_real_),
     eumofa_production = NA_real_
   ) |>
-    mutate(
+    dplyr::mutate(
       eurostat_value = eurostat_production * 1000,
       fao_value = fao_production * 1000,
       eumofa_value = eumofa_production
@@ -1007,37 +1007,37 @@ test_that("overview plots sum countries separately by source, year and category"
     plot <- build_comparison_plot(comparison_table, measure, "low_anthropic")
     multiplier <- if (measure == "production_tonnes") 1 else 1000
     molluscs <- plot$data |>
-      filter(category == "mollusca_all") |>
-      arrange(year)
+      dplyr::filter(category == "mollusca_all") |>
+      dplyr::arrange(year)
 
-    expect_false("country_code" %in% names(plot$data))
-    expect_named(plot$facet$params$facets, "category")
-    expect_equal(molluscs$value[molluscs$source == "Eurostat"], c(30, NA_real_) * multiplier)
-    expect_equal(molluscs$value[molluscs$source == "FAO"], c(1, 0) * multiplier)
-    expect_true(all(is.na(plot$data$value[plot$data$source == "EUMOFA"])))
-    expect_equal(
+    testthat::expect_false("country_code" %in% names(plot$data))
+    testthat::expect_named(plot$facet$params$facets, "category")
+    testthat::expect_equal(molluscs$value[molluscs$source == "Eurostat"], c(30, NA_real_) * multiplier)
+    testthat::expect_equal(molluscs$value[molluscs$source == "FAO"], c(1, 0) * multiplier)
+    testthat::expect_true(all(is.na(plot$data$value[plot$data$source == "EUMOFA"])))
+    testthat::expect_equal(
       plot$data$value[plot$data$category == "aquatic_plants_all" & plot$data$source == "Eurostat"],
       300 * multiplier
     )
-    expect_equal(nrow(ggplot2::ggplot_build(plot)$layout$layout), 2L)
+    testthat::expect_equal(nrow(ggplot2::ggplot_build(plot)$layout$layout), 2L)
   }
 
   country_plot <- build_comparison_plot(
     comparison_table, "production_tonnes", "low_anthropic", facet_countries = TRUE
   )
-  expect_equal(nrow(country_plot$data), 18L)
-  expect_equal(nrow(ggplot2::ggplot_build(country_plot)$layout$layout), 4L)
+  testthat::expect_equal(nrow(country_plot$data), 18L)
+  testthat::expect_equal(nrow(ggplot2::ggplot_build(country_plot)$layout$layout), 4L)
 
   total_plot <- build_comparison_plot(
-    select(comparison_table, -profile, -category), "production_tonnes", "all_production"
+    dplyr::select(comparison_table, -profile, -category), "production_tonnes", "all_production"
   )
-  expect_s3_class(total_plot$facet, "FacetNull")
-  expect_equal(
+  testthat::expect_s3_class(total_plot$facet, "FacetNull")
+  testthat::expect_equal(
     total_plot$data$value[total_plot$data$source == "Eurostat"], c(330, NA_real_)
   )
 })
 
-test_that("empty segment plots can be built without facet values", {
+testthat::test_that("empty segment plots can be built without facet values", {
   comparison_table <- tibble::tibble(
     profile = character(),
     category = character(),
@@ -1054,10 +1054,10 @@ test_that("empty segment plots can be built without facet values", {
     segment = "low_anthropic"
   )
 
-  expect_no_error(ggplot2::ggplot_build(plot))
+  testthat::expect_no_error(ggplot2::ggplot_build(plot))
 })
 
-test_that("default comparison window covers the latest 20 completed years", {
+testthat::test_that("default comparison window covers the latest 20 completed years", {
   script <- parse(file.path(project_root, "main-script.R"))
   year_assignment <- Filter(function(expression) {
     is.call(expression) && identical(expression[[1]], as.name("<-")) &&
@@ -1067,5 +1067,5 @@ test_that("default comparison window covers the latest 20 completed years", {
   eval(year_assignment[[1]], envir = config)
   latest_year <- as.integer(format(Sys.Date(), "%Y")) - 1L
 
-  expect_equal(config$years_target, seq.int(latest_year - 19L, latest_year))
+  testthat::expect_equal(config$years_target, seq.int(latest_year - 19L, latest_year))
 })

@@ -18,7 +18,7 @@ build_pipeline_outputs <- function(inputs, config) {
   }
 
   observations <- build_normalized_observations(inputs) |>
-    mutate(observation_id = seq_len(n()), .before = 1)
+    dplyr::mutate(observation_id = seq_len(dplyr::n()), .before = 1)
   if (is.null(config$comparison_countries)) {
     config$comparison_countries <- unique(observations$country_code)
   }
@@ -32,12 +32,12 @@ build_pipeline_outputs <- function(inputs, config) {
   fao_v_long <- harmonise_fao_val(inputs$fao_value, inputs$fao_to_iso2)
   eumo_long <- harmonise_eumofa(inputs$eumofa)
 
-  all_long <- bind_rows(eu_long, fao_q_long, fao_v_long, eumo_long) |>
-    arrange(country_code, year, measure, source)
+  all_long <- dplyr::bind_rows(eu_long, fao_q_long, fao_v_long, eumo_long) |>
+    dplyr::arrange(country_code, year, measure, source)
 
   fao_v_long_fx <- convert_fao_usd_values(fao_v_long, inputs$fx_rates)
 
-  all_long_fx <- bind_rows(all_long, fao_v_long_fx)
+  all_long_fx <- dplyr::bind_rows(all_long, fao_v_long_fx)
 
   low_anthropic <- build_low_anthropic_outputs(
     inputs,
@@ -45,10 +45,10 @@ build_pipeline_outputs <- function(inputs, config) {
   )
 
   unit_check <- all_long_fx |>
-    filter(measure == "production_tonnes") |>
-    group_by(country_code, year, source) |>
-    summarise(value_tonnes = sum(values, na.rm = TRUE), .groups = "drop") |>
-    pivot_wider(
+    dplyr::filter(measure == "production_tonnes") |>
+    dplyr::group_by(country_code, year, source) |>
+    dplyr::summarise(value_tonnes = sum(values, na.rm = TRUE), .groups = "drop") |>
+    tidyr::pivot_wider(
       id_cols = c(country_code, year),
       names_from = source,
       values_from = value_tonnes
@@ -59,12 +59,12 @@ build_pipeline_outputs <- function(inputs, config) {
   }
 
   unit_check <- unit_check |>
-    mutate(
-      eurostat = coalesce(eurostat, 0),
-      fao_quantity = coalesce(fao_quantity, 0),
-      eumofa = coalesce(eumofa, 0)
+    dplyr::mutate(
+      eurostat = dplyr::coalesce(eurostat, 0),
+      fao_quantity = dplyr::coalesce(fao_quantity, 0),
+      eumofa = dplyr::coalesce(eumofa, 0)
     ) |>
-    mutate(
+    dplyr::mutate(
       suspicious_fao = (fao_quantity > 1e6) & (eurostat < 1e4),
       suspicious_eumo = (eumofa > 1e6) & (eurostat < 1e4)
     )
@@ -91,16 +91,16 @@ build_pipeline_outputs <- function(inputs, config) {
       years = config$comparison_years,
       countries = config$comparison_countries,
       memberships = memberships |>
-        filter(segment == "freshwater") |>
-        select(observation_id)
+        dplyr::filter(segment == "freshwater") |>
+        dplyr::select(observation_id)
     ),
     low_anthropic = build_comparison_table(
       observations,
       years = config$comparison_years,
       countries = config$comparison_countries,
       memberships = memberships |>
-        filter(segment == "low_anthropic") |>
-        select(observation_id, profile, category),
+        dplyr::filter(segment == "low_anthropic") |>
+        dplyr::select(observation_id, profile, category),
       membership_dimensions = c("profile", "category")
     )
   )
@@ -146,7 +146,7 @@ build_pipeline_outputs <- function(inputs, config) {
         tolerance = config$tolerance
       ),
       unit_check = unit_check,
-      suspicious = filter(unit_check, suspicious_fao | suspicious_eumo)
+      suspicious = dplyr::filter(unit_check, suspicious_fao | suspicious_eumo)
     )
   )
 }

@@ -26,23 +26,23 @@ build_comparison_plot <- function(comparison_table, measure, segment, facet_coun
   source_columns <- plot_spec$source_columns
   dimensions <- intersect(c("profile", "category"), names(comparison_table))
   plot_data <- comparison_table |>
-    select(all_of(c(dimensions, "country_code", "year", names(source_columns)))) |>
-    pivot_longer(
-      cols = all_of(names(source_columns)),
+    dplyr::select(dplyr::all_of(c(dimensions, "country_code", "year", names(source_columns)))) |>
+    tidyr::pivot_longer(
+      cols = dplyr::all_of(names(source_columns)),
       names_to = "source_column",
       values_to = "value"
     ) |>
-    mutate(
+    dplyr::mutate(
       source = unname(source_columns[source_column]),
       measure = measure,
       unit = plot_spec$unit
     ) |>
-    select(all_of(dimensions), country_code, year, source, measure, unit, value)
+    dplyr::select(dplyr::all_of(dimensions), country_code, year, source, measure, unit, value)
   country_dimensions <- if (facet_countries) "country_code" else character()
   if (!facet_countries) {
     plot_data <- plot_data |>
-      group_by(across(all_of(c(dimensions, "year", "source", "measure", "unit")))) |>
-      summarise(
+      dplyr::group_by(dplyr::across(dplyr::all_of(c(dimensions, "year", "source", "measure", "unit")))) |>
+      dplyr::summarise(
         value = if (all(is.na(value))) NA_real_ else sum(value, na.rm = TRUE),
         .groups = "drop"
       )

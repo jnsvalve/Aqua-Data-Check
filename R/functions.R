@@ -321,29 +321,29 @@ harmonise_eurostat <- function(eu_df) {
   }
 
   eu_df |>
-    filter(unit %in% c("TLW", "EUR")) |>
-    mutate(
+    dplyr::filter(unit %in% c("TLW", "EUR")) |>
+    dplyr::mutate(
       year = as.integer(.data[[time_col]]),
       country_code = geo,
       environment = aquaenv
     ) |>
     # KEEP ONLY TOTAL ROWS:
-    filter(
+    dplyr::filter(
       freq == "A",
       species == "F00",       # TOTAL
       fishreg == "0"          # TOTAL region
       # aquameth: keep all (Eurostat does not always provide TOTAL)
     ) |>
-    group_by(country_code, year, unit, environment) |>
-    summarise(values = sum(values, na.rm = TRUE), .groups = "drop") |>
-    mutate(
-      measure = case_when(
+    dplyr::group_by(country_code, year, unit, environment) |>
+    dplyr::summarise(values = sum(values, na.rm = TRUE), .groups = "drop") |>
+    dplyr::mutate(
+      measure = dplyr::case_when(
         unit == "TLW" ~ "production_tonnes",
         unit == "EUR" ~ "production_value_eur"
       ),
       source = "eurostat"
     ) |>
-    select(
+    dplyr::select(
       country_code, year, measure, values, unit, source, environment
     )
 }
@@ -373,14 +373,14 @@ harmonise_eurostat_low_anthropic <- function(eu_df, species_labels = NULL) {
   algae_pattern <- "algae|alga|seaweed|kelp|wakame|spirulina|ulva|lettuce"
 
   eu_low <- eu_df |>
-    filter(unit %in% c("TLW", "EUR")) |>
-    mutate(
+    dplyr::filter(unit %in% c("TLW", "EUR")) |>
+    dplyr::mutate(
       year = as.integer(.data[[time_col]]),
       country_code = geo,
       environment = aquaenv,
       species_code = species
     ) |>
-    filter(
+    dplyr::filter(
       freq == "A",
       species_code != "F00",
       fishreg == "0"
@@ -397,58 +397,58 @@ harmonise_eurostat_low_anthropic <- function(eu_df, species_labels = NULL) {
     ))
   }
 
-  species_lookup <- tibble(species_code = unique(eu_low$species_code))
+  species_lookup <- tibble::tibble(species_code = unique(eu_low$species_code))
   if (!is.null(species_labels)) {
     required_label_cols <- c("species_code", "species_label")
     if (!all(required_label_cols %in% names(species_labels))) {
       stop("Eurostat species labels must contain species_code and species_label")
     }
     species_lookup <- species_lookup |>
-      left_join(
+      dplyr::left_join(
         species_labels |>
-          transmute(
+          dplyr::transmute(
             species_code = as.character(species_code),
             species_label = as.character(species_label)
           ) |>
-          distinct(species_code, .keep_all = TRUE),
+          dplyr::distinct(species_code, .keep_all = TRUE),
         by = "species_code"
       )
   } else if (requireNamespace("eurostat", quietly = TRUE)) {
     species_lookup <- species_lookup |>
-      mutate(species_label = suppressWarnings(eurostat::label_eurostat(species_code, dic = "SPECIES")))
+      dplyr::mutate(species_label = suppressWarnings(eurostat::label_eurostat(species_code, dic = "SPECIES")))
   } else {
-    species_lookup <- species_lookup |> mutate(species_label = NA_character_)
+    species_lookup <- species_lookup |> dplyr::mutate(species_label = NA_character_)
   }
 
   eu_low |>
-    left_join(species_lookup, by = "species_code") |>
-    mutate(
+    dplyr::left_join(species_lookup, by = "species_code") |>
+    dplyr::mutate(
       species_label = tolower(as.character(species_label)),
-      production_type = case_when(
-        str_detect(species_label %||% "", mussel_pattern) ~ "mussels_bivalves",
-        str_detect(species_label %||% "", algae_pattern) ~ "seaweed_algae",
+      production_type = dplyr::case_when(
+        stringr::str_detect(species_label %||% "", mussel_pattern) ~ "mussels_bivalves",
+        stringr::str_detect(species_label %||% "", algae_pattern) ~ "seaweed_algae",
         TRUE ~ NA_character_
       )
     ) |>
-    filter(!is.na(production_type)) |>
-    group_by(country_code, year, unit, environment, production_type) |>
-    summarise(values = sum(values, na.rm = TRUE), .groups = "drop") |>
-    mutate(
-      measure = case_when(
+    dplyr::filter(!is.na(production_type)) |>
+    dplyr::group_by(country_code, year, unit, environment, production_type) |>
+    dplyr::summarise(values = sum(values, na.rm = TRUE), .groups = "drop") |>
+    dplyr::mutate(
+      measure = dplyr::case_when(
         unit == "TLW" ~ "production_tonnes",
         unit == "EUR" ~ "production_value_eur"
       ),
       source = "eurostat_species"
     ) |>
-    select(country_code, year, production_type, source, measure, values)
+    dplyr::select(country_code, year, production_type, source, measure, values)
 }
 
 harmonise_fao_qty <- function(df, map = NULL) {
   n_fail <- sum(is.na(suppressWarnings(as.numeric(df$value)))) - sum(is.na(df$value))
-  if (n_fail > 0) cli_alert_warning("FAO quantity: {n_fail} non-numeric value(s) coerced to NA")
+  if (n_fail > 0) cli::cli_alert_warning("FAO quantity: {n_fail} non-numeric value(s) coerced to NA")
 
   df |>
-    transmute(
+    dplyr::transmute(
       country_un_code = as.character(country_un_code),
       year = as.integer(period),
       environment = environment_alpha_2_code,
@@ -457,17 +457,17 @@ harmonise_fao_qty <- function(df, map = NULL) {
       values = suppressWarnings(as.numeric(value)),
       source = "fao_quantity"
     ) |>
-    mutate(country_code = resolve_fao_country_code(country_un_code, map)) |>
-    group_by(country_code, year, measure, unit, source, environment, country_un_code) |>
-    summarise(values = sum(values, na.rm = TRUE), .groups = "drop")
+    dplyr::mutate(country_code = resolve_fao_country_code(country_un_code, map)) |>
+    dplyr::group_by(country_code, year, measure, unit, source, environment, country_un_code) |>
+    dplyr::summarise(values = sum(values, na.rm = TRUE), .groups = "drop")
 }
 
 harmonise_fao_val <- function(df, map = NULL) {
   n_fail <- sum(is.na(suppressWarnings(as.numeric(df$value)))) - sum(is.na(df$value))
-  if (n_fail > 0) cli_alert_warning("FAO value: {n_fail} non-numeric value(s) coerced to NA")
+  if (n_fail > 0) cli::cli_alert_warning("FAO value: {n_fail} non-numeric value(s) coerced to NA")
 
   df |>
-    transmute(
+    dplyr::transmute(
       country_un_code = as.character(country_un_code),
       year = as.integer(period),
       environment = environment_alpha_2_code,
@@ -477,8 +477,8 @@ harmonise_fao_val <- function(df, map = NULL) {
       values_usd = suppressWarnings(as.numeric(value)) * 1000,
       source = "fao_value"
     ) |>
-    mutate(country_code = resolve_fao_country_code(country_un_code, map)) |>
-    select(
+    dplyr::mutate(country_code = resolve_fao_country_code(country_un_code, map)) |>
+    dplyr::select(
       country_code, year, measure,
       values = values_usd, unit, source, environment, country_un_code
     )
@@ -487,11 +487,11 @@ harmonise_fao_val <- function(df, map = NULL) {
 harmonise_eumofa <- function(df) {
   n_fail_vol <- sum(is.na(suppressWarnings(as.numeric(df$volume_kg)))) - sum(is.na(df$volume_kg))
   n_fail_val <- sum(is.na(suppressWarnings(as.numeric(df$value_eur)))) - sum(is.na(df$value_eur))
-  if (n_fail_vol > 0) cli_alert_warning("EUMOFA: {n_fail_vol} volume_kg value(s) coerced to NA")
-  if (n_fail_val > 0) cli_alert_warning("EUMOFA: {n_fail_val} value_eur value(s) coerced to NA")
+  if (n_fail_vol > 0) cli::cli_alert_warning("EUMOFA: {n_fail_vol} volume_kg value(s) coerced to NA")
+  if (n_fail_val > 0) cli::cli_alert_warning("EUMOFA: {n_fail_val} value_eur value(s) coerced to NA")
 
   tonnes <- df |>
-    transmute(
+    dplyr::transmute(
       country_code = toupper(country),
       year = as.integer(year),
       measure = "production_tonnes",
@@ -501,7 +501,7 @@ harmonise_eumofa <- function(df) {
       commodity_group = commodity_group %||% NA_character_
     )
   value_eur <- df |>
-    transmute(
+    dplyr::transmute(
       country_code = toupper(country),
       year = as.integer(year),
       measure = "production_value_eur",
@@ -510,7 +510,7 @@ harmonise_eumofa <- function(df) {
       source = "eumofa",
       commodity_group = commodity_group %||% NA_character_
     )
-  bind_rows(tonnes, value_eur) |> filter(!is.na(values))
+  dplyr::bind_rows(tonnes, value_eur) |> dplyr::filter(!is.na(values))
 }
 
 
@@ -521,31 +521,31 @@ harmonise_eumofa <- function(df) {
 filter_freshwater <- function(long_tbl) {
   # EUROSTAT freshwater (FRW)
   es_fw    <- long_tbl |>
-    filter(source == "eurostat", environment == "FRW")
+    dplyr::filter(source == "eurostat", environment == "FRW")
 
   # FAO freshwater (IN) — quantity (tonnes)
   fao_q_fw <- long_tbl |>
-    filter(source == "fao_quantity", environment == "IN")
+    dplyr::filter(source == "fao_quantity", environment == "IN")
 
   # FAO freshwater (IN) — original USD values
   fao_v_fw <- long_tbl |>
-    filter(source == "fao_value", environment == "IN")
+    dplyr::filter(source == "fao_value", environment == "IN")
 
   # FAO freshwater (IN) — EUR converted values
   fao_v_fx_fw <- long_tbl |>
-    filter(source == "fao_eur", environment == "IN")
+    dplyr::filter(source == "fao_eur", environment == "IN")
 
   # EUMOFA freshwater: identify using commodity_group text
   eumo_fw <- long_tbl |>
-    filter(source == "eumofa") |>
-    filter(is.na(commodity_group) |
-             str_detect(tolower(commodity_group), "fresh|inland"))
+    dplyr::filter(source == "eumofa") |>
+    dplyr::filter(is.na(commodity_group) |
+             stringr::str_detect(tolower(commodity_group), "fresh|inland"))
 
   n_eumo_fw <- nrow(eumo_fw)
-  cli_alert_info("EUMOFA freshwater rows matched: {n_eumo_fw} (via 'fresh|inland' in commodity_group)")
+  cli::cli_alert_info("EUMOFA freshwater rows matched: {n_eumo_fw} (via 'fresh|inland' in commodity_group)")
 
-  bind_rows(es_fw, fao_q_fw, fao_v_fw, fao_v_fx_fw, eumo_fw) |>
-    arrange(country_code, year, measure, source)
+  dplyr::bind_rows(es_fw, fao_q_fw, fao_v_fw, fao_v_fx_fw, eumo_fw) |>
+    dplyr::arrange(country_code, year, measure, source)
 }
 
 # ============================================================
@@ -554,19 +554,19 @@ filter_freshwater <- function(long_tbl) {
 
 convert_fao_usd_values <- function(fao_usd, fx_rates) {
   fao_usd |>
-    left_join(fx_rates, by = "year") |>
-    mutate(
+    dplyr::left_join(fx_rates, by = "year") |>
+    dplyr::mutate(
       unit = "EUR",
       measure = "production_value_eur",
       source = "fao_eur",
       values = values * eur_per_usd
     ) |>
-    select(-eur_per_usd)
+    dplyr::select(-eur_per_usd)
 }
 
 load_fx_table <- function(fx_path) {
   if (!file.exists(fx_path)) {
-    cli_alert_warning("FX CSV not found — using fallback rates")
+    cli::cli_alert_warning("FX CSV not found — using fallback rates")
     return(
       tibble::tribble(
         ~year, ~eur_per_usd,
@@ -581,20 +581,20 @@ load_fx_table <- function(fx_path) {
     )
   }
 
-  cli_h1("Loading FX rates from CSV")
+  cli::cli_h1("Loading FX rates from CSV")
 
-  fx_raw <- read_csv_safe(fx_path) |> clean_names()
+  fx_raw <- read_csv_safe(fx_path) |> janitor::clean_names()
 
   # Detect column names
   year_col <- if ("year" %in% names(fx_raw)) "year" else "period"
 
   if ("eur_per_usd" %in% names(fx_raw)) {
-    fx <- fx_raw |> transmute(
+    fx <- fx_raw |> dplyr::transmute(
       year = as.integer(.data[[year_col]]),
       eur_per_usd = as.numeric(eur_per_usd)
     )
   } else if ("usd_per_eur" %in% names(fx_raw)) {
-    fx <- fx_raw |> transmute(
+    fx <- fx_raw |> dplyr::transmute(
       year = as.integer(.data[[year_col]]),
       eur_per_usd = 1 / as.numeric(usd_per_eur)
     )
@@ -603,12 +603,12 @@ load_fx_table <- function(fx_path) {
   }
 
   # Fill missing years using nearest value
-  all_years <- tibble(year = 2010:2030)
+  all_years <- tibble::tibble(year = 2010:2030)
   fx <- all_years |>
-    left_join(fx, by = "year") |>
+    dplyr::left_join(fx, by = "year") |>
     tidyr::fill(eur_per_usd, .direction = "downup")
 
-  cli_alert_success("FX table loaded and expanded")
+  cli::cli_alert_success("FX table loaded and expanded")
   return(fx)
 }
 
@@ -619,22 +619,22 @@ load_fx_table <- function(fx_path) {
 build_comparison <- function(long_tbl, years = NULL, countries = NULL, tolerance = 0.30) {
   cmp <- long_tbl
 
-  if (!is.null(years))     cmp <- cmp |> filter(year %in% years)
-  if (!is.null(countries)) cmp <- cmp |> filter(country_code %in% countries)
+  if (!is.null(years))     cmp <- cmp |> dplyr::filter(year %in% years)
+  if (!is.null(countries)) cmp <- cmp |> dplyr::filter(country_code %in% countries)
 
   # FIX A: aggregate to country-year-source-measure totals
   cmp <- cmp |>
-    mutate(values = as.numeric(values)) |>
-    group_by(country_code, year, source, measure) |>
-    summarise(values = sum(values, na.rm = TRUE), .groups = "drop")
+    dplyr::mutate(values = as.numeric(values)) |>
+    dplyr::group_by(country_code, year, source, measure) |>
+    dplyr::summarise(values = sum(values, na.rm = TRUE), .groups = "drop")
 
   cmp_wide <- cmp |>
-    pivot_wider(
+    tidyr::pivot_wider(
       id_cols   = c(country_code, year),
       names_from  = c(source, measure),
       values_from = values
     ) |>
-    arrange(country_code, year)
+    dplyr::arrange(country_code, year)
 
   # Ensure required columns exist (create as NA_real_ if missing)
   for (col in .ENSURE_COLS) {
@@ -645,19 +645,19 @@ build_comparison <- function(long_tbl, years = NULL, countries = NULL, tolerance
 
   # Warn if FAO EUR value column is all-NA (FX conversion may not have run)
   if (all(is.na(cmp_wide[["fao_eur_production_value_eur"]]))) {
-    cli_alert_warning("build_comparison: 'fao_eur_production_value_eur' is all-NA — FAO USD\u2192EUR conversion may not have run")
+    cli::cli_alert_warning("build_comparison: 'fao_eur_production_value_eur' is all-NA — FAO USD\u2192EUR conversion may not have run")
   }
 
   # TONNES ratios
   cmp_wide <- cmp_wide |>
-    mutate(
+    dplyr::mutate(
       ratio_es_fao_qty  = eurostat_production_tonnes / fao_quantity_production_tonnes,
       ratio_es_eumo_qty = eurostat_production_tonnes / eumofa_production_tonnes
     )
 
   # VALUE ratios (EUR vs EUR; use FX-converted FAO)
   cmp_wide <- cmp_wide |>
-    mutate(
+    dplyr::mutate(
       ratio_es_fao_val =
         eurostat_production_value_eur /
         fao_eur_production_value_eur,
@@ -669,23 +669,23 @@ build_comparison <- function(long_tbl, years = NULL, countries = NULL, tolerance
 
   # Flags with tolerance
   cmp_wide <- cmp_wide |>
-    mutate(
-      flag_es_fao_qty = case_when(
+    dplyr::mutate(
+      flag_es_fao_qty = dplyr::case_when(
         is.na(ratio_es_fao_qty) ~ NA_character_,
         abs(ratio_es_fao_qty - 1) > tolerance ~ "CHECK",
         TRUE ~ ""
       ),
-      flag_es_eumo_qty = case_when(
+      flag_es_eumo_qty = dplyr::case_when(
         is.na(ratio_es_eumo_qty) ~ NA_character_,
         abs(ratio_es_eumo_qty - 1) > tolerance ~ "CHECK",
         TRUE ~ ""
       ),
-      flag_es_fao_val = case_when(
+      flag_es_fao_val = dplyr::case_when(
         is.na(ratio_es_fao_val) ~ NA_character_,
         abs(ratio_es_fao_val - 1) > tolerance ~ "CHECK",
         TRUE ~ ""
       ),
-      flag_es_eumo_val = case_when(
+      flag_es_eumo_val = dplyr::case_when(
         is.na(ratio_es_eumo_val) ~ NA_character_,
         abs(ratio_es_eumo_val - 1) > tolerance ~ "CHECK",
         TRUE ~ ""
@@ -701,16 +701,16 @@ build_comparison <- function(long_tbl, years = NULL, countries = NULL, tolerance
 
 build_fw_consistency <- function(fw_summary) {
   fw_summary |>
-    mutate(
+    dplyr::mutate(
       ratio_es_fao = ifelse(!is.na(fao_production) & fao_production > 0,
                             eurostat_production / fao_production, NA_real_),
       ratio_es_eumo = ifelse(!is.na(eumofa_production) & eumofa_production > 0,
                              eurostat_production / eumofa_production, NA_real_),
-      logdiff_es_fao = log1p(eurostat_production) - log1p(coalesce(fao_production, 0)),
-      logdiff_es_eumo = log1p(eurostat_production) - log1p(coalesce(eumofa_production, 0)),
+      logdiff_es_fao = log1p(eurostat_production) - log1p(dplyr::coalesce(fao_production, 0)),
+      logdiff_es_eumo = log1p(eurostat_production) - log1p(dplyr::coalesce(eumofa_production, 0)),
       flag_large_gap_fao = ifelse(!is.na(ratio_es_fao) & ratio_es_fao > 5, TRUE, FALSE),
       flag_large_gap_eumo = ifelse(!is.na(ratio_es_eumo) & ratio_es_eumo > 5, TRUE, FALSE),
-      notes = case_when(
+      notes = dplyr::case_when(
         is.na(eurostat_production) & !is.na(fao_production) ~ "Eurostat missing, FAO present",
         is.na(fao_production) & !is.na(eurostat_production) ~ "FAO missing, Eurostat present",
         is.na(eumofa_production) & !is.na(eurostat_production) ~ "EUMOFA missing, Eurostat present",
@@ -752,11 +752,11 @@ export_fw_consistency <- function(fw_summary,
 
 build_summary_table <- function(long_fx, years, europe_codes) {
   totals_wide <- long_fx |>
-    filter(year %in% years) |>
-    mutate(values = as.numeric(values)) |>
-    group_by(country_code, year, source, measure) |>
-    summarise(values = sum(values, na.rm = TRUE), .groups = "drop") |>
-    pivot_wider(
+    dplyr::filter(year %in% years) |>
+    dplyr::mutate(values = as.numeric(values)) |>
+    dplyr::group_by(country_code, year, source, measure) |>
+    dplyr::summarise(values = sum(values, na.rm = TRUE), .groups = "drop") |>
+    tidyr::pivot_wider(
       id_cols     = c(country_code, year),
       names_from  = c(source, measure),
       values_from = values
@@ -767,7 +767,7 @@ build_summary_table <- function(long_fx, years, europe_codes) {
   }
 
   totals_wide |>
-    transmute(
+    dplyr::transmute(
       country_code,
       year,
       eurostat_production = eurostat_production_tonnes,
@@ -777,17 +777,17 @@ build_summary_table <- function(long_fx, years, europe_codes) {
       fao_value           = fao_eur_production_value_eur,
       eumofa_value        = eumofa_production_value_eur
     ) |>
-    mutate(across(where(is.numeric), ~ round(.x, 0))) |>
-    filter(country_code %in% europe_codes) |>
-    group_by(country_code) |>
-    filter(any(!is.na(eurostat_production) |
+    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ round(.x, 0))) |>
+    dplyr::filter(country_code %in% europe_codes) |>
+    dplyr::group_by(country_code) |>
+    dplyr::filter(any(!is.na(eurostat_production) |
                  !is.na(fao_production) |
                  !is.na(eumofa_production) |
                  !is.na(eurostat_value) |
                  !is.na(fao_value) |
                  !is.na(eumofa_value))) |>
-    ungroup() |>
-    arrange(country_code, year)
+    dplyr::ungroup() |>
+    dplyr::arrange(country_code, year)
 }
 
 build_comparison_table <- function(observations,
@@ -796,29 +796,29 @@ build_comparison_table <- function(observations,
                                   memberships = NULL,
                                   membership_dimensions = character()) {
   scoped_observations <- observations |>
-    filter(year %in% years, country_code %in% countries)
+    dplyr::filter(year %in% years, country_code %in% countries)
   if (!is.null(memberships)) {
     scoped_observations <- scoped_observations |>
-      inner_join(memberships, by = "observation_id")
+      dplyr::inner_join(memberships, by = "observation_id")
   }
   scope_columns <- c(membership_dimensions, "country_code", "year")
 
   eurostat_totals <- scoped_observations |>
-    filter(source == "eurostat", record_scope == "published_total") |>
-    distinct(country_code, year, measure)
+    dplyr::filter(source == "eurostat", record_scope == "published_total") |>
+    dplyr::distinct(country_code, year, measure)
   eurostat_observations <- scoped_observations |>
-    filter(source == "eurostat")
+    dplyr::filter(source == "eurostat")
   eurostat_categories <- eurostat_observations |>
-    filter(record_scope != "published_total") |>
-    anti_join(eurostat_totals, by = c("country_code", "year", "measure"))
+    dplyr::filter(record_scope != "published_total") |>
+    dplyr::anti_join(eurostat_totals, by = c("country_code", "year", "measure"))
 
-  comparison_values <- bind_rows(
-    filter(scoped_observations, source != "eurostat"),
-    filter(eurostat_observations, record_scope == "published_total"),
+  comparison_values <- dplyr::bind_rows(
+    dplyr::filter(scoped_observations, source != "eurostat"),
+    dplyr::filter(eurostat_observations, record_scope == "published_total"),
     eurostat_categories
   ) |>
-    group_by(across(all_of(c(scope_columns, "source", "measure")))) |>
-    summarise(
+    dplyr::group_by(dplyr::across(dplyr::all_of(c(scope_columns, "source", "measure")))) |>
+    dplyr::summarise(
       values = if (all(is.na(comparison_value))) {
         NA_real_
       } else {
@@ -826,8 +826,8 @@ build_comparison_table <- function(observations,
       },
       .groups = "drop"
     ) |>
-    pivot_wider(
-      id_cols = all_of(scope_columns),
+    tidyr::pivot_wider(
+      id_cols = dplyr::all_of(scope_columns),
       names_from = c(source, measure),
       values_from = values
     )
@@ -845,8 +845,8 @@ build_comparison_table <- function(observations,
   }
 
   comparison_values |>
-    select(
-      all_of(scope_columns),
+    dplyr::select(
+      dplyr::all_of(scope_columns),
       eurostat_production = eurostat_production_tonnes,
       fao_production = fao_quantity_production_tonnes,
       eumofa_production = eumofa_production_tonnes,
@@ -854,5 +854,5 @@ build_comparison_table <- function(observations,
       fao_value = fao_value_production_value_eur,
       eumofa_value = eumofa_production_value_eur
     ) |>
-    arrange(across(all_of(scope_columns)))
+    dplyr::arrange(dplyr::across(dplyr::all_of(scope_columns)))
 }

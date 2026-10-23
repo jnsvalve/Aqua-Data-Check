@@ -12,7 +12,7 @@ suppressPackageStartupMessages({
   missing_pkgs <- required_pkgs[!vapply(required_pkgs, requireNamespace, logical(1), quietly = TRUE)]
   if (length(missing_pkgs) > 0) {
     message("Installing missing package(s): ", paste(missing_pkgs, collapse = ", "))
-    install.packages(missing_pkgs, repos = "https://cloud.r-project.org")
+    utils::install.packages(missing_pkgs, repos = "https://cloud.r-project.org")
   }
 
   library(dplyr)
@@ -66,8 +66,8 @@ dir.create(out_diagnostics, showWarnings = FALSE, recursive = TRUE)
 # Optional FAO UN→ISO2 overrides (only if you need manual corrections)
 fao_to_iso2 <- if (file.exists(fao_iso2_overrides_path)) {
   read_csv_safe(fao_iso2_overrides_path) |>
-    clean_names() |>
-    transmute(country_un_code = as.character(country_un_code), iso2 = toupper(iso2))
+    janitor::clean_names() |>
+    dplyr::transmute(country_un_code = as.character(country_un_code), iso2 = toupper(iso2))
 } else {
   NULL
 }
@@ -75,24 +75,24 @@ fao_to_iso2 <- if (file.exists(fao_iso2_overrides_path)) {
 # (Optional) diagnostics: find duplicates by country-year-source-measure
 inspect_duplicates <- function(long_tbl) {
   long_tbl |>
-    summarise(
+    dplyr::summarise(
       n = dplyr::n(),
       .by = c(.data$country_code, .data$year, .data$source, .data$measure)
     ) |>
-    filter(n > 1L) |>
-    arrange(desc(n))
+    dplyr::filter(n > 1L) |>
+    dplyr::arrange(desc(n))
 }
 
 # ============================================================
 # 1) EUROSTAT — RAW
 # ============================================================
 
-cli_h1("EUROSTAT AQUACULTURE — RAW DATA")
+cli::cli_h1("EUROSTAT AQUACULTURE — RAW DATA")
 
 eu_raw <- if (has_eurostat) {
   tryCatch(
     {
-      get_eurostat(
+      eurostat::get_eurostat(
         id = "fish_aq2a",
         time_format = "num",
         cache = TRUE,
@@ -100,11 +100,11 @@ eu_raw <- if (has_eurostat) {
       )
     },
     error = function(e1) {
-      cli_alert_warning("Eurostat fetch failed on first attempt: {conditionMessage(e1)}")
-      cli_alert_info("Retrying with cache refresh enabled...")
+      cli::cli_alert_warning("Eurostat fetch failed on first attempt: {conditionMessage(e1)}")
+      cli::cli_alert_info("Retrying with cache refresh enabled...")
       tryCatch(
         {
-          get_eurostat(
+          eurostat::get_eurostat(
             id = "fish_aq2a",
             time_format = "num",
             cache = TRUE,
@@ -113,67 +113,67 @@ eu_raw <- if (has_eurostat) {
           )
         },
         error = function(e2) {
-          cli_alert_warning(
+          cli::cli_alert_warning(
             "Eurostat download failed for dataset 'fish_aq2a'. Continuing without Eurostat data. Last error: {conditionMessage(e2)}"
           )
-          tibble()
+          tibble::tibble()
         }
       )
     }
   )
 } else {
-  tibble()
+  tibble::tibble()
 }
 
-eu_clean <- eu_raw |> clean_names()
+eu_clean <- eu_raw |> janitor::clean_names()
 eu_retrieved_at_utc <- format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
 
-cli_alert_success("Eurostat: loaded {nrow(eu_clean)} rows, {ncol(eu_clean)} cols")
-print(head(eu_clean, 5))
+cli::cli_alert_success("Eurostat: loaded {nrow(eu_clean)} rows, {ncol(eu_clean)} cols")
+print(utils::head(eu_clean, 5))
 
 # ============================================================
 # 2) FAO CSVs — RAW
 # ============================================================
 
-cli_h1("FAO AQUACULTURE — RAW QUANTITY")
+cli::cli_h1("FAO AQUACULTURE — RAW QUANTITY")
 
 fao_qty_raw <- read_fao_export(fao_qty_path)
 
-cli_alert_info("FAO Quantity columns:")
+cli::cli_alert_info("FAO Quantity columns:")
 print(names(fao_qty_raw))
-cli_alert_success("FAO Quantity rows: {nrow(fao_qty_raw)}")
+cli::cli_alert_success("FAO Quantity rows: {nrow(fao_qty_raw)}")
 
-cli_h1("FAO AQUACULTURE — RAW VALUE")
+cli::cli_h1("FAO AQUACULTURE — RAW VALUE")
 
 fao_val_raw <- read_fao_export(fao_val_path)
 
-cli_alert_info("FAO Value columns:")
+cli::cli_alert_info("FAO Value columns:")
 print(names(fao_val_raw))
-cli_alert_success("FAO Value rows: {nrow(fao_val_raw)}")
+cli::cli_alert_success("FAO Value rows: {nrow(fao_val_raw)}")
 
 if (export_fao_diagnostics && file.exists(fao_species_path)) {
-  cli_h2("FAO diagnostics: environments and species groups")
+  cli::cli_h2("FAO diagnostics: environments and species groups")
 
   fao_species_lu <- read_csv_safe(fao_species_path) |>
-    clean_names() |>
-    transmute(
+    janitor::clean_names() |>
+    dplyr::transmute(
       species_alpha_3_code = x3a_code,
       species_name_en = name_en,
       major_group = major_group
     )
 
   fao_qty_diag <- fao_qty_raw |>
-    left_join(fao_species_lu, by = "species_alpha_3_code") |>
-    mutate(value_num = suppressWarnings(as.numeric(value)))
+    dplyr::left_join(fao_species_lu, by = "species_alpha_3_code") |>
+    dplyr::mutate(value_num = suppressWarnings(as.numeric(value)))
 
   fao_val_diag <- fao_val_raw |>
-    left_join(fao_species_lu, by = "species_alpha_3_code") |>
-    mutate(value_num = suppressWarnings(as.numeric(value)) * 1000)
+    dplyr::left_join(fao_species_lu, by = "species_alpha_3_code") |>
+    dplyr::mutate(value_num = suppressWarnings(as.numeric(value)) * 1000)
 
-  fao_env_qty_counts <- fao_qty_diag |> count(environment_alpha_2_code, sort = TRUE)
-  fao_env_val_counts <- fao_val_diag |> count(environment_alpha_2_code, sort = TRUE)
-  fao_major_group_qty_counts <- fao_qty_diag |> count(major_group, sort = TRUE)
-  fao_major_group_val_counts <- fao_val_diag |> count(major_group, sort = TRUE)
+  fao_env_qty_counts <- fao_qty_diag |> dplyr::count(environment_alpha_2_code, sort = TRUE)
+  fao_env_val_counts <- fao_val_diag |> dplyr::count(environment_alpha_2_code, sort = TRUE)
+  fao_major_group_qty_counts <- fao_qty_diag |> dplyr::count(major_group, sort = TRUE)
+  fao_major_group_val_counts <- fao_val_diag |> dplyr::count(major_group, sort = TRUE)
 
   fao_diagnostics <- list(
     fao_env_qty_counts = fao_env_qty_counts,
@@ -187,13 +187,13 @@ if (export_fao_diagnostics && file.exists(fao_species_path)) {
 # 3) EUMOFA CSV — RAW
 # ============================================================
 
-cli_h1("EUMOFA AQUACULTURE — RAW DATA")
+cli::cli_h1("EUMOFA AQUACULTURE — RAW DATA")
 
 eumofa_raw <- read_eumofa_export(eumofa_path)
 
-cli_alert_info("EUMOFA columns:")
+cli::cli_alert_info("EUMOFA columns:")
 print(names(eumofa_raw))
-cli_alert_success("EUMOFA rows: {nrow(eumofa_raw)}")
+cli::cli_alert_success("EUMOFA rows: {nrow(eumofa_raw)}")
 
 # ============================================================
 # STORE RAW TABLES
@@ -206,7 +206,7 @@ aquaculture_raw <- list(
   eumofa = eumofa_raw
 )
 
-cli_h2("RAW TABLES READY — NO FILTERS APPLIED")
+cli::cli_h2("RAW TABLES READY — NO FILTERS APPLIED")
 print(lapply(aquaculture_raw, head))
 
 fx_path <- "./data/FX/usd_eur_rates.csv"
@@ -217,8 +217,8 @@ if (!file.exists(fao_species_path)) {
 }
 
 fao_species <- read_csv_safe(fao_species_path) |>
-  clean_names() |>
-  transmute(
+  janitor::clean_names() |>
+  dplyr::transmute(
     species_alpha_3_code = x3a_code,
     species_name_en = name_en,
     major_group = major_group,
@@ -232,13 +232,13 @@ empty_eurostat_species_labels <- tibble::tibble(
 eurostat_species_labels <- if (has_eurostat && nrow(aquaculture_raw$eurostat) > 0) {
   tryCatch(
     tibble::tibble(species_code = unique(as.character(aquaculture_raw$eurostat$species))) |>
-      mutate(
+      dplyr::mutate(
         species_label = suppressWarnings(
           eurostat::label_eurostat(species_code, dic = "SPECIES")
         )
       ),
     error = function(error) {
-      cli_alert_warning(
+      cli::cli_alert_warning(
         "Eurostat species dictionary unavailable; low-anthropic Eurostat rows will be skipped. {conditionMessage(error)}"
       )
       empty_eurostat_species_labels
@@ -334,19 +334,19 @@ normalized_snapshot_path <- write_normalized_snapshot(
   normalized_bundle,
   file.path(output_root, "normalized")
 )
-cli_alert_success("Normalized {manifest$coverage_status} snapshot saved to {normalized_snapshot_path}")
+cli::cli_alert_success("Normalized {manifest$coverage_status} snapshot saved to {normalized_snapshot_path}")
 
 if (manifest$coverage_status == "complete") {
-  cli_h2("Comparison ready (FX focus, country-year totals)")
-  print(head(pipeline_result$diagnostics$comparison_all, 20))
-  cli_h2("Freshwater-only comparison ready")
-  print(head(pipeline_result$diagnostics$comparison_freshwater, 20))
+  cli::cli_h2("Comparison ready (FX focus, country-year totals)")
+  print(utils::head(pipeline_result$diagnostics$comparison_all, 20))
+  cli::cli_h2("Freshwater-only comparison ready")
+  print(utils::head(pipeline_result$diagnostics$comparison_freshwater, 20))
 
-  cli_h2("Checking for unit inconsistencies (kg vs tonnes)")
+  cli::cli_h2("Checking for unit inconsistencies (kg vs tonnes)")
   unit_check <- pipeline_result$diagnostics$unit_check
   suspicious <- pipeline_result$diagnostics$suspicious
   if (nrow(suspicious) > 0) {
-    cli_alert_danger("{nrow(suspicious)} suspicious unit mismatch(es) detected — verify raw data before using results")
+    cli::cli_alert_danger("{nrow(suspicious)} suspicious unit mismatch(es) detected — verify raw data before using results")
   }
   print(suspicious)
 
@@ -362,10 +362,10 @@ if (manifest$coverage_status == "complete") {
     fao_diagnostics = fao_diagnostics
   )
   if (output_written) {
-    cli_alert_success("Summary exports, comparison tables, plots, and diagnostics updated from complete source coverage")
+    cli::cli_alert_success("Summary exports, comparison tables, plots, and diagnostics updated from complete source coverage")
   }
 } else {
-  cli_alert_warning(
+  cli::cli_alert_warning(
     "Source coverage is partial; latest summaries, diagnostics, and workbooks were not updated."
   )
 }

@@ -48,7 +48,7 @@ optional_numeric <- function(data, column) {
 }
 
 build_normalized_observations <- function(inputs) {
-  bind_rows(
+  dplyr::bind_rows(
     observation_prototype(),
     normalize_eurostat_observations(
       inputs$eurostat,
@@ -81,14 +81,14 @@ normalize_eurostat_observations <- function(eurostat, species_labels) {
   }
 
   labels <- species_labels |>
-    transmute(
+    dplyr::transmute(
       eurostat_species_code = as.character(species_code),
       eurostat_species_label = as.character(species_label)
     ) |>
-    distinct(eurostat_species_code, .keep_all = TRUE)
+    dplyr::distinct(eurostat_species_code, .keep_all = TRUE)
 
   eurostat |>
-    mutate(
+    dplyr::mutate(
       eurostat_species_code = as.character(species),
       eurostat_frequency = optional_character(eurostat, "freq"),
       eurostat_unit_code = as.character(unit),
@@ -97,13 +97,13 @@ normalize_eurostat_observations <- function(eurostat, species_labels) {
       eurostat_aquameth = optional_character(eurostat, "aquameth"),
       eurostat_flags = optional_character(eurostat, "flags")
     ) |>
-    left_join(labels, by = "eurostat_species_code") |>
-    transmute(
+    dplyr::left_join(labels, by = "eurostat_species_code") |>
+    dplyr::transmute(
       source = "eurostat",
       native_country_code = as.character(geo),
       country_code = toupper(as.character(geo)),
       year = as.integer(.data[[time_column]]),
-      measure = case_when(
+      measure = dplyr::case_when(
         unit == "TLW" ~ "production_tonnes",
         unit == "EUR" ~ "production_value_eur",
         TRUE ~ NA_character_
@@ -111,18 +111,18 @@ normalize_eurostat_observations <- function(eurostat, species_labels) {
       native_measure = as.character(unit),
       native_value = optional_numeric(eurostat, "values"),
       native_unit = as.character(unit),
-      comparison_value = case_when(
+      comparison_value = dplyr::case_when(
         unit %in% c("TLW", "EUR") ~ optional_numeric(eurostat, "values"),
         TRUE ~ NA_real_
       ),
-      comparison_unit = case_when(
+      comparison_unit = dplyr::case_when(
         unit == "TLW" ~ "TONNES",
         unit == "EUR" ~ "EUR",
         TRUE ~ NA_character_
       ),
-      conversion_factor = if_else(unit %in% c("TLW", "EUR"), 1, NA_real_),
+      conversion_factor = dplyr::if_else(unit %in% c("TLW", "EUR"), 1, NA_real_),
       fx_rate = NA_real_,
-      record_scope = if_else(
+      record_scope = dplyr::if_else(
         species == "F00" & fishreg == "0" & freq == "A",
         "published_total",
         "source_category"
@@ -143,20 +143,20 @@ prepare_fao_species <- function(fao_species) {
     fao_species$taxonomic_code <- NA_character_
   }
   fao_species |>
-    transmute(
+    dplyr::transmute(
       fao_species_alpha_3_code = as.character(species_alpha_3_code),
       fao_species_name_en = as.character(species_name_en),
       fao_major_group = as.character(major_group),
       fao_taxonomic_code = as.character(taxonomic_code)
     ) |>
-    distinct(fao_species_alpha_3_code, .keep_all = TRUE)
+    dplyr::distinct(fao_species_alpha_3_code, .keep_all = TRUE)
 }
 
 normalize_fao_quantity_observations <- function(fao_quantity, fao_species, country_map) {
   if (nrow(fao_quantity) == 0) return(observation_prototype())
 
   fao_quantity |>
-    transmute(
+    dplyr::transmute(
       native_country_code = as.character(country_un_code),
       country_code = resolve_fao_country_code(country_un_code, country_map),
       year = as.integer(period),
@@ -167,8 +167,8 @@ normalize_fao_quantity_observations <- function(fao_quantity, fao_species, count
       fao_measure = optional_character(fao_quantity, "measure"),
       native_value = optional_numeric(fao_quantity, "value")
     ) |>
-    left_join(prepare_fao_species(fao_species), by = "fao_species_alpha_3_code") |>
-    transmute(
+    dplyr::left_join(prepare_fao_species(fao_species), by = "fao_species_alpha_3_code") |>
+    dplyr::transmute(
       source = "fao_quantity",
       native_country_code,
       country_code,
@@ -197,11 +197,11 @@ normalize_fao_value_observations <- function(fao_value, fao_species, country_map
   if (nrow(fao_value) == 0) return(observation_prototype())
 
   rate_table <- fx_rates |>
-    transmute(year = as.integer(year), fx_rate = as.numeric(eur_per_usd)) |>
-    distinct(year, .keep_all = TRUE)
+    dplyr::transmute(year = as.integer(year), fx_rate = as.numeric(eur_per_usd)) |>
+    dplyr::distinct(year, .keep_all = TRUE)
 
   fao_value |>
-    transmute(
+    dplyr::transmute(
       native_country_code = as.character(country_un_code),
       country_code = resolve_fao_country_code(country_un_code, country_map),
       year = as.integer(period),
@@ -212,9 +212,9 @@ normalize_fao_value_observations <- function(fao_value, fao_species, country_map
       fao_measure = optional_character(fao_value, "measure"),
       native_value = optional_numeric(fao_value, "value")
     ) |>
-    left_join(prepare_fao_species(fao_species), by = "fao_species_alpha_3_code") |>
-    left_join(rate_table, by = "year") |>
-    transmute(
+    dplyr::left_join(prepare_fao_species(fao_species), by = "fao_species_alpha_3_code") |>
+    dplyr::left_join(rate_table, by = "year") |>
+    dplyr::transmute(
       source = "fao_value",
       native_country_code,
       country_code,
@@ -243,7 +243,7 @@ normalize_eumofa_observations <- function(eumofa) {
   if (nrow(eumofa) == 0) return(observation_prototype())
 
   common <- eumofa |>
-    transmute(
+    dplyr::transmute(
       native_country_code = as.character(country),
       country_code = toupper(as.character(country)),
       year = as.integer(year),
@@ -259,7 +259,7 @@ normalize_eumofa_observations <- function(eumofa) {
     )
 
   volume_observations <- common |>
-    transmute(
+    dplyr::transmute(
       source = "eumofa",
       native_country_code,
       country_code,
@@ -283,7 +283,7 @@ normalize_eumofa_observations <- function(eumofa) {
     )
 
   value_observations <- common |>
-    transmute(
+    dplyr::transmute(
       source = "eumofa",
       native_country_code,
       country_code,
@@ -306,7 +306,7 @@ normalize_eumofa_observations <- function(eumofa) {
       eumofa_weight
     )
 
-  bind_rows(volume_observations, value_observations)
+  dplyr::bind_rows(volume_observations, value_observations)
 }
 
 write_normalized_snapshot <- function(bundle, output_dir) {
