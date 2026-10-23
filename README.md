@@ -27,6 +27,19 @@ Rscript main-script.R
 
 Eurostat is optional for partial data collection. A complete run refreshes the latest summaries and diagnostics. A partial run saves a separate partial snapshot and leaves the latest outputs unchanged.
 
+## R Code Style
+
+The project uses [grkstyle](https://github.com/gadenbuie/grkstyle) as the default style for `styler` add-ins. Install it once from the author's R-universe:
+
+```r
+install.packages(
+	"grkstyle",
+	repos = c(gadenbuie = "https://gadenbuie.r-universe.dev", getOption("repos"))
+)
+```
+
+The project `.Rprofile` selects the style when opening the repository in RStudio.
+
 ## Updating Source Data
 
 Check for new annual releases at [FAO FishStatJ](https://www.fao.org/fishery/en/statistics/software/fishstatj) and the [EUMOFA aquaculture dashboard](https://fishery-aquaculture-market-observatory.ec.europa.eu/en/data/dashboards/aquaculture). No supported public API is currently documented for these exports, so refresh them from the official downloads:
