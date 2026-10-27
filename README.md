@@ -1,13 +1,15 @@
 # Universal Aquaculture Data Harvest & Harmonisation
 
-An in-progress R workflow for collecting and comparing aquaculture production data from Eurostat, FAO, and EUMOFA, with separate economic, social, and sales records from the EU Data Collection Framework (EUDCF). The data model and analysis outputs are evolving.
+An in-progress R workflow for comparing aquaculture production statistics from Eurostat and FAO, with a complementary EUMOFA market dataset and separate economic, social, and sales records from the EU Data Collection Framework (EUDCF). The data model and analysis outputs are evolving.
 
 ## Sources
 
-- **Eurostat**: `fish_aq2a` annual production data.
-- **FAO**: FishStatJ quantity and value CSV exports, with species and country reference tables.
-- **EUMOFA**: yearly aquaculture CSV, including commodity and species details.
-- **EUDCF**: EU aquaculture economic, social, and sales data-call workbook, including historical DCF sales records.
+- **Eurostat**: The [`fish_aq2a` dataset](https://ec.europa.eu/eurostat/databrowser/view/fish_aq2a/default/table?lang=en) reports annual aquaculture production by country and species, including quantity and value. Eurostat compiles official national statistics; EU Member States report aquaculture statistics under [Regulation (EC) No 762/2008](https://eur-lex.europa.eu/eli/reg/2008/762/oj/eng). The published country coverage can include EEA partners and varies by table and year.
+- **FAO**: [Global Aquaculture Production](https://www.fao.org/fishery/en/collection/aquaculture), distributed through FishStatJ and downloadable exports, provides annual production quantity and value across countries or territories, species, and culture environments. FAO says these are primarily official national statistics submitted through its annual questionnaire; it may supplement or estimate missing reports, with FAO estimates flagged in the data. This is an international reporting series, not an EU statistical obligation, and its country coverage and estimates need not match Eurostat's.
+- **EUDCF**: The [EU aquaculture data call](https://dcf.ec.europa.eu/data-calls/aquaculture_en) collects economic and sales variables under the EU Data Collection Framework, with data organized by year, variable, species, and sector segment. The framework is established by [Council Regulation (EU) 2017/1004](https://eur-lex.europa.eu/eli/reg/2017/1004/oj/eng). For economic data, [Commission Decision (EU) 2021/1167, point 6.1 and Tables 10–11](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021D1167) specifies annual collection from enterprises whose principal activity is NACE 03.21 (marine aquaculture) or 03.22 (freshwater aquaculture), using the prescribed sector segmentation. This is narrower than a production-wide frame that includes enterprises with aquaculture as a secondary activity; other DCF data types may have their own population rules. EUDCF records are retained separately from production observations.
+- **EUMOFA**: The [European Market Observatory for Fisheries and Aquaculture Products](https://fishery-aquaculture-market-observatory.ec.europa.eu/) is a European Commission market-intelligence tool, not a primary statistical reporting obligation equivalent to Eurostat or FAO. Its analyses use market indicators such as first sales, prices, trade, and consumption; this project imports its [yearly aquaculture dataset](https://fishery-aquaculture-market-observatory.ec.europa.eu/en/data/dashboards/aquaculture), which provides volume and value by country, commodity, and species. Treat it as a complementary market-oriented series: its classifications, coverage, and purpose do not define the same frame as Eurostat, FAO, or EUDCF.
+
+These sources do not describe an identical population. Production totals should be interpreted within each source's own country coverage, reporting rules, and categories; differences between totals are not necessarily differences in production alone.
 
 ## Workflow
 
@@ -29,19 +31,6 @@ Rscript main-script.R
 
 Eurostat is optional for partial data collection. A complete run refreshes the latest summaries and diagnostics. A partial run saves a separate partial snapshot and leaves the latest outputs unchanged.
 The EUDCF workbook is optional and does not affect production coverage status. Place the official workbook in `data/EUDCF/` using the configured filename in `main-script.R`.
-
-## R Code Style
-
-The project uses [grkstyle](https://github.com/gadenbuie/grkstyle) as the default style for `styler` add-ins. Install it once from the author's R-universe:
-
-```r
-install.packages(
-	"grkstyle",
-	repos = c(gadenbuie = "https://gadenbuie.r-universe.dev", getOption("repos"))
-)
-```
-
-The project `.Rprofile` selects the style when opening the repository in RStudio.
 
 ## Updating Source Data
 
@@ -91,3 +80,16 @@ Strict and broad categories overlap and should not be added together.
 ```powershell
 Rscript -e "testthat::test_dir('tests/testthat')"
 ```
+
+## R Code Style
+
+The project uses [grkstyle](https://github.com/gadenbuie/grkstyle) as the default style for `styler` add-ins. Install it once from the author's R-universe:
+
+```r
+install.packages(
+	"grkstyle",
+	repos = c(gadenbuie = "https://gadenbuie.r-universe.dev", getOption("repos"))
+)
+```
+
+The project `.Rprofile` selects the style when opening the repository in RStudio.
