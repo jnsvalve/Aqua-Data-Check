@@ -689,7 +689,7 @@ testthat::test_that("partial snapshots do not replace the latest complete snapsh
   )
   complete_path <- write_normalized_snapshot(complete_bundle, output_dir)
 
-  testthat::expect_equal(basename(complete_path), "aquaculture_observations_latest.rds")
+  testthat::expect_equal(basename(complete_path), "aquaculture_observations.rds")
   testthat::expect_equal(readRDS(complete_path), complete_bundle)
   complete_checksum <- unname(tools::md5sum(complete_path))
 
@@ -698,7 +698,7 @@ testthat::test_that("partial snapshots do not replace the latest complete snapsh
   partial_bundle$observations$source <- "fao_quantity"
   partial_path <- write_normalized_snapshot(partial_bundle, output_dir)
 
-  testthat::expect_equal(basename(partial_path), "aquaculture_observations_partial_latest.rds")
+  testthat::expect_equal(basename(partial_path), "aquaculture_observations_partial.rds")
   testthat::expect_equal(readRDS(partial_path), partial_bundle)
   testthat::expect_identical(unname(tools::md5sum(complete_path)), complete_checksum)
 })

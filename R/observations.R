@@ -321,9 +321,9 @@ write_normalized_snapshot <- function(bundle, output_dir) {
 
   dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
   filename <- if (coverage_status == "complete") {
-    "aquaculture_observations_latest.rds"
+    "aquaculture_observations.rds"
   } else {
-    "aquaculture_observations_partial_latest.rds"
+    "aquaculture_observations_partial.rds"
   }
   target_path <- file.path(output_dir, filename)
   staged_path <- tempfile(".normalized-snapshot-", tmpdir = output_dir, fileext = ".rds")

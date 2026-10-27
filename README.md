@@ -58,8 +58,8 @@ Refresh when a new annual release is published; do not automate dashboard scrapi
 
 ## Outputs
 
-- `output/normalized/aquaculture_observations_latest.rds` — complete snapshot with production observations, segment memberships, separate EUDCF workbook tables when available, and source/FX manifest.
-- `output/normalized/aquaculture_observations_partial_latest.rds` — latest partial snapshot, when a source is unavailable.
+- `output/normalized/aquaculture_observations.rds` — complete snapshot with production observations, segment memberships, separate EUDCF workbook tables when available, and source/FX manifest.
+- `output/normalized/aquaculture_observations_partial.rds` — partial snapshot, when a source is unavailable.
 - `output/general/Europe_summary_latest.xlsx`
 - `output/general/production_comparisons_latest.xlsx` — all-production, freshwater, and low-anthropic comparisons for the configured years and countries.
 - `output/general/comparison_plots/` — quantity and value charts for each comparison segment; complete runs use `_latest.png`, while partial runs use `_partial_latest.png` without replacing complete-run charts.
