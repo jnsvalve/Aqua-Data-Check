@@ -109,7 +109,7 @@ write_pipeline_exports <- function(exports,
         ggplot2::ggsave(
           filename = file.path(
             comparison_plot_dir,
-            paste0(plot_name, "_partial_latest.png")
+            paste0(plot_name, "_partial.png")
           ),
           plot = exports$comparison_plots[[plot_name]],
           width = 10,
@@ -134,13 +134,13 @@ write_pipeline_exports <- function(exports,
   openxlsx::writeData(workbook, "side_by_side", exports$low_anthropic_side_by_side)
   openxlsx::saveWorkbook(
     workbook,
-    file.path(output_dirs$low_anthropic, "Europe_low_anthropic_summary_latest.xlsx"),
+    file.path(output_dirs$low_anthropic, "Europe_low_anthropic_summary.xlsx"),
     overwrite = TRUE
   )
 
   openxlsx::write.xlsx(
     exports$general_summary,
-    file.path(output_dirs$general, "Europe_summary_latest.xlsx"),
+    file.path(output_dirs$general, "Europe_summary.xlsx"),
     sheetName = "data"
   )
   comparison_workbook <- openxlsx::createWorkbook()
@@ -154,14 +154,14 @@ write_pipeline_exports <- function(exports,
   }
   openxlsx::saveWorkbook(
     comparison_workbook,
-    file.path(output_dirs$general, "production_comparisons_latest.xlsx"),
+    file.path(output_dirs$general, "production_comparisons.xlsx"),
     overwrite = TRUE
   )
   comparison_plot_dir <- file.path(output_dirs$general, "comparison_plots")
   dir.create(comparison_plot_dir, recursive = TRUE, showWarnings = FALSE)
   for (plot_name in names(exports$comparison_plots)) {
     ggplot2::ggsave(
-      filename = file.path(comparison_plot_dir, paste0(plot_name, "_latest.png")),
+      filename = file.path(comparison_plot_dir, paste0(plot_name, ".png")),
       plot = exports$comparison_plots[[plot_name]],
       width = 10,
       height = 6,
@@ -171,12 +171,12 @@ write_pipeline_exports <- function(exports,
   }
   openxlsx::write.xlsx(
     exports$freshwater_summary,
-    file.path(output_dirs$freshwater, "Europe_freshwater_summary_latest.xlsx"),
+    file.path(output_dirs$freshwater, "Europe_freshwater_summary.xlsx"),
     sheetName = "data"
   )
   write_csv_safe(
     exports$freshwater_consistency,
-    file.path(output_dirs$freshwater, "freshwater_consistency_latest.csv")
+    file.path(output_dirs$freshwater, "freshwater_consistency.csv")
   )
 
   diagnostic_files <- c(

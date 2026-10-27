@@ -769,7 +769,7 @@ testthat::test_that("observation manifest records provenance and partial source 
   testthat::expect_equal(partial_manifest$fx$source, "fallback")
 })
 
-testthat::test_that("partial runs do not overwrite latest exports or diagnostics", {
+testthat::test_that("partial runs do not overwrite complete exports or diagnostics", {
   output_root <- tempfile("partial-output-guard-")
   output_dirs <- list(
     root = output_root,
@@ -785,11 +785,11 @@ testthat::test_that("partial runs do not overwrite latest exports or diagnostics
       output_dirs$freshwater, output_dirs$diagnostics, output_dirs$diagnostics,
       output_dirs$diagnostics, output_dirs$diagnostics),
     c(
-      "Europe_summary_latest.xlsx",
-      "production_comparisons_latest.xlsx",
-      "Europe_freshwater_summary_latest.xlsx",
-      "Europe_low_anthropic_summary_latest.xlsx",
-      "freshwater_consistency_latest.csv",
+      "Europe_summary.xlsx",
+      "production_comparisons.xlsx",
+      "Europe_freshwater_summary.xlsx",
+      "Europe_low_anthropic_summary.xlsx",
+      "freshwater_consistency.csv",
       "fao_env_qty_counts.csv",
       "fao_env_val_counts.csv",
       "fao_major_group_qty_counts.csv",
@@ -805,7 +805,7 @@ testthat::test_that("partial runs do not overwrite latest exports or diagnostics
   dir.create(comparison_plot_dir, recursive = TRUE)
   existing_paths <- c(
     existing_paths,
-    file.path(comparison_plot_dir, paste0(plot_names, "_latest.png"))
+    file.path(comparison_plot_dir, paste0(plot_names, ".png"))
   )
   for (path in existing_paths) writeLines("previous complete output", path)
   before_hashes <- unname(tools::md5sum(existing_paths))
@@ -831,7 +831,7 @@ testthat::test_that("partial runs do not overwrite latest exports or diagnostics
   testthat::expect_identical(unname(tools::md5sum(existing_paths)), before_hashes)
   partial_plot_path <- file.path(
     comparison_plot_dir,
-    "all_production_quantity_partial_latest.png"
+    "all_production_quantity_partial.png"
   )
   testthat::expect_true(file.exists(partial_plot_path))
   testthat::expect_gt(file.info(partial_plot_path)$size, 0)
@@ -902,12 +902,12 @@ testthat::test_that("complete runs write summaries and diagnostics", {
   comparison_plot_dir <- file.path(output_dirs$general, "comparison_plots")
   testthat::expect_setequal(
     list.files(comparison_plot_dir),
-    paste0(plot_names, "_latest.png")
+    paste0(plot_names, ".png")
   )
   testthat::expect_true(all(
-    file.info(file.path(comparison_plot_dir, paste0(plot_names, "_latest.png")))$size > 0
+    file.info(file.path(comparison_plot_dir, paste0(plot_names, ".png")))$size > 0
   ))
-  comparison_path <- file.path(output_dirs$general, "production_comparisons_latest.xlsx")
+  comparison_path <- file.path(output_dirs$general, "production_comparisons.xlsx")
   testthat::expect_setequal(
     openxlsx::getSheetNames(comparison_path),
     c("all_production", "freshwater", "low_anthropic")
@@ -925,11 +925,11 @@ testthat::test_that("complete runs write summaries and diagnostics", {
     "mussels_bivalves"
   )
   testthat::expect_setequal(
-    openxlsx::getSheetNames(file.path(output_dirs$low_anthropic, "Europe_low_anthropic_summary_latest.xlsx")),
+    openxlsx::getSheetNames(file.path(output_dirs$low_anthropic, "Europe_low_anthropic_summary.xlsx")),
     c("by_mode", "side_by_side")
   )
   testthat::expect_equal(
-    nrow(openxlsx::read.xlsx(file.path(output_dirs$general, "Europe_summary_latest.xlsx"), sheet = "data")),
+    nrow(openxlsx::read.xlsx(file.path(output_dirs$general, "Europe_summary.xlsx"), sheet = "data")),
     1L
   )
   testthat::expect_equal(
