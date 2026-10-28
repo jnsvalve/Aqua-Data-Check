@@ -32,6 +32,7 @@ testthat::test_that("FAO country ranking balances quantity and value using three
     dplyr::mutate(
       observation_id = dplyr::row_number(),
       source = ifelse(measure == "production_tonnes", "fao_quantity", "fao_value"),
+      fao_species_alpha_3_code = ifelse(category == "mussels_bivalves", "MUS", "SWE"),
       comparison_value = dplyr::case_when(
         country_code == "DE" ~ ifelse(measure == "production_tonnes", 100, 1000),
         country_code == "FR" ~ ifelse(measure == "production_tonnes", 1, 100000),
@@ -42,8 +43,15 @@ testthat::test_that("FAO country ranking balances quantity and value using three
     )
   memberships <- observations |>
     dplyr::transmute(observation_id, segment = "low_anthropic", profile = "strict", category)
+  species_classification <- tibble::tibble(
+    species_alpha_3_code = c("MUS", "SWE"),
+    isscaap_group_en = c("Mussels", "Brown seaweeds")
+  )
   observations <- observations |> dplyr::select(-category)
-  result <- build_fao_low_anthropic_countries(observations, memberships, 2019:2024, top_n = 2L)
+  result <- build_fao_low_anthropic_countries(
+    observations, memberships, 2019:2024, top_n = 2L,
+    species_classification = species_classification
+  )
   testthat::expect_identical(result$ranking$country_code[1], "IT")
   testthat::expect_equal(result$ranking$average_tonnes[result$ranking$country_code == "DE"], 200)
   testthat::expect_equal(result$ranking$average_thousand_eur[result$ranking$country_code == "IT"], 40)
@@ -51,13 +59,18 @@ testthat::test_that("FAO country ranking balances quantity and value using three
   testthat::expect_true(all(result$ranking$ranking_start == 2021))
   testthat::expect_true(all(result$ranking$ranking_end == 2023))
   testthat::expect_false("ES" %in% result$ranking$country_code)
-  testthat::expect_setequal(unique(result$annual_data$category), c("mussels_bivalves", "seaweed_algae"))
+  testthat::expect_setequal(unique(result$annual_data$category), c("Mussels", "Brown seaweeds"))
   incomplete <- observations |> dplyr::filter(!(country_code == "IT" & year == 2022))
-  incomplete_result <- build_fao_low_anthropic_countries(incomplete, memberships, 2019:2024)
+  incomplete_result <- build_fao_low_anthropic_countries(
+    incomplete, memberships, 2019:2024, species_classification = species_classification
+  )
   testthat::expect_false("IT" %in% incomplete_result$ranking$country_code)
   broad <- dplyr::mutate(memberships, profile = "broad", category = "mollusca_all")
-  broad_result <- build_fao_low_anthropic_countries(observations, broad, 2019:2024, profile = "broad")
-  testthat::expect_identical(unique(broad_result$annual_data$category), "mollusca_all")
+  broad_result <- build_fao_low_anthropic_countries(
+    observations, broad, 2019:2024, profile = "broad",
+    species_classification = species_classification
+  )
+  testthat::expect_setequal(unique(broad_result$annual_data$category), c("Mussels", "Brown seaweeds"))
   plot <- build_fao_low_anthropic_country_plot(result, "IT")
   testthat::expect_s3_class(plot, "patchwork")
   testthat::expect_equal(length(plot), 2L)
@@ -78,7 +91,10 @@ testthat::test_that("FAO country ranking balances quantity and value using three
   gap_plot <- build_fao_low_anthropic_country_plot(history_gap, "IT")
   testthat::expect_true(all(is.na(gap_plot[[1]]$data$value[gap_plot[[1]]$data$year == 2020])))
   testthat::expect_gt(dplyr::n_distinct(gap_plot[[1]]$data$series), 2L)
-  empty <- build_fao_low_anthropic_countries(observations[0, ], memberships, 2019:2024)
+  empty <- build_fao_low_anthropic_countries(
+    observations[0, ], memberships, 2019:2024,
+    species_classification = species_classification
+  )
   testthat::expect_equal(nrow(empty$ranking), 0L)
   testthat::expect_error(build_fao_low_anthropic_countries(observations, memberships, 2019:2024, profile = "invalid"))
 })
@@ -466,6 +482,19 @@ testthat::test_that("pipeline outputs are computed from in-memory source tables"
       crustacea_memberships$segment == "low_anthropic" &
       crustacea_memberships$profile == "broad" &
       crustacea_memberships$category == "crustacea_subset"
+  ))
+  scalloped_lobster <- result$observations |>
+    dplyr::filter(source == "fao_quantity", fao_species_alpha_3_code == "SHR") |>
+    dplyr::slice_head(n = 1) |>
+    dplyr::mutate(
+      observation_id = max(result$observations$observation_id) + 1L,
+      fao_species_alpha_3_code = "LOK",
+      fao_species_name_en = "Scalloped spiny lobster"
+    )
+  lobster_memberships <- build_segment_memberships(scalloped_lobster)
+  testthat::expect_false(any(
+    lobster_memberships$segment == "low_anthropic" &
+      lobster_memberships$profile == "strict"
   ))
 
   unclassified_id <- result$observations |>

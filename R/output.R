@@ -2,17 +2,29 @@ build_fao_low_anthropic_country_plot <- function(analysis, country_code) {
   country_data <- analysis$annual_data |>
     dplyr::filter(.data$country_code == .env$country_code)
   if (!nrow(country_data)) stop("No chart data for country: ", country_code, call. = FALSE)
-  category_labels <- c(
-    mussels_bivalves = "Bivalves / matched molluscs", seaweed_algae = "Seaweed / algae",
-    mollusca_all = "All molluscs", aquatic_plants_all = "All aquatic plants",
-    crustacea_subset = "Selected crustaceans"
-  )
   category_colours <- c(
-    mussels_bivalves = "#287D8E", seaweed_algae = "#6E9940",
-    mollusca_all = "#287D8E", aquatic_plants_all = "#6E9940",
-    crustacea_subset = "#C96851"
+    "Abalones, winkles, conchs" = "#D49B37",
+    "Clams, cockles, arkshells" = "#C96851",
+    "Freshwater molluscs" = "#B279A2",
+    "Miscellaneous marine molluscs" = "#4C78A8",
+    "Mussels" = "#287D8E",
+    "Oysters" = "#6E9940",
+    "Pearls, mother-of-pearl, shells" = "#FF9DA6",
+    "Scallops, pectens" = "#7C62A3",
+    "Squids, cuttlefishes, octopuses" = "#72B7B2",
+    "Brown seaweeds" = "#59A14F",
+    "Green seaweeds" = "#8CD17D",
+    "Red seaweeds" = "#E15759",
+    "Miscellaneous aquatic plants" = "#F28E2B"
   )
-  categories <- intersect(names(category_labels), unique(analysis$annual_data$category))
+  categories <- sort(unique(analysis$annual_data$category))
+  unknown_categories <- setdiff(categories, names(category_colours))
+  if (length(unknown_categories) > 0) {
+    category_colours <- c(
+      category_colours,
+      stats::setNames(scales::hue_pal()(length(unknown_categories)), unknown_categories)
+    )
+  }
   panels <- lapply(c("production_tonnes", "production_value_eur"), function(selected_measure) {
     panel_data <- country_data |>
       dplyr::filter(measure == selected_measure) |>
@@ -35,7 +47,7 @@ build_fao_low_anthropic_country_plot <- function(analysis, country_code) {
       ggplot2::geom_area(stat = "identity", na.rm = TRUE) +
       ggplot2::scale_fill_manual(
         values = category_colours[categories], breaks = categories,
-        labels = category_labels[categories], drop = FALSE
+        labels = categories, drop = FALSE
       ) +
       ggplot2::scale_x_continuous(
         limits = range(analysis$years), breaks = scales::breaks_width(5),

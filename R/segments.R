@@ -63,7 +63,7 @@ build_segment_memberships <- function(observations,
     matched_by = freshwater_reason
   )
 
-  mussel_pattern <- "mussel|oyster|clam|cockle|scallop|bivalv|mollusc|mollusk"
+  mussel_pattern <- "mussel|oyster|clam|cockle|scallops?\\b|bivalv|mollusc|mollusk"
   seaweed_pattern <- "seaweed|algae|kelp|wakame|spirulina|ulva|lettuce"
   crustacea_pattern <- "shrimp|prawn|crab|lobster|crayfish|krill"
   fao_source <- observation_source %in% c("fao_quantity", "fao_value")

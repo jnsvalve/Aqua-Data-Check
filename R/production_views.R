@@ -1,6 +1,7 @@
 build_fao_low_anthropic_countries <- function(observations, memberships, years,
                                               profile = "strict", top_n = 10L,
-                                              continent = NULL) {
+                                              continent = NULL,
+                                              species_classification = NULL) {
   profile <- match.arg(profile, c("strict", "broad"))
   if (!is.null(continent)) {
     continent <- match.arg(continent, c("Africa", "Americas", "Asia", "Europe", "Oceania", "Antarctica"))
@@ -18,12 +19,42 @@ build_fao_low_anthropic_countries <- function(observations, memberships, years,
   if (anyDuplicated(selected_memberships$observation_id)) {
     stop("Low-anthropic categories must not overlap within a profile", call. = FALSE)
   }
+  if (!is.null(species_classification)) {
+    required_classification <- c("species_alpha_3_code", "isscaap_group_en")
+    if (!all(required_classification %in% names(species_classification))) {
+      stop("species_classification must include species_alpha_3_code and isscaap_group_en", call. = FALSE)
+    }
+    species_classification <- species_classification |>
+      dplyr::transmute(
+        fao_species_alpha_3_code = as.character(species_alpha_3_code),
+        fao_isscaap_group_en = as.character(isscaap_group_en)
+      ) |>
+      dplyr::filter(!is.na(fao_species_alpha_3_code), !is.na(fao_isscaap_group_en)) |>
+      dplyr::distinct()
+    conflicting_groups <- species_classification |>
+      dplyr::count(fao_species_alpha_3_code) |>
+      dplyr::filter(n > 1L)
+    if (nrow(conflicting_groups) > 0) {
+      stop("FAO species codes must map to only one ISSCAAP group", call. = FALSE)
+    }
+    observations <- observations |>
+      dplyr::select(-dplyr::any_of("fao_isscaap_group_en")) |>
+      dplyr::left_join(species_classification, by = "fao_species_alpha_3_code")
+  } else if (!"fao_isscaap_group_en" %in% names(observations)) {
+    observations$fao_isscaap_group_en <- NA_character_
+  }
   annual <- observations |>
     dplyr::filter(
       source %in% c("fao_quantity", "fao_value"), year %in% years,
       !is.na(country_code), grepl("^[A-Z]{2}$", country_code)
     ) |>
     dplyr::inner_join(selected_memberships, by = "observation_id") |>
+    dplyr::mutate(
+      category = dplyr::coalesce(
+        dplyr::na_if(stringr::str_squish(fao_isscaap_group_en), ""),
+        category
+      )
+    ) |>
     dplyr::group_by(country_code, year, measure, category) |>
     dplyr::summarise(
       value = if (any(!is.finite(comparison_value))) NA_real_ else sum(comparison_value),

@@ -243,7 +243,8 @@ fao_species <- read_csv_safe(fao_species_path) |>
     species_alpha_3_code = x3a_code,
     species_name_en = name_en,
     major_group = major_group,
-    taxonomic_code = taxonomic_code
+    taxonomic_code = taxonomic_code,
+    isscaap_group_en = isscaap_group_en
   )
 
 empty_eurostat_species_labels <- tibble::tibble(
@@ -317,7 +318,8 @@ fao_low_anthropic_countries <- build_fao_low_anthropic_countries(
   years = seq.int(from = low_anthropic_start_year, to = max(years_target)),
   profile = low_anthropic_profile,
   top_n = low_anthropic_top_n,
-  continent = low_anthropic_continent
+  continent = low_anthropic_continent,
+  species_classification = fao_species
 )
 fao_country_plot_paths <- write_fao_low_anthropic_countries(
   fao_low_anthropic_countries, out_low_anthropic
