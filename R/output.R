@@ -1,3 +1,91 @@
+build_fao_low_anthropic_country_plot <- function(analysis, country_code) {
+  country_data <- analysis$annual_data |>
+    dplyr::filter(.data$country_code == .env$country_code)
+  if (!nrow(country_data)) stop("No chart data for country: ", country_code, call. = FALSE)
+  category_labels <- c(
+    mussels_bivalves = "Bivalves / matched molluscs", seaweed_algae = "Seaweed / algae",
+    mollusca_all = "All molluscs", aquatic_plants_all = "All aquatic plants",
+    crustacea_subset = "Selected crustaceans"
+  )
+  category_colours <- c(
+    mussels_bivalves = "#287D8E", seaweed_algae = "#6E9940",
+    mollusca_all = "#287D8E", aquatic_plants_all = "#6E9940",
+    crustacea_subset = "#C96851"
+  )
+  categories <- intersect(names(category_labels), unique(analysis$annual_data$category))
+  panels <- lapply(c("production_tonnes", "production_value_eur"), function(selected_measure) {
+    panel_data <- country_data |>
+      dplyr::filter(measure == selected_measure) |>
+      tidyr::complete(year = analysis$years, category = categories) |>
+      dplyr::group_by(year) |>
+      dplyr::mutate(
+        value = if (any(is.finite(value))) tidyr::replace_na(value, 0) else NA_real_
+      ) |>
+      dplyr::ungroup()
+    unknown_years <- country_data |>
+      dplyr::filter(measure == selected_measure, !is.finite(value)) |>
+      dplyr::pull(year)
+    panel_data <- panel_data |>
+      dplyr::mutate(value = ifelse(year %in% unknown_years, NA_real_, value)) |>
+      dplyr::group_by(category) |>
+      dplyr::arrange(year, .by_group = TRUE) |>
+      dplyr::mutate(run = cumsum(!is.finite(value)), series = paste(category, run)) |>
+      dplyr::ungroup()
+    ggplot2::ggplot(panel_data, ggplot2::aes(year, value, fill = category, group = series)) +
+      ggplot2::geom_area(stat = "identity", na.rm = TRUE) +
+      ggplot2::scale_fill_manual(
+        values = category_colours[categories], breaks = categories,
+        labels = category_labels[categories], drop = FALSE
+      ) +
+      ggplot2::scale_x_continuous(
+        limits = range(analysis$years), breaks = scales::breaks_width(5),
+        labels = scales::label_number(accuracy = 1, big.mark = ""), expand = c(0, 0)
+      ) +
+      ggplot2::scale_y_continuous(labels = scales::label_comma(), expand = ggplot2::expansion(mult = c(0, 0.05))) +
+      ggplot2::labs(
+        title = if (selected_measure == "production_tonnes") "Quantity (tonnes)" else "Value (thousand EUR, nominal)",
+        x = NULL, y = NULL, fill = NULL
+      ) +
+      ggplot2::theme_minimal(base_size = 12) +
+      ggplot2::theme(panel.grid.minor = ggplot2::element_blank(), legend.position = "bottom")
+  })
+  country_name <- suppressWarnings(countrycode::countrycode(country_code, "iso2c", "country.name"))
+  if (is.na(country_name)) country_name <- country_code
+  country_rank <- analysis$ranking |> dplyr::filter(.data$country_code == .env$country_code)
+  ranking_scope <- if (is.null(analysis$continent)) "Worldwide" else analysis$continent
+  patchwork::wrap_plots(panels, nrow = 1, guides = "collect") +
+    patchwork::plot_annotation(
+      title = paste(country_name, "- FAO low-anthropic aquaculture"),
+      subtitle = paste0(
+        analysis$profile, " profile | ", ranking_scope, " | Joint quantity/value rank ", country_rank$rank,
+        " | Three-year averages: ", country_rank$ranking_start, "-", country_rank$ranking_end
+      ),
+      caption = "Source: FAO; values converted using annual USD/EUR rates. Missing years remain gaps."
+    ) & ggplot2::theme(legend.position = "bottom")
+}
+
+write_fao_low_anthropic_countries <- function(analysis, output_dir) {
+  if (!nrow(analysis$ranking) || !any(analysis$ranking$selected)) {
+    cli::cli_alert_warning("No FAO countries have three complete ranking years for both quantity and value.")
+    return(invisible(character()))
+  }
+  output_dir <- file.path(output_dir, "fao_top_countries", analysis$profile)
+  if (!is.null(analysis$continent)) output_dir <- file.path(output_dir, analysis$continent)
+  dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+  write_csv_safe(analysis$ranking, file.path(output_dir, "country_ranking.csv"))
+  write_csv_safe(analysis$annual_data, file.path(output_dir, "annual_categories.csv"))
+  countries <- analysis$ranking$country_code[analysis$ranking$selected]
+  paths <- file.path(output_dir, paste0(countries, ".png"))
+  for (country_index in seq_along(countries)) {
+    ggplot2::ggsave(
+      filename = paths[country_index],
+      plot = build_fao_low_anthropic_country_plot(analysis, countries[country_index]),
+      width = 14, height = 6, units = "in", dpi = 150, bg = "white"
+    )
+  }
+  invisible(paths)
+}
+
 build_comparison_plot <- function(comparison_table, measure, segment, facet_countries = FALSE) {
   plot_spec <- switch(
     measure,

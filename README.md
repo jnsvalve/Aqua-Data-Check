@@ -75,6 +75,22 @@ Low-anthropic overview plots label panels by category, without repeating the str
 
 Strict and broad categories overlap and should not be added together.
 
+### FAO Top Countries
+
+Each selected country gets one stacked-area figure with quantity (tonnes) and nominal value (thousand EUR) side by side, composed with `patchwork`. The stacks use the existing low-anthropic membership categories within a single profile, not overlapping strict and broad categories together. The current strict classification is name-based and includes matched mollusc labels; it is not an independently verified farming-intensity classification.
+
+Set `low_anthropic_profile` to `"strict"` (default) or `"broad"` and `low_anthropic_top_n` to the desired country count (default 10) in `main-script.R`. The annual panels start at `low_anthropic_start_year` (default 2010) and end at the latest completed calendar year. This gives quantity and value the same plotting window, independently of the general comparison plots' 20-year window. FAO publication delays can leave the end of that window without observations. Quantity and value share category colours but have separate vertical scales; scales also differ between countries.
+
+Set `low_anthropic_continent <- "Europe"` to rank the top countries within Europe, or leave it as `NULL` (default) for worldwide selection. Available continent names are `"Africa"`, `"Americas"`, `"Asia"`, `"Europe"`, `"Oceania"`, and `"Antarctica"`, following the `countrycode` package's ISO2-to-continent mapping. Europe is a geographical grouping, not EU membership; transcontinental countries and territories follow that mapping. A continent filter excludes unmapped country codes. Filtering happens before ranking-year selection, eligibility checks and scoring, so a regional top ten is not a filtered subset of the worldwide top ten.
+
+Countries are selected jointly for quantity AND value, not from separate top-10 lists. Ranking uses the latest three consecutive calendar years ending with the latest year having usable FAO quantity and converted value in the window. A country must have all three years for both measures and positive averages. The score is the geometric mean of its quantity share and value share among eligible countries, with equal weighting; this favours strength in both while allowing a large result in one to compensate partly for a smaller result in the other. It is not a requirement to be independently top-10 on both measures, nor a ranking of the entire displayed history. Ties are resolved by country code.
+
+Value uses the existing annual USD/EUR rates, divided by 1,000, without inflation adjustment. Explicit unknown values invalidate that category-year and exclude the affected ranking year rather than being treated as zero. In charts, absent categories within an otherwise reported measure-year are treated as zero; completely missing years remain gaps. National reporting omissions cannot be distinguished from absent production without additional source metadata.
+
+Outputs are written to `output/low_anthropic/fao_top_countries/<profile>/`: one `<country_code>.png` per selected country, `country_ranking.csv` with averages, component shares, scores and selection flags for all eligible countries, and `annual_categories.csv` with the selected countries' underlying series. These FAO-only outputs are generated even if Eurostat or EUMOFA is unavailable. Files from previous selections are not automatically deleted; use the ranking CSV's selection flags to identify the current set.
+
+Continent-filtered outputs use a separate `<profile>/<continent>/` subdirectory, for example `output/low_anthropic/fao_top_countries/strict/Europe/`, without replacing worldwide results. Charts identify the ranking scope, and CSVs retain the continent classification.
+
 ## Tests
 
 ```powershell

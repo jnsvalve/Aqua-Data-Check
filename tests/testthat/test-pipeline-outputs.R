@@ -23,6 +23,111 @@ source(file.path(project_root, "R", "eudcf.R"))
 pipeline_path <- file.path(project_root, "R", "pipeline.R")
 if (file.exists(pipeline_path)) source(pipeline_path)
 
+testthat::test_that("FAO country ranking balances quantity and value using three complete years", {
+  observations <- tidyr::expand_grid(
+    country_code = c("DE", "FR", "IT", "ES"), year = 2019:2023,
+    measure = c("production_tonnes", "production_value_eur"),
+    category = c("mussels_bivalves", "seaweed_algae")
+  ) |>
+    dplyr::mutate(
+      observation_id = dplyr::row_number(),
+      source = ifelse(measure == "production_tonnes", "fao_quantity", "fao_value"),
+      comparison_value = dplyr::case_when(
+        country_code == "DE" ~ ifelse(measure == "production_tonnes", 100, 1000),
+        country_code == "FR" ~ ifelse(measure == "production_tonnes", 1, 100000),
+        country_code == "IT" ~ ifelse(measure == "production_tonnes", 20, 20000),
+        TRUE ~ NA_real_
+      ),
+      comparison_value = ifelse(country_code == "DE" & year < 2021, 1e9, comparison_value)
+    )
+  memberships <- observations |>
+    dplyr::transmute(observation_id, segment = "low_anthropic", profile = "strict", category)
+  observations <- observations |> dplyr::select(-category)
+  result <- build_fao_low_anthropic_countries(observations, memberships, 2019:2024, top_n = 2L)
+  testthat::expect_identical(result$ranking$country_code[1], "IT")
+  testthat::expect_equal(result$ranking$average_tonnes[result$ranking$country_code == "DE"], 200)
+  testthat::expect_equal(result$ranking$average_thousand_eur[result$ranking$country_code == "IT"], 40)
+  testthat::expect_equal(sum(result$ranking$selected), 2)
+  testthat::expect_true(all(result$ranking$ranking_start == 2021))
+  testthat::expect_true(all(result$ranking$ranking_end == 2023))
+  testthat::expect_false("ES" %in% result$ranking$country_code)
+  testthat::expect_setequal(unique(result$annual_data$category), c("mussels_bivalves", "seaweed_algae"))
+  incomplete <- observations |> dplyr::filter(!(country_code == "IT" & year == 2022))
+  incomplete_result <- build_fao_low_anthropic_countries(incomplete, memberships, 2019:2024)
+  testthat::expect_false("IT" %in% incomplete_result$ranking$country_code)
+  broad <- dplyr::mutate(memberships, profile = "broad", category = "mollusca_all")
+  broad_result <- build_fao_low_anthropic_countries(observations, broad, 2019:2024, profile = "broad")
+  testthat::expect_identical(unique(broad_result$annual_data$category), "mollusca_all")
+  plot <- build_fao_low_anthropic_country_plot(result, "IT")
+  testthat::expect_s3_class(plot, "patchwork")
+  testthat::expect_equal(length(plot), 2L)
+  testthat::expect_equal(max(plot[[2]]$data$value, na.rm = TRUE), 20)
+  output_dir <- tempfile("fao-country-charts-")
+  on.exit(unlink(output_dir, recursive = TRUE), add = TRUE)
+  paths <- write_fao_low_anthropic_countries(result, output_dir)
+  testthat::expect_length(paths, 2L)
+  testthat::expect_true(all(file.info(paths)$size > 0))
+  testthat::expect_true(file.exists(file.path(dirname(paths[1]), "country_ranking.csv")))
+  testthat::expect_true(file.exists(file.path(dirname(paths[1]), "annual_categories.csv")))
+  history_gap <- result
+  history_gap$annual_data <- result$annual_data |> dplyr::filter(year != 2020)
+  gap_plot <- build_fao_low_anthropic_country_plot(history_gap, "IT")
+  testthat::expect_true(all(is.na(gap_plot[[1]]$data$value[gap_plot[[1]]$data$year == 2020])))
+  testthat::expect_gt(dplyr::n_distinct(gap_plot[[1]]$data$series), 2L)
+  empty <- build_fao_low_anthropic_countries(observations[0, ], memberships, 2019:2024)
+  testthat::expect_equal(nrow(empty$ranking), 0L)
+  testthat::expect_error(build_fao_low_anthropic_countries(observations, memberships, 2019:2024, profile = "invalid"))
+})
+
+testthat::test_that("FAO continent selection filters countries before ranking and choosing years", {
+  observations <- tidyr::expand_grid(
+    country_code = c("DE", "FR", "CN"), year = 2020:2023,
+    measure = c("production_tonnes", "production_value_eur")
+  ) |>
+    dplyr::filter(country_code == "CN" | year < 2023) |>
+    dplyr::mutate(
+      observation_id = dplyr::row_number(),
+      source = ifelse(measure == "production_tonnes", "fao_quantity", "fao_value"),
+      comparison_value = dplyr::case_when(
+        country_code == "CN" ~ 1e6,
+        country_code == "DE" ~ 100,
+        TRUE ~ 50
+      )
+    )
+  memberships <- observations |>
+    dplyr::transmute(observation_id, segment = "low_anthropic", profile = "strict", category = "mussels_bivalves")
+  worldwide <- build_fao_low_anthropic_countries(observations, memberships, 2020:2023, top_n = 1L)
+  europe <- build_fao_low_anthropic_countries(observations, memberships, 2020:2023, top_n = 1L, continent = "Europe")
+  testthat::expect_identical(worldwide$ranking$country_code[1], "CN")
+  testthat::expect_identical(europe$ranking$country_code[1], "DE")
+  testthat::expect_setequal(europe$ranking$country_code, c("DE", "FR"))
+  testthat::expect_identical(unique(europe$annual_data$country_code), "DE")
+  testthat::expect_true(all(europe$ranking$ranking_end == 2022))
+  testthat::expect_equal(sum(europe$ranking$quantity_share), 1)
+  testthat::expect_identical(europe$continent, "Europe")
+  testthat::expect_identical(unique(europe$ranking$continent), "Europe")
+  testthat::expect_null(worldwide$continent)
+  europe_plot <- build_fao_low_anthropic_country_plot(europe, "DE")
+  testthat::expect_match(europe_plot$patches$annotation$subtitle, "Europe")
+  output_dir <- tempfile("fao-continent-output-")
+  on.exit(unlink(output_dir, recursive = TRUE), add = TRUE)
+  world_paths <- write_fao_low_anthropic_countries(worldwide, output_dir)
+  world_hash <- unname(tools::md5sum(world_paths))
+  europe_paths <- write_fao_low_anthropic_countries(europe, output_dir)
+  testthat::expect_equal(
+    normalizePath(dirname(europe_paths), winslash = "/"),
+    normalizePath(file.path(output_dir, "fao_top_countries", "strict", "Europe"), winslash = "/")
+  )
+  testthat::expect_true(all(file.info(europe_paths)$size > 0))
+  testthat::expect_identical(unname(tools::md5sum(world_paths)), world_hash)
+  empty <- build_fao_low_anthropic_countries(observations, memberships, 2020:2023, continent = "Oceania")
+  testthat::expect_equal(nrow(empty$ranking), 0L)
+  testthat::expect_error(
+    build_fao_low_anthropic_countries(observations, memberships, 2020:2023, continent = "invalid"),
+    "arg"
+  )
+})
+
 testthat::test_that("FAO and EUMOFA imports enforce source schemas and preserve identifiers", {
   fao_path <- tempfile(fileext = ".csv")
   on.exit(unlink(fao_path), add = TRUE)

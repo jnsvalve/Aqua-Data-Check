@@ -1,3 +1,87 @@
+build_fao_low_anthropic_countries <- function(observations, memberships, years,
+                                              profile = "strict", top_n = 10L,
+                                              continent = NULL) {
+  profile <- match.arg(profile, c("strict", "broad"))
+  if (!is.null(continent)) {
+    continent <- match.arg(continent, c("Africa", "Americas", "Asia", "Europe", "Oceania", "Antarctica"))
+  }
+  if (length(top_n) != 1L || is.na(top_n) || top_n < 1 || top_n != as.integer(top_n)) {
+    stop("top_n must be a positive integer", call. = FALSE)
+  }
+  years <- sort(unique(as.integer(years)))
+  if (length(years) < 3L || anyNA(years)) {
+    stop("Provide at least three years", call. = FALSE)
+  }
+  selected_memberships <- memberships |>
+    dplyr::filter(segment == "low_anthropic", .data$profile == .env$profile) |>
+    dplyr::distinct(observation_id, category)
+  if (anyDuplicated(selected_memberships$observation_id)) {
+    stop("Low-anthropic categories must not overlap within a profile", call. = FALSE)
+  }
+  annual <- observations |>
+    dplyr::filter(
+      source %in% c("fao_quantity", "fao_value"), year %in% years,
+      !is.na(country_code), grepl("^[A-Z]{2}$", country_code)
+    ) |>
+    dplyr::inner_join(selected_memberships, by = "observation_id") |>
+    dplyr::group_by(country_code, year, measure, category) |>
+    dplyr::summarise(
+      value = if (any(!is.finite(comparison_value))) NA_real_ else sum(comparison_value),
+      .groups = "drop"
+    ) |>
+    dplyr::mutate(
+      value = ifelse(measure == "production_value_eur", value / 1000, value),
+      continent = countrycode::countrycode(country_code, "iso2c", "continent", warn = FALSE)
+    )
+  if (!is.null(continent)) {
+    annual <- annual |> dplyr::filter(.data$continent == .env$continent)
+  }
+  totals <- annual |>
+    dplyr::group_by(country_code, year, measure) |>
+    dplyr::summarise(
+      value = if (any(!is.finite(value))) NA_real_ else sum(value),
+      .groups = "drop"
+    )
+  common_years <- intersect(
+    totals$year[totals$measure == "production_tonnes" & is.finite(totals$value)],
+    totals$year[totals$measure == "production_value_eur" & is.finite(totals$value)]
+  )
+  ranking_years <- if (length(common_years)) seq.int(max(common_years) - 2L, max(common_years)) else integer()
+  averages <- totals |>
+    dplyr::filter(year %in% ranking_years, is.finite(value)) |>
+    dplyr::group_by(country_code, measure) |>
+    dplyr::filter(dplyr::n() == 3L) |>
+    dplyr::summarise(average = mean(value), .groups = "drop")
+  ranking <- averages |>
+    dplyr::filter(measure == "production_tonnes") |>
+    dplyr::transmute(country_code, average_tonnes = average) |>
+    dplyr::inner_join(
+      averages |>
+        dplyr::filter(measure == "production_value_eur") |>
+        dplyr::transmute(country_code, average_thousand_eur = average),
+      by = "country_code"
+    ) |>
+    dplyr::filter(average_tonnes > 0, average_thousand_eur > 0) |>
+    dplyr::mutate(
+      quantity_share = average_tonnes / sum(average_tonnes),
+      value_share = average_thousand_eur / sum(average_thousand_eur),
+      joint_score = sqrt(quantity_share * value_share)
+    ) |>
+    dplyr::arrange(dplyr::desc(joint_score), country_code) |>
+    dplyr::mutate(
+      rank = dplyr::row_number(), selected = rank <= top_n,
+      ranking_start = if (length(ranking_years)) min(ranking_years) else NA_integer_,
+      ranking_end = if (length(ranking_years)) max(ranking_years) else NA_integer_,
+      profile = .env$profile
+    ) |>
+    dplyr::left_join(dplyr::distinct(annual, country_code, continent), by = "country_code")
+  list(
+    ranking = ranking,
+    annual_data = annual |> dplyr::filter(country_code %in% ranking$country_code[ranking$selected]),
+    years = years, profile = profile, continent = continent
+  )
+}
+
 production_view_columns <- c(
   "eurostat_production_tonnes",
   "fao_quantity_production_tonnes",

@@ -7,7 +7,7 @@
 
 suppressPackageStartupMessages({
   required_pkgs <- c(
-    "dplyr", "readr", "tidyr", "janitor", "stringr", "cli", "openxlsx", "countrycode", "ggplot2"
+    "dplyr", "readr", "tidyr", "janitor", "stringr", "cli", "openxlsx", "countrycode", "ggplot2", "patchwork"
   )
   missing_pkgs <- required_pkgs[!vapply(required_pkgs, requireNamespace, logical(1), quietly = TRUE)]
   if (length(missing_pkgs) > 0) {
@@ -44,6 +44,10 @@ source("R/pipeline.R")
 # ============================================================
 
 years_target <- seq.int(to = as.integer(format(Sys.Date(), "%Y")) - 1L, length.out = 20L)
+low_anthropic_start_year <- 2010L
+low_anthropic_profile <- "strict"
+low_anthropic_top_n <- 10L
+low_anthropic_continent <- NULL
 fao_qty_path <- "./data/FAO/Aquaculture_Quantity.csv"
 fao_val_path <- "./data/FAO/Aquaculture_Value.csv"
 eumofa_path  <- "./data/EUMOFA/Yearly_Aquaculture.csv"
@@ -213,6 +217,7 @@ print(lapply(aquaculture_raw, head))
 
 fx_path <- "./data/FX/usd_eur_rates.csv"
 fx_tbl <- load_fx_table(fx_path)
+# Optional EUDCF import; kept separate from production observations.
 eudcf_data <- if (file.exists(eudcf_path)) {
   read_eudcf_workbook(eudcf_path)
 } else {
@@ -305,6 +310,19 @@ pipeline_result <- build_pipeline_outputs(
     include_crustacea_subset = FALSE
   )
 )
+
+fao_low_anthropic_countries <- build_fao_low_anthropic_countries(
+  pipeline_result$observations,
+  pipeline_result$memberships,
+  years = seq.int(from = low_anthropic_start_year, to = max(years_target)),
+  profile = low_anthropic_profile,
+  top_n = low_anthropic_top_n,
+  continent = low_anthropic_continent
+)
+fao_country_plot_paths <- write_fao_low_anthropic_countries(
+  fao_low_anthropic_countries, out_low_anthropic
+)
+cli::cli_alert_success("FAO low-anthropic country charts saved: {length(fao_country_plot_paths)}")
 
 source_status <- c(
   eurostat = has_eurostat && nrow(aquaculture_raw$eurostat) > 0,
