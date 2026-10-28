@@ -62,6 +62,10 @@ testthat::test_that("FAO country ranking balances quantity and value using three
   testthat::expect_s3_class(plot, "patchwork")
   testthat::expect_equal(length(plot), 2L)
   testthat::expect_equal(max(plot[[2]]$data$value, na.rm = TRUE), 20)
+  for (panel_index in seq_len(2L)) {
+    y_breaks <- plot[[panel_index]]$scales$get_scales("y")$breaks
+    testthat::expect_false(0 %in% y_breaks(c(0, 20)))
+  }
   output_dir <- tempfile("fao-country-charts-")
   on.exit(unlink(output_dir, recursive = TRUE), add = TRUE)
   paths <- write_fao_low_anthropic_countries(result, output_dir)

@@ -41,7 +41,14 @@ build_fao_low_anthropic_country_plot <- function(analysis, country_code) {
         limits = range(analysis$years), breaks = scales::breaks_width(5),
         labels = scales::label_number(accuracy = 1, big.mark = ""), expand = c(0, 0)
       ) +
-      ggplot2::scale_y_continuous(labels = scales::label_comma(), expand = ggplot2::expansion(mult = c(0, 0.05))) +
+      ggplot2::scale_y_continuous(
+        breaks = function(limits) {
+          breaks <- scales::breaks_pretty()(limits)
+          breaks[breaks != 0]
+        },
+        labels = scales::label_comma(),
+        expand = ggplot2::expansion(mult = c(0, 0.05))
+      ) +
       ggplot2::labs(
         title = if (selected_measure == "production_tonnes") "Quantity (tonnes)" else "Value (thousand EUR, nominal)",
         x = NULL, y = NULL, fill = NULL
