@@ -133,6 +133,16 @@ eudcf_dashboard_sales_data <- function(sales, country_code, segment_code,
   data
 }
 
+eudcf_dashboard_economic_display <- function(data) {
+  numeric_value <- suppressWarnings(as.numeric(as.character(data$value)))
+  data$value <- ifelse(
+    is.finite(numeric_value),
+    format(round(numeric_value), trim = TRUE, scientific = FALSE, big.mark = ","),
+    as.character(data$value)
+  )
+  data
+}
+
 eudcf_dashboard_sales_catalog <- function(sales) {
   sales |>
     dplyr::mutate(

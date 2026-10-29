@@ -103,6 +103,13 @@ testthat::test_that("DCF sales display rounds values and achieved sample without
   testthat::expect_identical(sales$achieved_sample, c("75.236", "NULL"))
 })
 
+testthat::test_that("DCF economics display rounds values without changing source rows", {
+  economics <- tibble::tibble(value = c("1234.56", "NULL"))
+  display <- eudcf_dashboard_economic_display(economics)
+  testthat::expect_identical(display$value, c("1,235", "NULL"))
+  testthat::expect_identical(economics$value, c("1234.56", "NULL"))
+})
+
 testthat::test_that("FAO country ranking balances quantity and value using three complete years", {
   observations <- tidyr::expand_grid(
     country_code = c("DE", "FR", "IT", "ES"), year = 2019:2023,

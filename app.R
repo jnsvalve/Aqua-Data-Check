@@ -478,7 +478,7 @@ if (inherits(workbook, "error")) {
         labs(
           title = variable$variable_name,
           subtitle = paste(input$economic_species_group, "|", input$economic_segment, "|", display_unit, "| nominal values"),
-          x = NULL, y = NULL, colour = "Country"
+          x = NULL, y = NULL, colour = NULL
         ) +
         theme_minimal(base_size = 12) +
         theme(panel.grid.minor = element_blank(), legend.position = "bottom")
@@ -492,8 +492,9 @@ if (inherits(workbook, "error")) {
     output$economic_table <- renderTable({
       selected_economic() |>
         dplyr::select(year, country_name, segment_name, value, unit) |>
+        eudcf_dashboard_economic_display() |>
         dplyr::arrange(year, country_name)
-    }, digits = 2, striped = TRUE, bordered = FALSE, spacing = "s")
+    }, striped = TRUE, bordered = FALSE, spacing = "s")
 
     output$download_economic <- downloadHandler(
       filename = function() paste0("eudcf_economic_", input$economic_variable, ".csv"),
