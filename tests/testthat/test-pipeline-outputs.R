@@ -20,8 +20,31 @@ source(output_path)
 source(file.path(project_root, "R", "segments.R"))
 source(file.path(project_root, "R", "production_views.R"))
 source(file.path(project_root, "R", "eudcf.R"))
+source(file.path(project_root, "R", "eudcf_dashboard.R"))
 pipeline_path <- file.path(project_root, "R", "pipeline.R")
 if (file.exists(pipeline_path)) source(pipeline_path)
+
+testthat::test_that("DCF economics filters low-anthropic species and chooses a reported segment", {
+  economic <- tibble::tibble(
+    country_code = c("DEU", "DEU", "DEU", "FRA"),
+    year = c(2021L, 2022L, 2021L, 2022L),
+    species_group = c("Mussel", "Mussel", "All", "Oyster"),
+    segment_code = c("seg.10_10", "seg.10_10", "tot", "seg.11_11"),
+    segment_name = c("Mussel Longline", "Mussel Longline", "National Total", "Oyster On-bottom"),
+    variable_code = "GST", variable_name = "Gross sales", value = c(100, 120, 500, 60),
+    unit = "EURO"
+  )
+  groups <- eudcf_dashboard_low_anthropic_groups(economic)
+  testthat::expect_setequal(groups, c("Mussel", "Oyster"))
+  segment <- eudcf_dashboard_default_economic_segment(economic, "Mussel", 2021:2022)
+  testthat::expect_identical(segment$segment_code, "seg.10_10")
+  selected <- eudcf_dashboard_economic_data(
+    economic, "DEU", "seg.10_10", "GST", species_group = "Mussel", year_range = 2021:2022
+  )
+  testthat::expect_equal(nrow(selected), 2L)
+  testthat::expect_true(all(selected$species_group == "Mussel"))
+  testthat::expect_false(any(selected$segment_code == "tot"))
+})
 
 testthat::test_that("FAO country ranking balances quantity and value using three complete years", {
   observations <- tidyr::expand_grid(

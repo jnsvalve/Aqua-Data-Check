@@ -32,6 +32,10 @@ Rscript main-script.R
 Eurostat is optional for partial data collection. A complete run refreshes the latest summaries and diagnostics. A partial run saves a separate partial snapshot and leaves the latest outputs unchanged.
 The EUDCF workbook is optional and does not affect production coverage status. Place the official workbook in `data/EUDCF/` using the configured filename in `main-script.R`.
 
+## DCF Explorer
+
+The workbook-backed Shiny explorer can be started from the repository root with `Rscript -e "shiny::runApp()"`. Install `shiny` and `bslib` if they are not already available. The app reads the configured STECF workbook directly from `data/EUDCF/`; it does not download, rewrite, or merge the source data. The Economics tab defaults to low-anthropic species groups and exposes the reported economic variables by country and culture segment. It does not derive profitability ratios; use the STECF economic report's documented formulas before interpreting a calculated margin. The Coverage & quality tab summarizes workbook coverage and surfaces the workbook's own caveats.
+
 ## Updating Source Data
 
 Check for new annual releases at [FAO FishStatJ](https://www.fao.org/fishery/en/statistics/software/fishstatj) and the [EUMOFA aquaculture dashboard](https://fishery-aquaculture-market-observatory.ec.europa.eu/en/data/dashboards/aquaculture). No supported public API is currently documented for these exports, so refresh them from the official downloads:
