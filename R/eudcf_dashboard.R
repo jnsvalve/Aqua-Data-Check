@@ -35,16 +35,86 @@ eudcf_dashboard_low_anthropic_groups <- function(economic) {
 }
 
 eudcf_dashboard_default_economic_segment <- function(economic, species_group,
-                                                      year_range = NULL) {
+                                                      year_range = NULL,
+                                                      country_codes = NULL) {
   data <- economic |> dplyr::filter(species_group == .env$species_group)
+  if (!is.null(country_codes) && length(country_codes) > 0) {
+    data <- data |> dplyr::filter(country_code %in% .env$country_codes)
+  }
   if (!is.null(year_range)) {
-    in_range <- eudcf_dashboard_filter_years(data, year_range)
-    if (nrow(in_range) > 0) data <- in_range
+    data <- eudcf_dashboard_filter_years(data, year_range)
   }
   data |>
     dplyr::count(segment_code, segment_name, sort = TRUE) |>
     dplyr::slice_head(n = 1L)
 }
+
+eudcf_dashboard_economic_segments <- function(economic, species_group,
+                                              country_codes = NULL,
+                                              year_range = NULL) {
+  data <- economic |> dplyr::filter(species_group == .env$species_group)
+  if (!is.null(country_codes) && length(country_codes) > 0) {
+    data <- data |> dplyr::filter(country_code %in% .env$country_codes)
+  }
+  if (!is.null(year_range)) {
+    data <- eudcf_dashboard_filter_years(data, year_range)
+  }
+  data |>
+    dplyr::distinct(segment_code, segment_name) |>
+    dplyr::filter(!is.na(segment_code), nzchar(segment_code)) |>
+    dplyr::mutate(segment_name = dplyr::if_else(is.na(segment_name) | !nzchar(segment_name), segment_code, segment_name)) |>
+    dplyr::arrange(segment_code)
+}
+
+eudcf_dashboard_sales_segments <- function(sales, country_code,
+                                           variable_code = NULL,
+                                           species_code = NULL,
+                                           year_range = NULL) {
+  data <- eudcf_dashboard_sales_catalog(sales) |>
+    dplyr::filter(country_code == .env$country_code)
+  if (!is.null(variable_code) && nzchar(variable_code)) {
+    data <- data |> dplyr::filter(variable_code == .env$variable_code)
+  }
+  if (!is.null(species_code) && nzchar(species_code)) {
+    data <- data |> dplyr::filter(species_code == .env$species_code)
+  }
+  if (!is.null(year_range)) {
+    data <- eudcf_dashboard_filter_years(data, year_range)
+  }
+  data |>
+    dplyr::distinct(segment_code, segment_name) |>
+    dplyr::arrange(segment_code)
+}
+
+eudcf_dashboard_plot_values <- function(data) {
+  if (!"unit" %in% names(data) || !"value" %in% names(data)) {
+    stop("Plot data must include value and unit", call. = FALSE)
+  }
+  values <- suppressWarnings(as.numeric(as.character(data$value)))
+  unit <- toupper(trimws(as.character(data$unit)))
+  is_euro <- unit %in% c("EURO", "EUR")
+  data |>
+    dplyr::mutate(
+      plot_value = ifelse(is_euro, values / 1000, values),
+      plot_unit = ifelse(is_euro, "thousand EUR", as.character(unit))
+    )
+}
+
+  eudcf_dashboard_sales_display <- function(data) {
+    numeric_value <- suppressWarnings(as.numeric(as.character(data$value)))
+    numeric_rate <- suppressWarnings(as.numeric(as.character(data$achieved_sample)))
+    data$value <- ifelse(
+      is.finite(numeric_value),
+      format(round(numeric_value), trim = TRUE, scientific = FALSE, big.mark = ","),
+      as.character(data$value)
+    )
+    data$achieved_sample <- ifelse(
+      is.finite(numeric_rate),
+      sprintf("%.2f", round(numeric_rate, 2)),
+      as.character(data$achieved_sample)
+    )
+    data
+  }
 
 eudcf_dashboard_sales_data <- function(sales, country_code, segment_code,
                                        variable_code, species_code = NULL,

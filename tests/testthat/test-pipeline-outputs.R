@@ -26,24 +26,81 @@ if (file.exists(pipeline_path)) source(pipeline_path)
 
 testthat::test_that("DCF economics filters low-anthropic species and chooses a reported segment", {
   economic <- tibble::tibble(
-    country_code = c("DEU", "DEU", "DEU", "FRA"),
-    year = c(2021L, 2022L, 2021L, 2022L),
-    species_group = c("Mussel", "Mussel", "All", "Oyster"),
-    segment_code = c("seg.10_10", "seg.10_10", "tot", "seg.11_11"),
-    segment_name = c("Mussel Longline", "Mussel Longline", "National Total", "Oyster On-bottom"),
-    variable_code = "GST", variable_name = "Gross sales", value = c(100, 120, 500, 60),
+    country_code = c("DEU", "DEU", "DEU", "DEU", "FRA"),
+    year = c(2021L, 2022L, 2021L, 2020L, 2022L),
+    species_group = c("Mussel", "Mussel", "All", "Mussel", "Oyster"),
+    segment_code = c("seg.10_10", "seg.10_10", "tot", "seg.old", "seg.11_11"),
+    segment_name = c("Mussel Longline", "Mussel Longline", "National Total", "Old segment", "Oyster On-bottom"),
+    variable_code = "GST", variable_name = "Gross sales", value = c(100, 120, 500, 80, 60),
     unit = "EURO"
   )
   groups <- eudcf_dashboard_low_anthropic_groups(economic)
   testthat::expect_setequal(groups, c("Mussel", "Oyster"))
   segment <- eudcf_dashboard_default_economic_segment(economic, "Mussel", 2021:2022)
   testthat::expect_identical(segment$segment_code, "seg.10_10")
+  testthat::expect_identical(
+    eudcf_dashboard_economic_segments(economic, "Mussel", "DEU", c(2021L, 2022L))$segment_code,
+    "seg.10_10"
+  )
+  testthat::expect_equal(
+    nrow(eudcf_dashboard_economic_segments(economic, "Mussel", "DEU", c(2023L, 2024L))),
+    0L
+  )
   selected <- eudcf_dashboard_economic_data(
     economic, "DEU", "seg.10_10", "GST", species_group = "Mussel", year_range = 2021:2022
   )
   testthat::expect_equal(nrow(selected), 2L)
   testthat::expect_true(all(selected$species_group == "Mussel"))
   testthat::expect_false(any(selected$segment_code == "tot"))
+})
+
+testthat::test_that("DCF graph values scale euros only and segments follow the country", {
+  plot_values <- eudcf_dashboard_plot_values(tibble::tibble(
+    value = c(1250000, 275), unit = c("EURO", "KG")
+  ))
+  testthat::expect_equal(plot_values$plot_value, c(1250, 275))
+  testthat::expect_identical(plot_values$plot_unit, c("thousand EUR", "KG"))
+
+  economic <- tibble::tibble(
+    country_code = c("DEU", "DEU", "FRA"),
+    species_group = "Mussel", year = 2022L,
+    segment_code = c("seg.10_10", "seg.10_11", "seg.10_9"),
+    segment_name = c("Longline", "On-bottom", "Rafts"),
+    variable_code = "GST", variable_name = "Gross sales", value = 10,
+    unit = "EURO"
+  )
+  testthat::expect_identical(
+    eudcf_dashboard_economic_segments(economic, "Mussel", "DEU", c(2022L, 2022L))$segment_code,
+    c("seg.10_10", "seg.10_11")
+  )
+
+  sales <- tibble::tibble(
+    country_code = c("DEU", "DEU", "DEU", "FRA"),
+    species_code = "MUS", variable_code = "GST", year = c(2022L, 2022L, 2020L, 2022L),
+    segment_code = c("seg.10_10", "seg.10_11", "seg.old", "seg.10_9"),
+    segment_name = c("Longline", "On-bottom", "Old segment", "Rafts"),
+    value = c("100", "200", "80", "300"), unit = "EURO"
+  )
+  testthat::expect_identical(
+    eudcf_dashboard_sales_segments(sales, "DEU", "GST", "MUS", c(2022L, 2022L))$segment_code,
+    c("seg.10_10", "seg.10_11")
+  )
+  testthat::expect_equal(
+    nrow(eudcf_dashboard_sales_segments(sales, "DEU", "GST", "MUS", c(2023L, 2024L))),
+    0L
+  )
+})
+
+testthat::test_that("DCF sales display rounds values and achieved sample without changing source rows", {
+  sales <- tibble::tibble(
+    value = c("1234.56", "NULL"),
+    achieved_sample = c("75.236", "NULL")
+  )
+  display <- eudcf_dashboard_sales_display(sales)
+  testthat::expect_identical(display$value, c("1,235", "NULL"))
+  testthat::expect_identical(display$achieved_sample, c("75.24", "NULL"))
+  testthat::expect_identical(sales$value, c("1234.56", "NULL"))
+  testthat::expect_identical(sales$achieved_sample, c("75.236", "NULL"))
 })
 
 testthat::test_that("FAO country ranking balances quantity and value using three complete years", {
@@ -98,6 +155,19 @@ testthat::test_that("FAO country ranking balances quantity and value using three
   testthat::expect_s3_class(plot, "patchwork")
   testthat::expect_equal(length(plot), 2L)
   testthat::expect_equal(max(plot[[2]]$data$value, na.rm = TRUE), 20)
+  country_specific <- result
+  country_specific$annual_data <- result$annual_data |>
+    dplyr::filter(
+      (country_code == "DE" & category == "Mussels") |
+        (country_code == "FR" & category == "Brown seaweeds")
+    )
+  country_specific$annual_data$category <- factor(
+    country_specific$annual_data$category,
+    levels = c("Mussels", "Brown seaweeds", "Green seaweeds")
+  )
+  country_plot <- build_fao_low_anthropic_country_plot(country_specific, "DE")
+  testthat::expect_identical(unique(country_plot[[1]]$data$category), "Mussels")
+  testthat::expect_identical(unique(country_plot[[2]]$data$category), "Mussels")
   for (panel_index in seq_len(2L)) {
     y_breaks <- plot[[panel_index]]$scales$get_scales("y")$breaks
     testthat::expect_false(0 %in% y_breaks(c(0, 20)))

@@ -1,6 +1,7 @@
 build_fao_low_anthropic_country_plot <- function(analysis, country_code) {
   country_data <- analysis$annual_data |>
-    dplyr::filter(.data$country_code == .env$country_code)
+    dplyr::filter(.data$country_code == .env$country_code) |>
+    dplyr::mutate(category = as.character(category))
   if (!nrow(country_data)) stop("No chart data for country: ", country_code, call. = FALSE)
   category_colours <- c(
     "Abalones, winkles, conchs" = "#D49B37",
@@ -17,7 +18,11 @@ build_fao_low_anthropic_country_plot <- function(analysis, country_code) {
     "Red seaweeds" = "#E15759",
     "Miscellaneous aquatic plants" = "#F28E2B"
   )
-  categories <- sort(unique(analysis$annual_data$category))
+  categories <- country_data |>
+    dplyr::filter(measure == "production_tonnes", is.finite(value), value > 0) |>
+    dplyr::distinct(category) |>
+    dplyr::pull(category) |>
+    sort()
   unknown_categories <- setdiff(categories, names(category_colours))
   if (length(unknown_categories) > 0) {
     category_colours <- c(
@@ -26,9 +31,13 @@ build_fao_low_anthropic_country_plot <- function(analysis, country_code) {
     )
   }
   panels <- lapply(c("production_tonnes", "production_value_eur"), function(selected_measure) {
-    panel_data <- country_data |>
-      dplyr::filter(measure == selected_measure) |>
-      tidyr::complete(year = analysis$years, category = categories) |>
+    panel_data <- tidyr::expand_grid(year = analysis$years, category = categories) |>
+      dplyr::left_join(
+        country_data |>
+          dplyr::filter(measure == selected_measure) |>
+          dplyr::select(year, category, value),
+        by = c("year", "category")
+      ) |>
       dplyr::group_by(year) |>
       dplyr::mutate(
         value = if (any(is.finite(value))) tidyr::replace_na(value, 0) else NA_real_
