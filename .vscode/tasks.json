@@ -1,0 +1,71 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Inventory DCF profitability data",
+			"type": "shell",
+			"command": "C:\\Program Files\\R\\R-4.6.1\\bin\\Rscript.exe",
+			"args": [
+				"C:\\dev\\eudcf-inventory.R"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "test"
+		},
+		{
+			"label": "Inspect DCF economics coverage",
+			"type": "shell",
+			"command": "C:\\Program Files\\R\\R-4.6.1\\bin\\Rscript.exe",
+			"args": [
+				"C:\\dev\\eudcf-inventory.R"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "test"
+		},
+		{
+			"label": "Check DCF national totals",
+			"type": "shell",
+			"command": "C:\\Program Files\\R\\R-4.6.1\\bin\\Rscript.exe",
+			"args": [
+				"C:\\dev\\eudcf-inventory.R"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "test"
+		},
+		{
+			"label": "Summarize DCF profitability readiness",
+			"type": "shell",
+			"command": "C:\\Program Files\\R\\R-4.6.1\\bin\\Rscript.exe",
+			"args": [
+				"C:\\dev\\eudcf-profitability-check.R"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "test"
+		},
+		{
+			"label": "Summarize DCF readiness corrected",
+			"type": "shell",
+			"command": "C:\\Program Files\\R\\R-4.6.1\\bin\\Rscript.exe",
+			"args": [
+				"C:\\dev\\eudcf-profitability-check.R"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "test"
+		},
+		{
+			"label": "Read DCF workbook caveats",
+			"type": "shell",
+			"command": "C:\\Program Files\\R\\R-4.6.1\\bin\\Rscript.exe",
+			"args": [
+				"C:\\dev\\eudcf-notes.R"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "test"
+		}
+	]
+}

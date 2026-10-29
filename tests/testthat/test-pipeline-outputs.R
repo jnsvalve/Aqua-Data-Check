@@ -144,6 +144,36 @@ testthat::test_that("DCF dependent selections resolve available choices together
   testthat::expect_identical(empty_sales$selected_segment, character())
 })
 
+testthat::test_that("DCF sales output follows a country change", {
+  previous_directory <- setwd(project_root)
+  on.exit(setwd(previous_directory), add = TRUE)
+  app_environment <- new.env(parent = globalenv())
+  sys.source(file.path(project_root, "app.R"), envir = app_environment)
+
+  shiny::testServer(app_environment$server, {
+    session$setInputs(
+      sales_country = "FIN", sales_variable = "TGS", sales_species = "SAL",
+      sales_segment = "seg.02_6", sales_years = c(2021L, 2022L)
+    )
+    session$flushReact()
+    testthat::expect_match(output$sales_status, "1 reported rows")
+    finland_rows <- paste(unlist(output$sales_table, use.names = FALSE), collapse = " ")
+    testthat::expect_match(finland_rows, "Trout Cages")
+
+    session$setInputs(sales_country = "HRV")
+    session$flushReact()
+    testthat::expect_identical(output$sales_status, "No rows match these filters.")
+
+    session$setInputs(sales_species = "CGM", sales_segment = "seg.04_1")
+    session$flushReact()
+    testthat::expect_match(output$sales_status, "1 reported rows")
+    croatia_rows <- paste(unlist(output$sales_table, use.names = FALSE), collapse = " ")
+    testthat::expect_match(croatia_rows, "Carp Ponds")
+    testthat::expect_match(croatia_rows, "Africa-bighead catfish, hybrid")
+    testthat::expect_false(grepl("Trout Cages", croatia_rows, fixed = TRUE))
+  })
+})
+
 testthat::test_that("DCF sales display rounds values and achieved sample without changing source rows", {
   sales <- tibble::tibble(
     value = c("1234.56", "NULL"),
