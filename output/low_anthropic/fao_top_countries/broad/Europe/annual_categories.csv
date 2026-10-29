@@ -1,0 +1,1221 @@
+country_code,year,measure,category,value,continent
+DE,2010,production_tonnes,"Clams, cockles, arkshells",0,Europe
+DE,2010,production_tonnes,Mussels,4905,Europe
+DE,2010,production_tonnes,Oysters,80,Europe
+DE,2010,production_value_eur,"Clams, cockles, arkshells",0,Europe
+DE,2010,production_value_eur,Mussels,4926.920636,Europe
+DE,2010,production_value_eur,Oysters,860.973432,Europe
+DE,2011,production_tonnes,"Clams, cockles, arkshells",0,Europe
+DE,2011,production_tonnes,Mussels,20830,Europe
+DE,2011,production_tonnes,Oysters,80,Europe
+DE,2011,production_value_eur,"Clams, cockles, arkshells",0,Europe
+DE,2011,production_value_eur,Mussels,36091.104522,Europe
+DE,2011,production_value_eur,Oysters,903.991616,Europe
+DE,2012,production_tonnes,"Clams, cockles, arkshells",0,Europe
+DE,2012,production_tonnes,Mussels,6933,Europe
+DE,2012,production_tonnes,Oysters,80,Europe
+DE,2012,production_value_eur,"Clams, cockles, arkshells",0,Europe
+DE,2012,production_value_eur,Mussels,9159.341862,Europe
+DE,2012,production_value_eur,Oysters,834.393296,Europe
+DE,2013,production_tonnes,"Clams, cockles, arkshells",0,Europe
+DE,2013,production_tonnes,Mussels,5036,Europe
+DE,2013,production_tonnes,Oysters,80,Europe
+DE,2013,production_value_eur,"Clams, cockles, arkshells",0,Europe
+DE,2013,production_value_eur,Mussels,13031.147998,Europe
+DE,2013,production_value_eur,Oysters,862.53299,Europe
+DE,2014,production_tonnes,Mussels,5280,Europe
+DE,2014,production_tonnes,Oysters,80,Europe
+DE,2014,production_value_eur,Mussels,15248.226114000001,Europe
+DE,2014,production_value_eur,Oysters,862.7819420000001,Europe
+DE,2015,production_tonnes,Mussels,10875,Europe
+DE,2015,production_tonnes,Oysters,80,Europe
+DE,2015,production_value_eur,Mussels,11863.002976,Europe
+DE,2015,production_value_eur,Oysters,720.5617980000001,Europe
+DE,2016,production_tonnes,Mussels,22264,Europe
+DE,2016,production_tonnes,Oysters,80,Europe
+DE,2016,production_value_eur,Mussels,25619.99732,Europe
+DE,2016,production_value_eur,Oysters,650.88,Europe
+DE,2017,production_tonnes,Mussels,16856,Europe
+DE,2017,production_tonnes,Oysters,80,Europe
+DE,2017,production_value_eur,Mussels,23815.140169,Europe
+DE,2017,production_value_eur,Oysters,721.45919,Europe
+DE,2018,production_tonnes,Mussels,15864,Europe
+DE,2018,production_tonnes,Oysters,80,Europe
+DE,2018,production_value_eur,Mussels,34792.516528,Europe
+DE,2018,production_value_eur,Oysters,721.043376,Europe
+DE,2019,production_tonnes,Mussels,22037,Europe
+DE,2019,production_tonnes,Oysters,80,Europe
+DE,2019,production_value_eur,Mussels,44280.67127400001,Europe
+DE,2019,production_value_eur,Oysters,719.7776460000001,Europe
+DE,2020,production_tonnes,Mussels,13490,Europe
+DE,2020,production_tonnes,Oysters,50,Europe
+DE,2020,production_value_eur,Mussels,22972.123091,Europe
+DE,2020,production_value_eur,Oysters,450.76747600000004,Europe
+DE,2021,production_tonnes,Mussels,14274,Europe
+DE,2021,production_tonnes,Oysters,50,Europe
+DE,2021,production_value_eur,Mussels,26962.093535,Europe
+DE,2021,production_value_eur,Oysters,449.73688500000003,Europe
+DE,2022,production_tonnes,Mussels,8631,Europe
+DE,2022,production_tonnes,Oysters,50,Europe
+DE,2022,production_value_eur,Mussels,12519.908449999999,Europe
+DE,2022,production_value_eur,Oysters,450.17839999999995,Europe
+DE,2023,production_tonnes,Mussels,18029,Europe
+DE,2023,production_tonnes,Oysters,50,Europe
+DE,2023,production_value_eur,Mussels,29720.845308000004,Europe
+DE,2023,production_value_eur,Oysters,449.591604,Europe
+ES,2010,production_tonnes,"Abalones, winkles, conchs",2.8,Europe
+ES,2010,production_tonnes,Brown seaweeds,0,Europe
+ES,2010,production_tonnes,"Clams, cockles, arkshells",2124.5,Europe
+ES,2010,production_tonnes,Miscellaneous aquatic plants,1.25,Europe
+ES,2010,production_tonnes,Miscellaneous marine molluscs,0.7,Europe
+ES,2010,production_tonnes,Mussels,189089.7,Europe
+ES,2010,production_tonnes,Oysters,1535.4,Europe
+ES,2010,production_tonnes,"Scallops, pectens",0.5,Europe
+ES,2010,production_tonnes,"Squids, cuttlefishes, octopuses",10.2,Europe
+ES,2010,production_value_eur,"Abalones, winkles, conchs",11.718784,Europe
+ES,2010,production_value_eur,Brown seaweeds,0,Europe
+ES,2010,production_value_eur,"Clams, cockles, arkshells",22770.562452,Europe
+ES,2010,production_value_eur,Miscellaneous aquatic plants,672.635832,Europe
+ES,2010,production_value_eur,Miscellaneous marine molluscs,5.3813320000000004,Europe
+ES,2010,production_value_eur,Mussels,113590.48269799999,Europe
+ES,2010,production_value_eur,Oysters,6344.36583,Europe
+ES,2010,production_value_eur,"Scallops, pectens",8.648376,Europe
+ES,2010,production_value_eur,"Squids, cuttlefishes, octopuses",55.457666,Europe
+ES,2011,production_tonnes,"Abalones, winkles, conchs",2.915,Europe
+ES,2011,production_tonnes,Brown seaweeds,0.141,Europe
+ES,2011,production_tonnes,"Clams, cockles, arkshells",2211.411,Europe
+ES,2011,production_tonnes,Miscellaneous aquatic plants,1.7,Europe
+ES,2011,production_tonnes,Miscellaneous marine molluscs,0.419,Europe
+ES,2011,production_tonnes,Mussels,208582.95299999998,Europe
+ES,2011,production_tonnes,Oysters,1755.7350000000001,Europe
+ES,2011,production_tonnes,"Scallops, pectens",1.132,Europe
+ES,2011,production_tonnes,"Squids, cuttlefishes, octopuses",2.937,Europe
+ES,2011,production_value_eur,"Abalones, winkles, conchs",14.639460000000001,Europe
+ES,2011,production_value_eur,Brown seaweeds,0.176792,Europe
+ES,2011,production_value_eur,"Clams, cockles, arkshells",19609.025392,Europe
+ES,2011,production_value_eur,Miscellaneous aquatic plants,891.912032,Europe
+ES,2011,production_value_eur,Miscellaneous marine molluscs,3.9688000000000003,Europe
+ES,2011,production_value_eur,Mussels,139976.186284,Europe
+ES,2011,production_value_eur,Oysters,7011.240588000001,Europe
+ES,2011,production_value_eur,"Scallops, pectens",15.201405999999999,Europe
+ES,2011,production_value_eur,"Squids, cuttlefishes, octopuses",20.576424,Europe
+ES,2012,production_tonnes,"Abalones, winkles, conchs",0.6,Europe
+ES,2012,production_tonnes,Brown seaweeds,0.6,Europe
+ES,2012,production_tonnes,"Clams, cockles, arkshells",1837.2,Europe
+ES,2012,production_tonnes,Miscellaneous aquatic plants,1.681,Europe
+ES,2012,production_tonnes,Miscellaneous marine molluscs,0,Europe
+ES,2012,production_tonnes,Mussels,203664.1,Europe
+ES,2012,production_tonnes,Oysters,1255.7,Europe
+ES,2012,production_tonnes,"Scallops, pectens",1,Europe
+ES,2012,production_tonnes,"Squids, cuttlefishes, octopuses",4.5,Europe
+ES,2012,production_value_eur,"Abalones, winkles, conchs",2.780866,Europe
+ES,2012,production_value_eur,Brown seaweeds,0.695442,Europe
+ES,2012,production_value_eur,"Clams, cockles, arkshells",13175.247008,Europe
+ES,2012,production_value_eur,Miscellaneous aquatic plants,810.4776680000001,Europe
+ES,2012,production_value_eur,Miscellaneous marine molluscs,0,Europe
+ES,2012,production_value_eur,Mussels,116252.09257200001,Europe
+ES,2012,production_value_eur,Oysters,5027.77055,Europe
+ES,2012,production_value_eur,"Scallops, pectens",10.575048,Europe
+ES,2012,production_value_eur,"Squids, cuttlefishes, octopuses",22.460702,Europe
+ES,2013,production_tonnes,"Abalones, winkles, conchs",0,Europe
+ES,2013,production_tonnes,"Clams, cockles, arkshells",1934.947,Europe
+ES,2013,production_tonnes,Miscellaneous aquatic plants,1.8,Europe
+ES,2013,production_tonnes,Miscellaneous marine molluscs,0,Europe
+ES,2013,production_tonnes,Mussels,162012,Europe
+ES,2013,production_tonnes,Oysters,1020.6800000000001,Europe
+ES,2013,production_tonnes,"Scallops, pectens",6.96,Europe
+ES,2013,production_tonnes,"Squids, cuttlefishes, octopuses",1.66,Europe
+ES,2013,production_value_eur,"Abalones, winkles, conchs",0,Europe
+ES,2013,production_value_eur,"Clams, cockles, arkshells",16048.30733,Europe
+ES,2013,production_value_eur,Miscellaneous aquatic plants,905.659414,Europe
+ES,2013,production_value_eur,Miscellaneous marine molluscs,0,Europe
+ES,2013,production_value_eur,Mussels,95748.00446200001,Europe
+ES,2013,production_value_eur,Oysters,4952.450844000001,Europe
+ES,2013,production_value_eur,"Scallops, pectens",38.866278,Europe
+ES,2013,production_value_eur,"Squids, cuttlefishes, octopuses",8.88921,Europe
+ES,2014,production_tonnes,"Abalones, winkles, conchs",0.993,Europe
+ES,2014,production_tonnes,Brown seaweeds,1.6,Europe
+ES,2014,production_tonnes,"Clams, cockles, arkshells",1101.231,Europe
+ES,2014,production_tonnes,Miscellaneous aquatic plants,1.463,Europe
+ES,2014,production_tonnes,Miscellaneous marine molluscs,0.228,Europe
+ES,2014,production_tonnes,Mussels,220448.547,Europe
+ES,2014,production_tonnes,Oysters,984.716,Europe
+ES,2014,production_tonnes,"Scallops, pectens",6.346,Europe
+ES,2014,production_tonnes,"Squids, cuttlefishes, octopuses",1.196,Europe
+ES,2014,production_value_eur,"Abalones, winkles, conchs",4.163632000000001,Europe
+ES,2014,production_value_eur,Brown seaweeds,19.172912,Europe
+ES,2014,production_value_eur,"Clams, cockles, arkshells",10490.071482000001,Europe
+ES,2014,production_value_eur,Miscellaneous aquatic plants,800.8343860000001,Europe
+ES,2014,production_value_eur,Miscellaneous marine molluscs,13.474978,Europe
+ES,2014,production_value_eur,Mussels,132428.698578,Europe
+ES,2014,production_value_eur,Oysters,4733.549876,Europe
+ES,2014,production_value_eur,"Scallops, pectens",39.34073,Europe
+ES,2014,production_value_eur,"Squids, cuttlefishes, octopuses",8.993842,Europe
+ES,2015,production_tonnes,"Abalones, winkles, conchs",0,Europe
+ES,2015,production_tonnes,Brown seaweeds,0.013,Europe
+ES,2015,production_tonnes,"Clams, cockles, arkshells",1386.217,Europe
+ES,2015,production_tonnes,Miscellaneous aquatic plants,1.329,Europe
+ES,2015,production_tonnes,Miscellaneous marine molluscs,0,Europe
+ES,2015,production_tonnes,Mussels,225307.61,Europe
+ES,2015,production_tonnes,Oysters,1107.154,Europe
+ES,2015,production_tonnes,"Scallops, pectens",3.638,Europe
+ES,2015,production_tonnes,"Squids, cuttlefishes, octopuses",0.658,Europe
+ES,2015,production_value_eur,"Abalones, winkles, conchs",0,Europe
+ES,2015,production_value_eur,Brown seaweeds,0.129888,Europe
+ES,2015,production_value_eur,"Clams, cockles, arkshells",11137.540611999999,Europe
+ES,2015,production_value_eur,Miscellaneous aquatic plants,712.474466,Europe
+ES,2015,production_value_eur,Miscellaneous marine molluscs,0,Europe
+ES,2015,production_value_eur,Mussels,115189.37240800001,Europe
+ES,2015,production_value_eur,Oysters,4363.84443,Europe
+ES,2015,production_value_eur,"Scallops, pectens",25.331768,Europe
+ES,2015,production_value_eur,"Squids, cuttlefishes, octopuses",3.177746,Europe
+ES,2016,production_tonnes,"Abalones, winkles, conchs",0.136,Europe
+ES,2016,production_tonnes,Brown seaweeds,0,Europe
+ES,2016,production_tonnes,"Clams, cockles, arkshells",2608.324,Europe
+ES,2016,production_tonnes,Green seaweeds,0.636,Europe
+ES,2016,production_tonnes,Miscellaneous aquatic plants,3.107,Europe
+ES,2016,production_tonnes,Miscellaneous marine molluscs,0,Europe
+ES,2016,production_tonnes,Mussels,215855.447,Europe
+ES,2016,production_tonnes,Oysters,1072.7259999999999,Europe
+ES,2016,production_tonnes,Red seaweeds,0.032,Europe
+ES,2016,production_tonnes,"Scallops, pectens",1.847,Europe
+ES,2016,production_tonnes,"Squids, cuttlefishes, octopuses",0.923,Europe
+ES,2016,production_value_eur,"Abalones, winkles, conchs",6.798984000000001,Europe
+ES,2016,production_value_eur,Brown seaweeds,0,Europe
+ES,2016,production_value_eur,"Clams, cockles, arkshells",18844.587832,Europe
+ES,2016,production_value_eur,Green seaweeds,35.353632,Europe
+ES,2016,production_value_eur,Miscellaneous aquatic plants,1080.859464,Europe
+ES,2016,production_value_eur,Miscellaneous marine molluscs,0,Europe
+ES,2016,production_value_eur,Mussels,118051.41639999999,Europe
+ES,2016,production_value_eur,Oysters,4308.050872000001,Europe
+ES,2016,production_value_eur,Red seaweeds,4.242471999999999,Europe
+ES,2016,production_value_eur,"Scallops, pectens",10.164576,Europe
+ES,2016,production_value_eur,"Squids, cuttlefishes, octopuses",7.112672000000001,Europe
+ES,2017,production_tonnes,"Abalones, winkles, conchs",0.843,Europe
+ES,2017,production_tonnes,Brown seaweeds,0.479,Europe
+ES,2017,production_tonnes,"Clams, cockles, arkshells",1355.5810000000001,Europe
+ES,2017,production_tonnes,Green seaweeds,0.943,Europe
+ES,2017,production_tonnes,Miscellaneous aquatic plants,7.809,Europe
+ES,2017,production_tonnes,Mussels,241785.183,Europe
+ES,2017,production_tonnes,Oysters,1092.974,Europe
+ES,2017,production_tonnes,Red seaweeds,0.035,Europe
+ES,2017,production_tonnes,"Scallops, pectens",1.496,Europe
+ES,2017,production_tonnes,"Squids, cuttlefishes, octopuses",1.73,Europe
+ES,2017,production_value_eur,"Abalones, winkles, conchs",64.265811,Europe
+ES,2017,production_value_eur,Brown seaweeds,3.501876,Europe
+ES,2017,production_value_eur,"Clams, cockles, arkshells",12307.212813000002,Europe
+ES,2017,production_value_eur,Green seaweeds,35.897777000000005,Europe
+ES,2017,production_value_eur,Miscellaneous aquatic plants,1604.614045,Europe
+ES,2017,production_value_eur,Mussels,130828.67880400001,Europe
+ES,2017,production_value_eur,Oysters,4027.415517,Europe
+ES,2017,production_value_eur,Red seaweeds,0.28029200000000004,Europe
+ES,2017,production_value_eur,"Scallops, pectens",9.743694999999999,Europe
+ES,2017,production_value_eur,"Squids, cuttlefishes, octopuses",17.699198,Europe
+ES,2018,production_tonnes,"Abalones, winkles, conchs",6.68,Europe
+ES,2018,production_tonnes,Brown seaweeds,1.65,Europe
+ES,2018,production_tonnes,"Clams, cockles, arkshells",2148.12,Europe
+ES,2018,production_tonnes,Miscellaneous aquatic plants,14.71,Europe
+ES,2018,production_tonnes,Mussels,283800.56,Europe
+ES,2018,production_tonnes,Oysters,1070.85,Europe
+ES,2018,production_tonnes,Red seaweeds,0.62,Europe
+ES,2018,production_tonnes,"Scallops, pectens",1.14,Europe
+ES,2018,production_tonnes,"Squids, cuttlefishes, octopuses",0.84,Europe
+ES,2018,production_value_eur,"Abalones, winkles, conchs",205.958848,Europe
+ES,2018,production_value_eur,Brown seaweeds,4.497792,Europe
+ES,2018,production_value_eur,"Clams, cockles, arkshells",18933.907408,Europe
+ES,2018,production_value_eur,Miscellaneous aquatic plants,2252.01664,Europe
+ES,2018,production_value_eur,Mussels,135316.04264,Europe
+ES,2018,production_value_eur,Oysters,4085.96928,Europe
+ES,2018,production_value_eur,Red seaweeds,2.48888,Europe
+ES,2018,production_value_eur,"Scallops, pectens",6.1692,Europe
+ES,2018,production_value_eur,"Squids, cuttlefishes, octopuses",9.826623999999999,Europe
+ES,2019,production_tonnes,"Abalones, winkles, conchs",1.81,Europe
+ES,2019,production_tonnes,Brown seaweeds,0.135,Europe
+ES,2019,production_tonnes,"Clams, cockles, arkshells",1260.027,Europe
+ES,2019,production_tonnes,Green seaweeds,1.089,Europe
+ES,2019,production_tonnes,Miscellaneous aquatic plants,15.399000000000001,Europe
+ES,2019,production_tonnes,Miscellaneous marine molluscs,0.05,Europe
+ES,2019,production_tonnes,Mussels,228194.931,Europe
+ES,2019,production_tonnes,Oysters,1309.949,Europe
+ES,2019,production_tonnes,Red seaweeds,0.128,Europe
+ES,2019,production_tonnes,"Scallops, pectens",6.3660000000000005,Europe
+ES,2019,production_tonnes,"Squids, cuttlefishes, octopuses",0.815,Europe
+ES,2019,production_value_eur,"Abalones, winkles, conchs",57.048412000000006,Europe
+ES,2019,production_value_eur,Brown seaweeds,1.349323,Europe
+ES,2019,production_value_eur,"Clams, cockles, arkshells",11091.293073,Europe
+ES,2019,production_value_eur,Green seaweeds,18.277924,Europe
+ES,2019,production_value_eur,Miscellaneous aquatic plants,1988.2037759999998,Europe
+ES,2019,production_value_eur,Miscellaneous marine molluscs,0.50008,Europe
+ES,2019,production_value_eur,Mussels,118560.29786299999,Europe
+ES,2019,production_value_eur,Oysters,5014.3075180000005,Europe
+ES,2019,production_value_eur,Red seaweeds,1.1448260000000001,Europe
+ES,2019,production_value_eur,"Scallops, pectens",32.599858000000005,Europe
+ES,2019,production_value_eur,"Squids, cuttlefishes, octopuses",7.112745,Europe
+ES,2020,production_tonnes,"Clams, cockles, arkshells",1194.291,Europe
+ES,2020,production_tonnes,Miscellaneous aquatic plants,34.771,Europe
+ES,2020,production_tonnes,Mussels,204466.12399999998,Europe
+ES,2020,production_tonnes,Oysters,1088.592,Europe
+ES,2020,production_value_eur,"Clams, cockles, arkshells",12613.773482,Europe
+ES,2020,production_value_eur,Miscellaneous aquatic plants,2257.868072,Europe
+ES,2020,production_value_eur,Mussels,105872.879157,Europe
+ES,2020,production_value_eur,Oysters,3873.71777,Europe
+ES,2021,production_tonnes,"Clams, cockles, arkshells",1703.458,Europe
+ES,2021,production_tonnes,Miscellaneous aquatic plants,29.59,Europe
+ES,2021,production_tonnes,Mussels,203225.746,Europe
+ES,2021,production_tonnes,Oysters,1431.91,Europe
+ES,2021,production_tonnes,"Scallops, pectens",5.219,Europe
+ES,2021,production_value_eur,"Clams, cockles, arkshells",16682.720924999998,Europe
+ES,2021,production_value_eur,Miscellaneous aquatic plants,1882.738585,Europe
+ES,2021,production_value_eur,Mussels,137333.74498999998,Europe
+ES,2021,production_value_eur,Oysters,4761.48036,Europe
+ES,2021,production_value_eur,"Scallops, pectens",26.376675,Europe
+ES,2022,production_tonnes,"Clams, cockles, arkshells",861.79,Europe
+ES,2022,production_tonnes,Miscellaneous aquatic plants,22.849999999999998,Europe
+ES,2022,production_tonnes,Miscellaneous marine molluscs,10,Europe
+ES,2022,production_tonnes,Mussels,192203.108,Europe
+ES,2022,production_tonnes,Oysters,1451.185,Europe
+ES,2022,production_tonnes,"Scallops, pectens",6.927,Europe
+ES,2022,production_value_eur,"Clams, cockles, arkshells",9769.419049999999,Europe
+ES,2022,production_value_eur,Miscellaneous aquatic plants,3947.1074999999996,Europe
+ES,2022,production_value_eur,Miscellaneous marine molluscs,60.023849999999996,Europe
+ES,2022,production_value_eur,Mussels,155702.01795,Europe
+ES,2022,production_value_eur,Oysters,5349.2581,Europe
+ES,2022,production_value_eur,"Scallops, pectens",33.554,Europe
+ES,2023,production_tonnes,Brown seaweeds,0,Europe
+ES,2023,production_tonnes,"Clams, cockles, arkshells",1037.147,Europe
+ES,2023,production_tonnes,Green seaweeds,0,Europe
+ES,2023,production_tonnes,Miscellaneous aquatic plants,23.48,Europe
+ES,2023,production_tonnes,Mussels,155751.842,Europe
+ES,2023,production_tonnes,Oysters,1441.796,Europe
+ES,2023,production_tonnes,Red seaweeds,0,Europe
+ES,2023,production_tonnes,"Scallops, pectens",0,Europe
+ES,2023,production_tonnes,"Squids, cuttlefishes, octopuses",0,Europe
+ES,2023,production_value_eur,Brown seaweeds,0,Europe
+ES,2023,production_value_eur,"Clams, cockles, arkshells",13264.840512,Europe
+ES,2023,production_value_eur,Green seaweeds,0,Europe
+ES,2023,production_value_eur,Miscellaneous aquatic plants,296.33049600000004,Europe
+ES,2023,production_value_eur,Mussels,125457.87223200001,Europe
+ES,2023,production_value_eur,Oysters,5921.645268,Europe
+ES,2023,production_value_eur,Red seaweeds,0,Europe
+ES,2023,production_value_eur,"Scallops, pectens",0,Europe
+ES,2023,production_value_eur,"Squids, cuttlefishes, octopuses",0,Europe
+FR,2010,production_tonnes,"Abalones, winkles, conchs",5,Europe
+FR,2010,production_tonnes,"Clams, cockles, arkshells",2251,Europe
+FR,2010,production_tonnes,Miscellaneous aquatic plants,440,Europe
+FR,2010,production_tonnes,Mussels,70339,Europe
+FR,2010,production_tonnes,Oysters,80650,Europe
+FR,2010,production_value_eur,"Abalones, winkles, conchs",67.65,Europe
+FR,2010,production_value_eur,"Clams, cockles, arkshells",14768.540710000001,Europe
+FR,2010,production_value_eur,Miscellaneous aquatic plants,443.54497000000003,Europe
+FR,2010,production_value_eur,Mussels,157351.385224,Europe
+FR,2010,production_value_eur,Oysters,414524.90776400006,Europe
+FR,2011,production_tonnes,"Abalones, winkles, conchs",5,Europe
+FR,2011,production_tonnes,"Clams, cockles, arkshells",2446,Europe
+FR,2011,production_tonnes,Miscellaneous aquatic plants,47.5,Europe
+FR,2011,production_tonnes,Mussels,65021,Europe
+FR,2011,production_tonnes,Oysters,78965,Europe
+FR,2011,production_value_eur,"Abalones, winkles, conchs",67.65,Europe
+FR,2011,production_value_eur,"Clams, cockles, arkshells",14916.01771,Europe
+FR,2011,production_value_eur,Miscellaneous aquatic plants,302.78335999999996,Europe
+FR,2011,production_value_eur,Mussels,155817.869768,Europe
+FR,2011,production_value_eur,Oysters,486208.59674199997,Europe
+FR,2012,production_tonnes,"Abalones, winkles, conchs",5,Europe
+FR,2012,production_tonnes,Brown seaweeds,100,Europe
+FR,2012,production_tonnes,"Clams, cockles, arkshells",2070,Europe
+FR,2012,production_tonnes,Mussels,77139,Europe
+FR,2012,production_tonnes,Oysters,80354,Europe
+FR,2012,production_value_eur,"Abalones, winkles, conchs",67.65,Europe
+FR,2012,production_value_eur,Brown seaweeds,254.95390799999998,Europe
+FR,2012,production_value_eur,"Clams, cockles, arkshells",11216.042574,Europe
+FR,2012,production_value_eur,Mussels,161496.929418,Europe
+FR,2012,production_value_eur,Oysters,460116.513098,Europe
+FR,2013,production_tonnes,"Abalones, winkles, conchs",6,Europe
+FR,2013,production_tonnes,Brown seaweeds,100,Europe
+FR,2013,production_tonnes,"Clams, cockles, arkshells",2868,Europe
+FR,2013,production_tonnes,Mussels,74138.2,Europe
+FR,2013,production_tonnes,Oysters,77510.5,Europe
+FR,2013,production_value_eur,"Abalones, winkles, conchs",81.18,Europe
+FR,2013,production_value_eur,Brown seaweeds,263.55177199999997,Europe
+FR,2013,production_value_eur,"Clams, cockles, arkshells",16051.715086,Europe
+FR,2013,production_value_eur,Mussels,158315.506866,Europe
+FR,2013,production_value_eur,Oysters,466136.365486,Europe
+FR,2014,production_tonnes,"Abalones, winkles, conchs",6,Europe
+FR,2014,production_tonnes,Brown seaweeds,100,Europe
+FR,2014,production_tonnes,"Clams, cockles, arkshells",2767.5,Europe
+FR,2014,production_tonnes,Mussels,57633,Europe
+FR,2014,production_tonnes,Oysters,75166.79999999999,Europe
+FR,2014,production_value_eur,"Abalones, winkles, conchs",81.18,Europe
+FR,2014,production_value_eur,Brown seaweeds,263.62753999999995,Europe
+FR,2014,production_value_eur,"Clams, cockles, arkshells",16261.707,Europe
+FR,2014,production_value_eur,Mussels,122715.415064,Europe
+FR,2014,production_value_eur,Oysters,413466.333192,Europe
+FR,2015,production_tonnes,"Abalones, winkles, conchs",6,Europe
+FR,2015,production_tonnes,Brown seaweeds,100,Europe
+FR,2015,production_tonnes,"Clams, cockles, arkshells",2796.8,Europe
+FR,2015,production_tonnes,Mussels,56801.700000000004,Europe
+FR,2015,production_tonnes,Oysters,64882.4,Europe
+FR,2015,production_value_eur,"Abalones, winkles, conchs",81.18,Europe
+FR,2015,production_value_eur,Brown seaweeds,220.171886,Europe
+FR,2015,production_value_eur,"Clams, cockles, arkshells",14463.502349999999,Europe
+FR,2015,production_value_eur,Mussels,112464.07953,Europe
+FR,2015,production_value_eur,Oysters,336270.274164,Europe
+FR,2016,production_tonnes,"Abalones, winkles, conchs",7,Europe
+FR,2016,production_tonnes,Brown seaweeds,100,Europe
+FR,2016,production_tonnes,"Clams, cockles, arkshells",2518.27,Europe
+FR,2016,production_tonnes,Mussels,51619.59,Europe
+FR,2016,production_tonnes,Oysters,77622.1,Europe
+FR,2016,production_value_eur,"Abalones, winkles, conchs",94.92,Europe
+FR,2016,production_value_eur,Brown seaweeds,220.141176,Europe
+FR,2016,production_value_eur,"Clams, cockles, arkshells",17285.648872,Europe
+FR,2016,production_value_eur,Mussels,126956.568528,Europe
+FR,2016,production_value_eur,Oysters,393311.45216000004,Europe
+FR,2017,production_tonnes,"Abalones, winkles, conchs",7,Europe
+FR,2017,production_tonnes,Brown seaweeds,100,Europe
+FR,2017,production_tonnes,"Clams, cockles, arkshells",2995.3,Europe
+FR,2017,production_tonnes,Mussels,52699,Europe
+FR,2017,production_tonnes,Oysters,84926.8,Europe
+FR,2017,production_value_eur,"Abalones, winkles, conchs",93.135,Europe
+FR,2017,production_value_eur,Brown seaweeds,220.44611,Europe
+FR,2017,production_value_eur,"Clams, cockles, arkshells",19457.500761,Europe
+FR,2017,production_value_eur,Mussels,135621.248018,Europe
+FR,2017,production_value_eur,Oysters,423321.295505,Europe
+FR,2018,production_tonnes,"Abalones, winkles, conchs",7,Europe
+FR,2018,production_tonnes,Brown seaweeds,113,Europe
+FR,2018,production_tonnes,"Clams, cockles, arkshells",3179.7999999999997,Europe
+FR,2018,production_tonnes,Miscellaneous aquatic plants,253.9,Europe
+FR,2018,production_tonnes,Mussels,48817.5,Europe
+FR,2018,production_tonnes,Oysters,92092,Europe
+FR,2018,production_value_eur,"Abalones, winkles, conchs",89.04,Europe
+FR,2018,production_value_eur,Brown seaweeds,258.691728,Europe
+FR,2018,production_value_eur,"Clams, cockles, arkshells",14035.593136,Europe
+FR,2018,production_value_eur,Miscellaneous aquatic plants,7666.180336,Europe
+FR,2018,production_value_eur,Mussels,100767.43295999999,Europe
+FR,2018,production_value_eur,Oysters,382511.096288,Europe
+FR,2019,production_tonnes,"Abalones, winkles, conchs",7,Europe
+FR,2019,production_tonnes,Brown seaweeds,104.93,Europe
+FR,2019,production_tonnes,"Clams, cockles, arkshells",1945.68,Europe
+FR,2019,production_tonnes,Green seaweeds,6.22,Europe
+FR,2019,production_tonnes,Miscellaneous aquatic plants,271.76,Europe
+FR,2019,production_tonnes,Mussels,60254.990000000005,Europe
+FR,2019,production_tonnes,Oysters,85947.09999999999,Europe
+FR,2019,production_value_eur,"Abalones, winkles, conchs",93.765,Europe
+FR,2019,production_value_eur,Brown seaweeds,402.806403,Europe
+FR,2019,production_value_eur,"Clams, cockles, arkshells",9713.698586,Europe
+FR,2019,production_value_eur,Green seaweeds,60.00067,Europe
+FR,2019,production_value_eur,Miscellaneous aquatic plants,7966.029718000001,Europe
+FR,2019,production_value_eur,Mussels,133870.566757,Europe
+FR,2019,production_value_eur,Oysters,398133.477773,Europe
+FR,2020,production_tonnes,"Abalones, winkles, conchs",7,Europe
+FR,2020,production_tonnes,Brown seaweeds,69.749,Europe
+FR,2020,production_tonnes,"Clams, cockles, arkshells",1932.628,Europe
+FR,2020,production_tonnes,Miscellaneous aquatic plants,273.51,Europe
+FR,2020,production_tonnes,Mussels,61219.494999999995,Europe
+FR,2020,production_tonnes,Oysters,80783.385,Europe
+FR,2020,production_value_eur,"Abalones, winkles, conchs",92.085,Europe
+FR,2020,production_value_eur,Brown seaweeds,382.17818300000005,Europe
+FR,2020,production_value_eur,"Clams, cockles, arkshells",11846.066099,Europe
+FR,2020,production_value_eur,Miscellaneous aquatic plants,7817.660438,Europe
+FR,2020,production_value_eur,Mussels,138055.65528300003,Europe
+FR,2020,production_value_eur,Oysters,357593.76820000005,Europe
+FR,2021,production_tonnes,"Abalones, winkles, conchs",7,Europe
+FR,2021,production_tonnes,Brown seaweeds,77.63,Europe
+FR,2021,production_tonnes,"Clams, cockles, arkshells",2142.329,Europe
+FR,2021,production_tonnes,Miscellaneous aquatic plants,252.649,Europe
+FR,2021,production_tonnes,Mussels,66321.297,Europe
+FR,2021,production_tonnes,Oysters,80910.621,Europe
+FR,2021,production_value_eur,"Abalones, winkles, conchs",88.725,Europe
+FR,2021,production_value_eur,Brown seaweeds,323.61303,Europe
+FR,2021,production_value_eur,"Clams, cockles, arkshells",12226.392035,Europe
+FR,2021,production_value_eur,Miscellaneous aquatic plants,7587.28373,Europe
+FR,2021,production_value_eur,Mussels,149412.22399999996,Europe
+FR,2021,production_value_eur,Oysters,403401.72236,Europe
+FR,2022,production_tonnes,"Abalones, winkles, conchs",5,Europe
+FR,2022,production_tonnes,Brown seaweeds,132.8,Europe
+FR,2022,production_tonnes,"Clams, cockles, arkshells",1870.136,Europe
+FR,2022,production_tonnes,Miscellaneous aquatic plants,388.605,Europe
+FR,2022,production_tonnes,Mussels,71195.475,Europe
+FR,2022,production_tonnes,Oysters,84785.695,Europe
+FR,2022,production_value_eur,"Abalones, winkles, conchs",71.25,Europe
+FR,2022,production_value_eur,Brown seaweeds,593.71865,Europe
+FR,2022,production_value_eur,"Clams, cockles, arkshells",13406.289799999999,Europe
+FR,2022,production_value_eur,Miscellaneous aquatic plants,9024.14975,Europe
+FR,2022,production_value_eur,Mussels,177207.2487,Europe
+FR,2022,production_value_eur,Oysters,411546.31085,Europe
+FR,2023,production_tonnes,"Abalones, winkles, conchs",5,Europe
+FR,2023,production_tonnes,Brown seaweeds,112.75,Europe
+FR,2023,production_tonnes,"Clams, cockles, arkshells",1330.228,Europe
+FR,2023,production_tonnes,Miscellaneous aquatic plants,338.797,Europe
+FR,2023,production_tonnes,Mussels,54556.047999999995,Europe
+FR,2023,production_tonnes,Oysters,90429.619,Europe
+FR,2023,production_value_eur,"Abalones, winkles, conchs",69.3,Europe
+FR,2023,production_value_eur,Brown seaweeds,496.77566400000006,Europe
+FR,2023,production_value_eur,"Clams, cockles, arkshells",8346.526188,Europe
+FR,2023,production_value_eur,Miscellaneous aquatic plants,8302.539168000001,Europe
+FR,2023,production_value_eur,Mussels,135793.64106,Europe
+FR,2023,production_value_eur,Oysters,514388.834652,Europe
+GB,2010,production_tonnes,"Clams, cockles, arkshells",33.8,Europe
+GB,2010,production_tonnes,Mussels,30212,Europe
+GB,2010,production_tonnes,Oysters,1266.4499999999998,Europe
+GB,2010,production_tonnes,"Scallops, pectens",7.3,Europe
+GB,2010,production_value_eur,"Clams, cockles, arkshells",127.21357,Europe
+GB,2010,production_value_eur,Mussels,39202.25496,Europe
+GB,2010,production_value_eur,Oysters,6921.201144000001,Europe
+GB,2010,production_value_eur,"Scallops, pectens",38.153698000000006,Europe
+GB,2011,production_tonnes,"Clams, cockles, arkshells",20.8,Europe
+GB,2011,production_tonnes,Mussels,26158,Europe
+GB,2011,production_tonnes,Oysters,868,Europe
+GB,2011,production_tonnes,"Scallops, pectens",11,Europe
+GB,2011,production_value_eur,"Clams, cockles, arkshells",78.213322,Europe
+GB,2011,production_value_eur,Mussels,44834.585598000005,Europe
+GB,2011,production_value_eur,Oysters,6272.109316,Europe
+GB,2011,production_value_eur,"Scallops, pectens",142.06229400000004,Europe
+GB,2012,production_tonnes,"Clams, cockles, arkshells",14,Europe
+GB,2012,production_tonnes,Mussels,26021,Europe
+GB,2012,production_tonnes,Oysters,1317,Europe
+GB,2012,production_tonnes,"Scallops, pectens",7.4,Europe
+GB,2012,production_value_eur,"Clams, cockles, arkshells",61.839316,Europe
+GB,2012,production_value_eur,Mussels,44491.373696,Europe
+GB,2012,production_value_eur,Oysters,8704.080813999999,Europe
+GB,2012,production_value_eur,"Scallops, pectens",142.726166,Europe
+GB,2013,production_tonnes,"Clams, cockles, arkshells",2516.5,Europe
+GB,2013,production_tonnes,Miscellaneous marine molluscs,1.75,Europe
+GB,2013,production_tonnes,Mussels,44960.403999999995,Europe
+GB,2013,production_tonnes,Oysters,1315.9409999999998,Europe
+GB,2013,production_tonnes,"Scallops, pectens",6,Europe
+GB,2013,production_value_eur,"Clams, cockles, arkshells",8888.639936000001,Europe
+GB,2013,production_value_eur,Miscellaneous marine molluscs,4.703028000000001,Europe
+GB,2013,production_value_eur,Mussels,105513.319846,Europe
+GB,2013,production_value_eur,Oysters,6076.167856000001,Europe
+GB,2013,production_value_eur,"Scallops, pectens",80.77861,Europe
+GB,2014,production_tonnes,"Clams, cockles, arkshells",20.1,Europe
+GB,2014,production_tonnes,Miscellaneous marine molluscs,1.75,Europe
+GB,2014,production_tonnes,Mussels,39502.8,Europe
+GB,2014,production_tonnes,Oysters,1687.3000000000002,Europe
+GB,2014,production_tonnes,"Scallops, pectens",7,Europe
+GB,2014,production_value_eur,"Clams, cockles, arkshells",96.696204,Europe
+GB,2014,production_value_eur,Miscellaneous marine molluscs,4.675066,Europe
+GB,2014,production_value_eur,Mussels,91085.39418,Europe
+GB,2014,production_value_eur,Oysters,6730.247744000001,Europe
+GB,2014,production_value_eur,"Scallops, pectens",100.91485800000001,Europe
+GB,2015,production_tonnes,"Clams, cockles, arkshells",3052.29,Europe
+GB,2015,production_tonnes,Miscellaneous marine molluscs,2,Europe
+GB,2015,production_tonnes,Mussels,19254.3,Europe
+GB,2015,production_tonnes,Oysters,1845.501,Europe
+GB,2015,production_tonnes,"Scallops, pectens",5,Europe
+GB,2015,production_value_eur,"Clams, cockles, arkshells",10526.159599999999,Europe
+GB,2015,production_value_eur,Miscellaneous marine molluscs,6.173288,Europe
+GB,2015,production_value_eur,Mussels,35077.438726,Europe
+GB,2015,production_value_eur,Oysters,5980.47648,Europe
+GB,2015,production_value_eur,"Scallops, pectens",90.275768,Europe
+GB,2016,production_tonnes,"Clams, cockles, arkshells",5.550000000000001,Europe
+GB,2016,production_tonnes,Mussels,14685.26,Europe
+GB,2016,production_tonnes,Oysters,2188.68,Europe
+GB,2016,production_tonnes,"Scallops, pectens",10,Europe
+GB,2016,production_value_eur,"Clams, cockles, arkshells",22.062120000000004,Europe
+GB,2016,production_value_eur,Mussels,20792.376968,Europe
+GB,2016,production_value_eur,Oysters,7395.240704,Europe
+GB,2016,production_value_eur,"Scallops, pectens",104.578336,Europe
+GB,2017,production_tonnes,"Clams, cockles, arkshells",5244.228,Europe
+GB,2017,production_tonnes,Mussels,16178.26,Europe
+GB,2017,production_tonnes,Oysters,2271.82,Europe
+GB,2017,production_tonnes,"Scallops, pectens",17,Europe
+GB,2017,production_value_eur,"Clams, cockles, arkshells",15046.483467,Europe
+GB,2017,production_value_eur,Mussels,22347.6989,Europe
+GB,2017,production_value_eur,Oysters,8724.969291000001,Europe
+GB,2017,production_value_eur,"Scallops, pectens",142.266817,Europe
+GB,2018,production_tonnes,"Clams, cockles, arkshells",4451.320000000001,Europe
+GB,2018,production_tonnes,Mussels,14247,Europe
+GB,2018,production_tonnes,Oysters,2238.75,Europe
+GB,2018,production_tonnes,"Scallops, pectens",5,Europe
+GB,2018,production_value_eur,"Clams, cockles, arkshells",5955.006224000001,Europe
+GB,2018,production_value_eur,Mussels,18095.937552,Europe
+GB,2018,production_value_eur,Oysters,7977.119039999999,Europe
+GB,2018,production_value_eur,"Scallops, pectens",72.41496,Europe
+GB,2019,production_tonnes,"Clams, cockles, arkshells",7.5,Europe
+GB,2019,production_tonnes,Mussels,13240,Europe
+GB,2019,production_tonnes,Oysters,2689.794,Europe
+GB,2019,production_tonnes,"Scallops, pectens",4,Europe
+GB,2019,production_value_eur,"Clams, cockles, arkshells",37.332758,Europe
+GB,2019,production_value_eur,Mussels,15272.770038,Europe
+GB,2019,production_value_eur,Oysters,9482.673235000002,Europe
+GB,2019,production_value_eur,"Scallops, pectens",55.926804,Europe
+GB,2020,production_tonnes,"Clams, cockles, arkshells",3551.8,Europe
+GB,2020,production_tonnes,Mussels,9238.9,Europe
+GB,2020,production_tonnes,Oysters,1819.8,Europe
+GB,2020,production_tonnes,"Scallops, pectens",2.5,Europe
+GB,2020,production_value_eur,"Clams, cockles, arkshells",11190.656812,Europe
+GB,2020,production_value_eur,Mussels,9972.33192,Europe
+GB,2020,production_value_eur,Oysters,6623.157496999999,Europe
+GB,2020,production_value_eur,"Scallops, pectens",50.537125,Europe
+GB,2021,production_tonnes,"Clams, cockles, arkshells",3893.084,Europe
+GB,2021,production_tonnes,Mussels,12223.2,Europe
+GB,2021,production_tonnes,Oysters,2988.62,Europe
+GB,2021,production_tonnes,"Scallops, pectens",3.2600000000000002,Europe
+GB,2021,production_value_eur,"Clams, cockles, arkshells",13583.712155,Europe
+GB,2021,production_value_eur,Mussels,13779.71244,Europe
+GB,2021,production_value_eur,Oysters,11418.223049999999,Europe
+GB,2021,production_value_eur,"Scallops, pectens",72.26102,Europe
+GB,2022,production_tonnes,"Clams, cockles, arkshells",1483.4940000000001,Europe
+GB,2022,production_tonnes,Mussels,14091.4,Europe
+GB,2022,production_tonnes,Oysters,2579.407,Europe
+GB,2022,production_tonnes,"Scallops, pectens",4.704,Europe
+GB,2022,production_value_eur,"Clams, cockles, arkshells",5221.9581,Europe
+GB,2022,production_value_eur,Mussels,16789.950399999998,Europe
+GB,2022,production_value_eur,Oysters,11644.16805,Europe
+GB,2022,production_value_eur,"Scallops, pectens",81.83775,Europe
+GB,2023,production_tonnes,"Clams, cockles, arkshells",1483.4940000000001,Europe
+GB,2023,production_tonnes,Mussels,14091.4,Europe
+GB,2023,production_tonnes,Oysters,2579.407,Europe
+GB,2023,production_tonnes,"Scallops, pectens",4.704,Europe
+GB,2023,production_value_eur,"Clams, cockles, arkshells",5121.733848,Europe
+GB,2023,production_value_eur,Mussels,16467.706332,Europe
+GB,2023,production_value_eur,Oysters,11420.685276,Europe
+GB,2023,production_value_eur,"Scallops, pectens",80.26695600000001,Europe
+GR,2010,production_tonnes,"Clams, cockles, arkshells",1,Europe
+GR,2010,production_tonnes,Mussels,17064,Europe
+GR,2010,production_tonnes,Oysters,83,Europe
+GR,2010,production_value_eur,"Clams, cockles, arkshells",7.0554440000000005,Europe
+GR,2010,production_value_eur,Mussels,10202.535530000001,Europe
+GR,2010,production_value_eur,Oysters,466.48012400000005,Europe
+GR,2011,production_tonnes,"Clams, cockles, arkshells",1.7,Europe
+GR,2011,production_tonnes,Miscellaneous aquatic plants,198,Europe
+GR,2011,production_tonnes,Mussels,17193.1,Europe
+GR,2011,production_tonnes,Oysters,1,Europe
+GR,2011,production_value_eur,"Clams, cockles, arkshells",7.18443,Europe
+GR,2011,production_value_eur,Miscellaneous aquatic plants,1368.529734,Europe
+GR,2011,production_value_eur,Mussels,8505.154636,Europe
+GR,2011,production_value_eur,Oysters,5.273092,Europe
+GR,2012,production_tonnes,"Clams, cockles, arkshells",0.35,Europe
+GR,2012,production_tonnes,Miscellaneous aquatic plants,174,Europe
+GR,2012,production_tonnes,Mussels,16611.6,Europe
+GR,2012,production_tonnes,Oysters,0.68,Europe
+GR,2012,production_value_eur,"Clams, cockles, arkshells",1.013848,Europe
+GR,2012,production_value_eur,Miscellaneous aquatic plants,874.937294,Europe
+GR,2012,production_value_eur,Mussels,6930.302324,Europe
+GR,2012,production_value_eur,Oysters,2.490422,Europe
+GR,2013,production_tonnes,"Clams, cockles, arkshells",0.34,Europe
+GR,2013,production_tonnes,Miscellaneous aquatic plants,93,Europe
+GR,2013,production_tonnes,Mussels,18638.4,Europe
+GR,2013,production_tonnes,Oysters,0.63,Europe
+GR,2013,production_value_eur,"Clams, cockles, arkshells",1.22221,Europe
+GR,2013,production_value_eur,Miscellaneous aquatic plants,493.88288400000005,Europe
+GR,2013,production_value_eur,Mussels,8261.398156000001,Europe
+GR,2013,production_value_eur,Oysters,2.26402,Europe
+GR,2014,production_tonnes,Miscellaneous aquatic plants,126,Europe
+GR,2014,production_tonnes,Miscellaneous marine molluscs,22.8,Europe
+GR,2014,production_tonnes,Mussels,16678.4,Europe
+GR,2014,production_value_eur,Miscellaneous aquatic plants,611.1942980000001,Europe
+GR,2014,production_value_eur,Miscellaneous marine molluscs,19.125106,Europe
+GR,2014,production_value_eur,Mussels,7614.610938,Europe
+GR,2015,production_tonnes,Miscellaneous aquatic plants,148,Europe
+GR,2015,production_tonnes,Miscellaneous marine molluscs,1,Europe
+GR,2015,production_tonnes,Mussels,18628.4,Europe
+GR,2015,production_value_eur,Miscellaneous aquatic plants,560.469426,Europe
+GR,2015,production_value_eur,Miscellaneous marine molluscs,3.1227240000000003,Europe
+GR,2015,production_value_eur,Mussels,6897.888052,Europe
+GR,2016,production_tonnes,Miscellaneous aquatic plants,96,Europe
+GR,2016,production_tonnes,Mussels,23288.6,Europe
+GR,2016,production_tonnes,Oysters,2,Europe
+GR,2016,production_value_eur,Miscellaneous aquatic plants,382.51675200000005,Europe
+GR,2016,production_value_eur,Mussels,8389.265544,Europe
+GR,2016,production_value_eur,Oysters,4.402480000000001,Europe
+GR,2017,production_tonnes,Miscellaneous aquatic plants,103,Europe
+GR,2017,production_tonnes,Miscellaneous marine molluscs,90.3,Europe
+GR,2017,production_tonnes,Mussels,19155.8,Europe
+GR,2017,production_value_eur,Miscellaneous aquatic plants,1073.371118,Europe
+GR,2017,production_value_eur,Miscellaneous marine molluscs,343.835793,Europe
+GR,2017,production_value_eur,Mussels,7677.853373,Europe
+GR,2018,production_tonnes,Miscellaneous aquatic plants,129.9,Europe
+GR,2018,production_tonnes,Miscellaneous marine molluscs,94.3,Europe
+GR,2018,production_tonnes,Mussels,21915.9,Europe
+GR,2018,production_value_eur,Miscellaneous aquatic plants,1267.059552,Europe
+GR,2018,production_value_eur,Miscellaneous marine molluscs,396.634192,Europe
+GR,2018,production_value_eur,Mussels,7681.682624,Europe
+GR,2019,production_tonnes,Miscellaneous aquatic plants,142.3,Europe
+GR,2019,production_tonnes,Miscellaneous marine molluscs,199.1,Europe
+GR,2019,production_tonnes,Mussels,23497.5,Europe
+GR,2019,production_value_eur,Miscellaneous aquatic plants,1385.5734420000001,Europe
+GR,2019,production_value_eur,Miscellaneous marine molluscs,467.74000499999994,Europe
+GR,2019,production_value_eur,Mussels,8926.288692,Europe
+GR,2020,production_tonnes,Miscellaneous aquatic plants,91.849,Europe
+GR,2020,production_tonnes,Miscellaneous marine molluscs,74.384,Europe
+GR,2020,production_tonnes,Mussels,19336.845,Europe
+GR,2020,production_value_eur,Miscellaneous aquatic plants,803.868724,Europe
+GR,2020,production_value_eur,Miscellaneous marine molluscs,170.629997,Europe
+GR,2020,production_value_eur,Mussels,6262.286906,Europe
+GR,2021,production_tonnes,Miscellaneous aquatic plants,62.1,Europe
+GR,2021,production_tonnes,Miscellaneous marine molluscs,23.286,Europe
+GR,2021,production_tonnes,Mussels,13508.3,Europe
+GR,2021,production_tonnes,Oysters,2,Europe
+GR,2021,production_value_eur,Miscellaneous aquatic plants,551.74613,Europe
+GR,2021,production_value_eur,Miscellaneous marine molluscs,74.84334,Europe
+GR,2021,production_value_eur,Mussels,4995.149899999999,Europe
+GR,2021,production_value_eur,Oysters,5.9961199999999995,Europe
+GR,2022,production_tonnes,Miscellaneous aquatic plants,57.5,Europe
+GR,2022,production_tonnes,Miscellaneous marine molluscs,15,Europe
+GR,2022,production_tonnes,Mussels,10733.855,Europe
+GR,2022,production_value_eur,Miscellaneous aquatic plants,650.0070999999999,Europe
+GR,2022,production_value_eur,Miscellaneous marine molluscs,84.0332,Europe
+GR,2022,production_value_eur,Mussels,6013.340399999999,Europe
+GR,2023,production_tonnes,Miscellaneous aquatic plants,17.61,Europe
+GR,2023,production_tonnes,Miscellaneous marine molluscs,2,Europe
+GR,2023,production_tonnes,Mussels,18008.37,Europe
+GR,2023,production_value_eur,Miscellaneous aquatic plants,407.977416,Europe
+GR,2023,production_value_eur,Miscellaneous marine molluscs,9.991212,Europe
+GR,2023,production_value_eur,Mussels,11886.519876,Europe
+IE,2010,production_tonnes,"Abalones, winkles, conchs",0.4,Europe
+IE,2010,production_tonnes,Brown seaweeds,2,Europe
+IE,2010,production_tonnes,"Clams, cockles, arkshells",175,Europe
+IE,2010,production_tonnes,Mussels,22234,Europe
+IE,2010,production_tonnes,Oysters,7160.5,Europe
+IE,2010,production_tonnes,Red seaweeds,1,Europe
+IE,2010,production_tonnes,"Scallops, pectens",58.5,Europe
+IE,2010,production_value_eur,"Abalones, winkles, conchs",15.545068,Europe
+IE,2010,production_value_eur,Brown seaweeds,1.1960520000000001,Europe
+IE,2010,production_value_eur,"Clams, cockles, arkshells",1297.4395060000002,Europe
+IE,2010,production_value_eur,Mussels,18877.009998,Europe
+IE,2010,production_value_eur,Oysters,25118.660578000003,Europe
+IE,2010,production_value_eur,Red seaweeds,0.5980260000000001,Europe
+IE,2010,production_value_eur,"Scallops, pectens",398.73812,Europe
+IE,2011,production_tonnes,"Abalones, winkles, conchs",0.53,Europe
+IE,2011,production_tonnes,Brown seaweeds,3,Europe
+IE,2011,production_tonnes,"Clams, cockles, arkshells",150.2,Europe
+IE,2011,production_tonnes,Mussels,22671,Europe
+IE,2011,production_tonnes,Oysters,7937,Europe
+IE,2011,production_tonnes,"Scallops, pectens",50.14,Europe
+IE,2011,production_value_eur,"Abalones, winkles, conchs",26.617118,Europe
+IE,2011,production_value_eur,Brown seaweeds,1.883376,Europe
+IE,2011,production_value_eur,"Clams, cockles, arkshells",1133.381942,Europe
+IE,2011,production_value_eur,Mussels,20380.532150000003,Europe
+IE,2011,production_value_eur,Oysters,37233.422578000005,Europe
+IE,2011,production_value_eur,"Scallops, pectens",395.97439199999997,Europe
+IE,2012,production_tonnes,"Abalones, winkles, conchs",0.71,Europe
+IE,2012,production_tonnes,"Clams, cockles, arkshells",29.5,Europe
+IE,2012,production_tonnes,Mussels,15188,Europe
+IE,2012,production_tonnes,Oysters,7560,Europe
+IE,2012,production_tonnes,Red seaweeds,8.5,Europe
+IE,2012,production_tonnes,"Scallops, pectens",43.4,Europe
+IE,2012,production_value_eur,"Abalones, winkles, conchs",24.190738,Europe
+IE,2012,production_value_eur,"Clams, cockles, arkshells",239.308718,Europe
+IE,2012,production_value_eur,Mussels,12989.582034,Europe
+IE,2012,production_value_eur,Oysters,43090.437807999995,Europe
+IE,2012,production_value_eur,Red seaweeds,9.850742,Europe
+IE,2012,production_value_eur,"Scallops, pectens",326.919978,Europe
+IE,2013,production_tonnes,"Abalones, winkles, conchs",1.7,Europe
+IE,2013,production_tonnes,Brown seaweeds,41.5,Europe
+IE,2013,production_tonnes,"Clams, cockles, arkshells",4,Europe
+IE,2013,production_tonnes,Mussels,15360,Europe
+IE,2013,production_tonnes,Oysters,8640.6,Europe
+IE,2013,production_tonnes,"Scallops, pectens",37,Europe
+IE,2013,production_value_eur,"Abalones, winkles, conchs",122.80279,Europe
+IE,2013,production_value_eur,Brown seaweeds,49.715534,Europe
+IE,2013,production_value_eur,"Clams, cockles, arkshells",95.836598,Europe
+IE,2013,production_value_eur,Mussels,17848.682192,Europe
+IE,2013,production_value_eur,Oysters,47815.18145800001,Europe
+IE,2013,production_value_eur,"Scallops, pectens",232.261392,Europe
+IE,2014,production_tonnes,Brown seaweeds,100,Europe
+IE,2014,production_tonnes,Mussels,11374.5,Europe
+IE,2014,production_tonnes,Oysters,9442.2,Europe
+IE,2014,production_tonnes,"Scallops, pectens",25.9,Europe
+IE,2014,production_value_eur,Brown seaweeds,119.8307,Europe
+IE,2014,production_value_eur,Mussels,16219.879456,Europe
+IE,2014,production_value_eur,Oysters,50503.12432,Europe
+IE,2014,production_value_eur,"Scallops, pectens",159.215628,Europe
+IE,2015,production_tonnes,Miscellaneous aquatic plants,70,Europe
+IE,2015,production_tonnes,Mussels,16015,Europe
+IE,2015,production_tonnes,Oysters,9547,Europe
+IE,2015,production_tonnes,"Scallops, pectens",50,Europe
+IE,2015,production_value_eur,Miscellaneous aquatic plants,70.054732,Europe
+IE,2015,production_value_eur,Mussels,12661.726682,Europe
+IE,2015,production_value_eur,Oysters,37835.01238,Europe
+IE,2015,production_value_eur,"Scallops, pectens",233.68204200000005,Europe
+IE,2016,production_tonnes,Miscellaneous aquatic plants,50,Europe
+IE,2016,production_tonnes,Mussels,15121,Europe
+IE,2016,production_tonnes,Oysters,8016.43,Europe
+IE,2016,production_tonnes,"Scallops, pectens",33,Europe
+IE,2016,production_value_eur,Miscellaneous aquatic plants,50.03188000000001,Europe
+IE,2016,production_value_eur,Mussels,12240.723192,Europe
+IE,2016,production_value_eur,Oysters,35423.878224,Europe
+IE,2016,production_value_eur,"Scallops, pectens",158.501032,Europe
+IE,2017,production_tonnes,Miscellaneous aquatic plants,41,Europe
+IE,2017,production_tonnes,Mussels,16340,Europe
+IE,2017,production_tonnes,Oysters,10058.9,Europe
+IE,2017,production_value_eur,Miscellaneous aquatic plants,41.083179,Europe
+IE,2017,production_value_eur,Mussels,14899.543047000001,Europe
+IE,2017,production_value_eur,Oysters,44484.518872,Europe
+IE,2018,production_tonnes,Miscellaneous aquatic plants,40,Europe
+IE,2018,production_tonnes,Mussels,13889,Europe
+IE,2018,production_tonnes,Oysters,10369,Europe
+IE,2018,production_value_eur,Miscellaneous aquatic plants,40.057824000000004,Europe
+IE,2018,production_value_eur,Mussels,11961.852384,Europe
+IE,2018,production_value_eur,Oysters,45759.08827199999,Europe
+IE,2019,production_tonnes,Miscellaneous aquatic plants,42,Europe
+IE,2019,production_tonnes,Mussels,15184,Europe
+IE,2019,production_tonnes,Oysters,10716,Europe
+IE,2019,production_value_eur,Miscellaneous aquatic plants,41.987074,Europe
+IE,2019,production_value_eur,Mussels,14815.001271,Europe
+IE,2019,production_value_eur,Oysters,46413.929505,Europe
+IE,2020,production_tonnes,Miscellaneous aquatic plants,42,Europe
+IE,2020,production_tonnes,Mussels,14729,Europe
+IE,2020,production_tonnes,Oysters,9475,Europe
+IE,2020,production_value_eur,Miscellaneous aquatic plants,42.071444,Europe
+IE,2020,production_value_eur,Mussels,13278.714881999998,Europe
+IE,2020,production_value_eur,Oysters,39201.623745000004,Europe
+IE,2021,production_tonnes,Miscellaneous aquatic plants,214,Europe
+IE,2021,production_tonnes,Mussels,17440,Europe
+IE,2021,production_tonnes,Oysters,11064,Europe
+IE,2021,production_value_eur,Miscellaneous aquatic plants,748.56184,Europe
+IE,2021,production_value_eur,Mussels,17081.211095,Europe
+IE,2021,production_value_eur,Oysters,49603.713055,Europe
+IE,2022,production_tonnes,Miscellaneous aquatic plants,493,Europe
+IE,2022,production_tonnes,Mussels,19770,Europe
+IE,2022,production_tonnes,Oysters,11437,Europe
+IE,2022,production_value_eur,Miscellaneous aquatic plants,394.55589999999995,Europe
+IE,2022,production_value_eur,Mussels,18591.16275,Europe
+IE,2022,production_value_eur,Oysters,56904.35685,Europe
+IE,2023,production_tonnes,Miscellaneous aquatic plants,532,Europe
+IE,2023,production_tonnes,Mussels,14684,Europe
+IE,2023,production_tonnes,Oysters,10125,Europe
+IE,2023,production_value_eur,Miscellaneous aquatic plants,648.4511880000001,Europe
+IE,2023,production_value_eur,Mussels,12910.189908,Europe
+IE,2023,production_value_eur,Oysters,53643.03898800001,Europe
+IT,2010,production_tonnes,"Clams, cockles, arkshells",36721.8,Europe
+IT,2010,production_tonnes,Mussels,64256,Europe
+IT,2010,production_tonnes,Oysters,37.7,Europe
+IT,2010,production_value_eur,"Clams, cockles, arkshells",114158.634458,Europe
+IT,2010,production_value_eur,Mussels,48407.37061600001,Europe
+IT,2010,production_value_eur,Oysters,373.42349,Europe
+IT,2011,production_tonnes,"Clams, cockles, arkshells",32276,Europe
+IT,2011,production_tonnes,Mussels,79519.7,Europe
+IT,2011,production_tonnes,Oysters,42.4,Europe
+IT,2011,production_value_eur,"Clams, cockles, arkshells",158866.70824200002,Europe
+IT,2011,production_value_eur,Mussels,75679.06370200001,Europe
+IT,2011,production_value_eur,Oysters,285.353112,Europe
+IT,2012,production_tonnes,"Clams, cockles, arkshells",20766,Europe
+IT,2012,production_tonnes,Mussels,63257,Europe
+IT,2012,production_tonnes,Oysters,47,Europe
+IT,2012,production_value_eur,"Clams, cockles, arkshells",83671.36459,Europe
+IT,2012,production_value_eur,Mussels,49189.152958000006,Europe
+IT,2012,production_value_eur,Oysters,381.27089,Europe
+IT,2013,production_tonnes,"Clams, cockles, arkshells",24609,Europe
+IT,2013,production_tonnes,Mussels,64235,Europe
+IT,2013,production_tonnes,Oysters,53,Europe
+IT,2013,production_value_eur,"Clams, cockles, arkshells",152918.25186000002,Europe
+IT,2013,production_value_eur,Mussels,53173.223818000006,Europe
+IT,2013,production_value_eur,Oysters,465.587144,Europe
+IT,2014,production_tonnes,"Clams, cockles, arkshells",36526.75,Europe
+IT,2014,production_tonnes,Mussels,63699.72,Europe
+IT,2014,production_tonnes,Oysters,147.33,Europe
+IT,2014,production_value_eur,"Clams, cockles, arkshells",127431.264092,Europe
+IT,2014,production_value_eur,Mussels,59615.18695000001,Europe
+IT,2014,production_value_eur,Oysters,811.05585,Europe
+IT,2015,production_tonnes,"Clams, cockles, arkshells",36500,Europe
+IT,2015,production_tonnes,Mussels,63700,Europe
+IT,2015,production_tonnes,Oysters,145,Europe
+IT,2015,production_value_eur,"Clams, cockles, arkshells",106310.42356,Europe
+IT,2015,production_value_eur,Mussels,49788.535566,Europe
+IT,2015,production_value_eur,Oysters,666.65016,Europe
+IT,2016,production_tonnes,"Clams, cockles, arkshells",36500,Europe
+IT,2016,production_tonnes,Mussels,63700,Europe
+IT,2016,production_tonnes,Oysters,145,Europe
+IT,2016,production_value_eur,"Clams, cockles, arkshells",106295.5292,Europe
+IT,2016,production_value_eur,Mussels,49781.560592,Europe
+IT,2016,production_value_eur,Oysters,666.5562639999999,Europe
+IT,2017,production_tonnes,"Clams, cockles, arkshells",36500,Europe
+IT,2017,production_tonnes,Mussels,63700,Europe
+IT,2017,production_tonnes,Oysters,145,Europe
+IT,2017,production_value_eur,"Clams, cockles, arkshells",106442.84460899999,Europe
+IT,2017,production_value_eur,Mussels,49850.553100000005,Europe
+IT,2017,production_value_eur,Oysters,667.480805,Europe
+IT,2018,production_tonnes,"Clams, cockles, arkshells",31055.68,Europe
+IT,2018,production_tonnes,Mussels,62035.31,Europe
+IT,2018,production_tonnes,Oysters,79.81,Europe
+IT,2018,production_value_eur,"Clams, cockles, arkshells",160861.36,Europe
+IT,2018,production_value_eur,Mussels,54359.572111999994,Europe
+IT,2018,production_value_eur,Oysters,412.41632,Europe
+IT,2019,production_tonnes,"Clams, cockles, arkshells",20450,Europe
+IT,2019,production_tonnes,Mussels,52500,Europe
+IT,2019,production_tonnes,Oysters,100,Europe
+IT,2019,production_value_eur,"Clams, cockles, arkshells",105790.722915,Europe
+IT,2019,production_value_eur,Mussels,45923.292980000006,Europe
+IT,2019,production_value_eur,Oysters,515.840557,Europe
+IT,2020,production_tonnes,"Clams, cockles, arkshells",24452.78,Europe
+IT,2020,production_tonnes,Mussels,50337.65,Europe
+IT,2020,production_tonnes,Oysters,181.54,Europe
+IT,2020,production_value_eur,"Clams, cockles, arkshells",141810.13701,Europe
+IT,2020,production_value_eur,Mussels,44150.283923,Europe
+IT,2020,production_value_eur,Oysters,957.013972,Europe
+IT,2021,production_tonnes,"Clams, cockles, arkshells",23082.4,Europe
+IT,2021,production_tonnes,Mussels,61921.4,Europe
+IT,2021,production_tonnes,Oysters,350.4,Europe
+IT,2021,production_value_eur,"Clams, cockles, arkshells",212118.747035,Europe
+IT,2021,production_value_eur,Mussels,55665.56137999999,Europe
+IT,2021,production_value_eur,Oysters,2757.289925,Europe
+IT,2022,production_tonnes,"Clams, cockles, arkshells",21000,Europe
+IT,2022,production_tonnes,Miscellaneous aquatic plants,250,Europe
+IT,2022,production_tonnes,Mussels,60500,Europe
+IT,2022,production_tonnes,Oysters,485.145,Europe
+IT,2022,production_value_eur,"Clams, cockles, arkshells",252099.84414999996,Europe
+IT,2022,production_value_eur,Miscellaneous aquatic plants,1875.7427,Europe
+IT,2022,production_value_eur,Mussels,60523.97084999999,Europe
+IT,2022,production_value_eur,Oysters,3877.55135,Europe
+IT,2023,production_tonnes,"Clams, cockles, arkshells",21577,Europe
+IT,2023,production_tonnes,Miscellaneous aquatic plants,275,Europe
+IT,2023,production_tonnes,Mussels,53596.3,Europe
+IT,2023,production_tonnes,Oysters,300.9,Europe
+IT,2023,production_value_eur,"Clams, cockles, arkshells",199863.47488799997,Europe
+IT,2023,production_value_eur,Miscellaneous aquatic plants,2060.628108,Europe
+IT,2023,production_value_eur,Mussels,94040.375352,Europe
+IT,2023,production_value_eur,Oysters,2504.859588,Europe
+NL,2010,production_tonnes,Mussels,56227,Europe
+NL,2010,production_tonnes,Oysters,3958.1,Europe
+NL,2010,production_value_eur,Mussels,82700.336334,Europe
+NL,2010,production_value_eur,Oysters,5116.677082,Europe
+NL,2011,production_tonnes,Mussels,36700,Europe
+NL,2011,production_tonnes,Oysters,2679.9,Europe
+NL,2011,production_value_eur,Mussels,61975.517098000004,Europe
+NL,2011,production_value_eur,Oysters,3869.2904579999995,Europe
+NL,2012,production_tonnes,Mussels,40000,Europe
+NL,2012,production_tonnes,Oysters,2539.4,Europe
+NL,2012,production_value_eur,Mussels,79916.322354,Europe
+NL,2012,production_value_eur,Oysters,3839.599324,Europe
+NL,2013,production_tonnes,Brown seaweeds,2,Europe
+NL,2013,production_tonnes,Mussels,37112,Europe
+NL,2013,production_tonnes,Oysters,2958,Europe
+NL,2013,production_value_eur,Brown seaweeds,4.791424,Europe
+NL,2013,production_value_eur,Mussels,87272.591472,Europe
+NL,2013,production_value_eur,Oysters,4453.066662,Europe
+NL,2014,production_tonnes,Brown seaweeds,2,Europe
+NL,2014,production_tonnes,Mussels,54100,Europe
+NL,2014,production_tonnes,Oysters,3264,Europe
+NL,2014,production_value_eur,Brown seaweeds,4.793228,Europe
+NL,2014,production_value_eur,Mussels,79220.36260600001,Europe
+NL,2014,production_value_eur,Oysters,9224.345394000002,Europe
+NL,2015,production_tonnes,Brown seaweeds,2,Europe
+NL,2015,production_tonnes,Mussels,54100,Europe
+NL,2015,production_tonnes,Oysters,2700,Europe
+NL,2015,production_value_eur,Brown seaweeds,4.003076,Europe
+NL,2015,production_value_eur,Mussels,64970.678454,Europe
+NL,2015,production_value_eur,Oysters,12519.765412,Europe
+NL,2016,production_tonnes,Brown seaweeds,2,Europe
+NL,2016,production_tonnes,Mussels,53000,Europe
+NL,2016,production_tonnes,Oysters,3300,Europe
+NL,2016,production_value_eur,Brown seaweeds,4.002912,Europe
+NL,2016,production_value_eur,Mussels,44548.511608,Europe
+NL,2016,production_value_eur,Oysters,13493.636456,Europe
+NL,2017,production_tonnes,Brown seaweeds,5,Europe
+NL,2017,production_tonnes,Mussels,44000,Europe
+NL,2017,production_tonnes,Oysters,2240,Europe
+NL,2017,production_value_eur,Brown seaweeds,10.020439,Europe
+NL,2017,production_value_eur,Mussels,46734.54871,Europe
+NL,2017,production_value_eur,Oysters,15585.531107,Europe
+NL,2018,production_tonnes,Brown seaweeds,27,Europe
+NL,2018,production_tonnes,Mussels,45500,Europe
+NL,2018,production_tonnes,Oysters,2500,Europe
+NL,2018,production_value_eur,Brown seaweeds,54.078655999999995,Europe
+NL,2018,production_value_eur,Mussels,51489.522048,Europe
+NL,2018,production_value_eur,Oysters,12432.994399999998,Europe
+NL,2019,production_tonnes,Brown seaweeds,27,Europe
+NL,2019,production_tonnes,Mussels,38200,Europe
+NL,2019,production_tonnes,Oysters,1850,Europe
+NL,2019,production_value_eur,Brown seaweeds,53.983636,Europe
+NL,2019,production_value_eur,Mussels,57282.278877000004,Europe
+NL,2019,production_value_eur,Oysters,4578.5833490000005,Europe
+NL,2020,production_tonnes,Brown seaweeds,32,Europe
+NL,2020,production_tonnes,Mussels,32400,Europe
+NL,2020,production_tonnes,Oysters,1850,Europe
+NL,2020,production_value_eur,Brown seaweeds,64.109577,Europe
+NL,2020,production_value_eur,Mussels,48682.911087,Europe
+NL,2020,production_value_eur,Oysters,6836.642976,Europe
+NL,2021,production_tonnes,Brown seaweeds,32,Europe
+NL,2021,production_tonnes,Mussels,32850,Europe
+NL,2021,production_tonnes,Oysters,1850,Europe
+NL,2021,production_value_eur,Brown seaweeds,63.962275,Europe
+NL,2021,production_value_eur,Mussels,59095.442574999994,Europe
+NL,2021,production_value_eur,Oysters,6821.010689999999,Europe
+NL,2022,production_tonnes,Brown seaweeds,74,Europe
+NL,2022,production_tonnes,Green seaweeds,3,Europe
+NL,2022,production_tonnes,Mussels,29600,Europe
+NL,2022,production_tonnes,Oysters,2270,Europe
+NL,2022,production_value_eur,Brown seaweeds,315.62515,Europe
+NL,2022,production_value_eur,Green seaweeds,12.00515,Europe
+NL,2022,production_value_eur,Mussels,53301.109449999996,Europe
+NL,2022,production_value_eur,Oysters,8306.6898,Europe
+NL,2023,production_tonnes,Brown seaweeds,80,Europe
+NL,2023,production_tonnes,Green seaweeds,5,Europe
+NL,2023,production_tonnes,Mussels,32501,Europe
+NL,2023,production_tonnes,Oysters,1639.7,Europe
+NL,2023,production_value_eur,Brown seaweeds,339.691044,Europe
+NL,2023,production_value_eur,Green seaweeds,19.9815,Europe
+NL,2023,production_value_eur,Mussels,55526.25817200001,Europe
+NL,2023,production_value_eur,Oysters,4561.465524,Europe
+PT,2010,production_tonnes,"Clams, cockles, arkshells",2627.455,Europe
+PT,2010,production_tonnes,Miscellaneous marine molluscs,0.02,Europe
+PT,2010,production_tonnes,Mussels,165.7,Europe
+PT,2010,production_tonnes,Oysters,548.4000000000001,Europe
+PT,2010,production_tonnes,"Squids, cuttlefishes, octopuses",0,Europe
+PT,2010,production_value_eur,"Clams, cockles, arkshells",22451.569250000004,Europe
+PT,2010,production_value_eur,Miscellaneous marine molluscs,0.191224,Europe
+PT,2010,production_value_eur,Mussels,63.406090000000006,Europe
+PT,2010,production_value_eur,Oysters,1935.6478020000002,Europe
+PT,2010,production_value_eur,"Squids, cuttlefishes, octopuses",0,Europe
+PT,2011,production_tonnes,"Clams, cockles, arkshells",2431.38,Europe
+PT,2011,production_tonnes,Mussels,249.7,Europe
+PT,2011,production_tonnes,Oysters,863,Europe
+PT,2011,production_tonnes,"Squids, cuttlefishes, octopuses",0,Europe
+PT,2011,production_value_eur,"Clams, cockles, arkshells",33161.33546,Europe
+PT,2011,production_value_eur,Mussels,147.348916,Europe
+PT,2011,production_value_eur,Oysters,3021.227352,Europe
+PT,2011,production_value_eur,"Squids, cuttlefishes, octopuses",0,Europe
+PT,2012,production_tonnes,"Clams, cockles, arkshells",2850.3,Europe
+PT,2012,production_tonnes,Mussels,338,Europe
+PT,2012,production_tonnes,Oysters,735.4000000000001,Europe
+PT,2012,production_tonnes,"Squids, cuttlefishes, octopuses",0,Europe
+PT,2012,production_value_eur,"Clams, cockles, arkshells",23807.441218000004,Europe
+PT,2012,production_value_eur,Mussels,180.18261800000002,Europe
+PT,2012,production_value_eur,Oysters,2485.973336,Europe
+PT,2012,production_value_eur,"Squids, cuttlefishes, octopuses",0,Europe
+PT,2013,production_tonnes,"Clams, cockles, arkshells",2426.3540000000003,Europe
+PT,2013,production_tonnes,Mussels,1546.687,Europe
+PT,2013,production_tonnes,Oysters,794.4970000000001,Europe
+PT,2013,production_tonnes,"Squids, cuttlefishes, octopuses",0,Europe
+PT,2013,production_value_eur,"Clams, cockles, arkshells",29849.946434,Europe
+PT,2013,production_value_eur,Mussels,1148.780886,Europe
+PT,2013,production_value_eur,Oysters,2412.454022,Europe
+PT,2013,production_value_eur,"Squids, cuttlefishes, octopuses",0,Europe
+PT,2014,production_tonnes,"Clams, cockles, arkshells",2504.4629999999997,Europe
+PT,2014,production_tonnes,Green seaweeds,3.12,Europe
+PT,2014,production_tonnes,Miscellaneous marine molluscs,0.07,Europe
+PT,2014,production_tonnes,Mussels,1296.615,Europe
+PT,2014,production_tonnes,Oysters,1040.868,Europe
+PT,2014,production_tonnes,Red seaweeds,0.4,Europe
+PT,2014,production_value_eur,"Clams, cockles, arkshells",21930.166346,Europe
+PT,2014,production_value_eur,Green seaweeds,178.075546,Europe
+PT,2014,production_value_eur,Miscellaneous marine molluscs,1.25829,Europe
+PT,2014,production_value_eur,Mussels,963.321568,Europe
+PT,2014,production_value_eur,Oysters,3231.335624,Europe
+PT,2014,production_value_eur,Red seaweeds,3.906562,Europe
+PT,2015,production_tonnes,Brown seaweeds,0.06,Europe
+PT,2015,production_tonnes,"Clams, cockles, arkshells",2416.074,Europe
+PT,2015,production_tonnes,Green seaweeds,1.53,Europe
+PT,2015,production_tonnes,Miscellaneous marine molluscs,0,Europe
+PT,2015,production_tonnes,Mussels,1315.117,Europe
+PT,2015,production_tonnes,Oysters,1034.8200000000002,Europe
+PT,2015,production_tonnes,Red seaweeds,0.39,Europe
+PT,2015,production_value_eur,Brown seaweeds,0.840664,Europe
+PT,2015,production_value_eur,"Clams, cockles, arkshells",26221.553116,Europe
+PT,2015,production_value_eur,Green seaweeds,71.200272,Europe
+PT,2015,production_value_eur,Miscellaneous marine molluscs,0,Europe
+PT,2015,production_value_eur,Mussels,1026.592358,Europe
+PT,2015,production_value_eur,Oysters,2732.7100240000004,Europe
+PT,2015,production_value_eur,Red seaweeds,9.640576000000001,Europe
+PT,2016,production_tonnes,"Clams, cockles, arkshells",2452.52,Europe
+PT,2016,production_tonnes,Green seaweeds,2,Europe
+PT,2016,production_tonnes,Mussels,1474.3,Europe
+PT,2016,production_tonnes,Oysters,989.52,Europe
+PT,2016,production_value_eur,"Clams, cockles, arkshells",23411.404184,Europe
+PT,2016,production_value_eur,Green seaweeds,93.059568,Europe
+PT,2016,production_value_eur,Mussels,2434.152888,Europe
+PT,2016,production_value_eur,Oysters,2813.9431759999998,Europe
+PT,2017,production_tonnes,"Clams, cockles, arkshells",4185.1,Europe
+PT,2017,production_tonnes,Green seaweeds,33.47,Europe
+PT,2017,production_tonnes,Mussels,1722.32,Europe
+PT,2017,production_tonnes,Oysters,1185.33,Europe
+PT,2017,production_value_eur,"Clams, cockles, arkshells",43585.288916,Europe
+PT,2017,production_value_eur,Green seaweeds,903.845017,Europe
+PT,2017,production_value_eur,Mussels,1328.875016,Europe
+PT,2017,production_value_eur,Oysters,3651.017067,Europe
+PT,2018,production_tonnes,"Abalones, winkles, conchs",0.9,Europe
+PT,2018,production_tonnes,Brown seaweeds,0.16,Europe
+PT,2018,production_tonnes,"Clams, cockles, arkshells",4183.863,Europe
+PT,2018,production_tonnes,Green seaweeds,33.29,Europe
+PT,2018,production_tonnes,Miscellaneous marine molluscs,0,Europe
+PT,2018,production_tonnes,Mussels,1745.62,Europe
+PT,2018,production_tonnes,Oysters,3451.4,Europe
+PT,2018,production_tonnes,Red seaweeds,1.27,Europe
+PT,2018,production_value_eur,"Abalones, winkles, conchs",11.716816,Europe
+PT,2018,production_value_eur,Brown seaweeds,1.922416,Europe
+PT,2018,production_value_eur,"Clams, cockles, arkshells",51503.280847999995,Europe
+PT,2018,production_value_eur,Green seaweeds,566.7506239999999,Europe
+PT,2018,production_value_eur,Miscellaneous marine molluscs,0,Europe
+PT,2018,production_value_eur,Mussels,1748.150304,Europe
+PT,2018,production_value_eur,Oysters,12541.58928,Europe
+PT,2018,production_value_eur,Red seaweeds,24.164608,Europe
+PT,2019,production_tonnes,"Abalones, winkles, conchs",0,Europe
+PT,2019,production_tonnes,"Clams, cockles, arkshells",2017.25,Europe
+PT,2019,production_tonnes,Green seaweeds,35,Europe
+PT,2019,production_tonnes,Mussels,449.82,Europe
+PT,2019,production_tonnes,Oysters,4034.01,Europe
+PT,2019,production_value_eur,"Abalones, winkles, conchs",0,Europe
+PT,2019,production_value_eur,"Clams, cockles, arkshells",33125.863576,Europe
+PT,2019,production_value_eur,Green seaweeds,594.815691,Europe
+PT,2019,production_value_eur,Mussels,449.680866,Europe
+PT,2019,production_value_eur,Oysters,17651.480035,Europe
+PT,2020,production_tonnes,"Abalones, winkles, conchs",0.13,Europe
+PT,2020,production_tonnes,Brown seaweeds,2,Europe
+PT,2020,production_tonnes,"Clams, cockles, arkshells",4013.7200000000003,Europe
+PT,2020,production_tonnes,Green seaweeds,30,Europe
+PT,2020,production_tonnes,Mussels,2007.2,Europe
+PT,2020,production_tonnes,Oysters,3838.3500000000004,Europe
+PT,2020,production_tonnes,Red seaweeds,10,Europe
+PT,2020,production_value_eur,"Abalones, winkles, conchs",2.898485,Europe
+PT,2020,production_value_eur,Brown seaweeds,24.041201,Europe
+PT,2020,production_value_eur,"Clams, cockles, arkshells",52018.962082000005,Europe
+PT,2020,production_value_eur,Green seaweeds,300.51194300000003,Europe
+PT,2020,production_value_eur,Mussels,1427.542889,Europe
+PT,2020,production_value_eur,Oysters,12248.857290000002,Europe
+PT,2020,production_value_eur,Red seaweeds,190.32390900000001,Europe
+PT,2021,production_tonnes,"Abalones, winkles, conchs",1.955,Europe
+PT,2021,production_tonnes,Brown seaweeds,2,Europe
+PT,2021,production_tonnes,"Clams, cockles, arkshells",5310.126,Europe
+PT,2021,production_tonnes,Green seaweeds,30,Europe
+PT,2021,production_tonnes,Mussels,3043.47,Europe
+PT,2021,production_tonnes,Oysters,2479.903,Europe
+PT,2021,production_tonnes,Red seaweeds,10,Europe
+PT,2021,production_value_eur,"Abalones, winkles, conchs",35.249174999999994,Europe
+PT,2021,production_value_eur,Brown seaweeds,23.986169999999998,Europe
+PT,2021,production_value_eur,"Clams, cockles, arkshells",85124.80145,Europe
+PT,2021,production_value_eur,Green seaweeds,299.82458999999994,Europe
+PT,2021,production_value_eur,Mussels,3285.026225,Europe
+PT,2021,production_value_eur,Oysters,10476.375065,Europe
+PT,2021,production_value_eur,Red seaweeds,189.889245,Europe
+PT,2022,production_tonnes,"Abalones, winkles, conchs",2,Europe
+PT,2022,production_tonnes,Brown seaweeds,2,Europe
+PT,2022,production_tonnes,"Clams, cockles, arkshells",4496,Europe
+PT,2022,production_tonnes,Green seaweeds,30,Europe
+PT,2022,production_tonnes,Mussels,3189,Europe
+PT,2022,production_tonnes,Oysters,2466,Europe
+PT,2022,production_tonnes,Red seaweeds,10,Europe
+PT,2022,production_value_eur,"Abalones, winkles, conchs",36.0943,Europe
+PT,2022,production_value_eur,Brown seaweeds,24.009349999999998,Europe
+PT,2022,production_value_eur,"Clams, cockles, arkshells",84695.844,Europe
+PT,2022,production_value_eur,Green seaweeds,300.11925,Europe
+PT,2022,production_value_eur,Mussels,2775.5295,Europe
+PT,2022,production_value_eur,Oysters,10534.91195,Europe
+PT,2022,production_value_eur,Red seaweeds,190.07504999999998,Europe
+PT,2023,production_tonnes,"Abalones, winkles, conchs",0.118,Europe
+PT,2023,production_tonnes,Brown seaweeds,0.82,Europe
+PT,2023,production_tonnes,"Clams, cockles, arkshells",6206.449,Europe
+PT,2023,production_tonnes,Green seaweeds,68.03,Europe
+PT,2023,production_tonnes,Mussels,3274.358,Europe
+PT,2023,production_tonnes,Oysters,2737.758,Europe
+PT,2023,production_tonnes,Red seaweeds,1.45,Europe
+PT,2023,production_value_eur,"Abalones, winkles, conchs",1.665972,Europe
+PT,2023,production_value_eur,Brown seaweeds,10.355268,Europe
+PT,2023,production_value_eur,"Clams, cockles, arkshells",124600.82434800001,Europe
+PT,2023,production_value_eur,Green seaweeds,635.5031759999999,Europe
+PT,2023,production_value_eur,Mussels,2860.940544,Europe
+PT,2023,production_value_eur,Oysters,11689.954584000001,Europe
+PT,2023,production_value_eur,Red seaweeds,35.5509,Europe
+RU,2010,production_tonnes,Brown seaweeds,614,Europe
+RU,2010,production_tonnes,Mussels,16,Europe
+RU,2010,production_tonnes,Oysters,7,Europe
+RU,2010,production_tonnes,"Scallops, pectens",854,Europe
+RU,2010,production_value_eur,Brown seaweeds,664.5935999999999,Europe
+RU,2010,production_value_eur,Mussels,18.761599999999998,Europe
+RU,2010,production_value_eur,Oysters,8.208200000000001,Europe
+RU,2010,production_value_eur,"Scallops, pectens",4005.6016,Europe
+RU,2011,production_tonnes,Brown seaweeds,821,Europe
+RU,2011,production_tonnes,Mussels,60,Europe
+RU,2011,production_tonnes,Oysters,3,Europe
+RU,2011,production_tonnes,"Scallops, pectens",725,Europe
+RU,2011,production_value_eur,Brown seaweeds,888.6504,Europe
+RU,2011,production_value_eur,Mussels,70.356,Europe
+RU,2011,production_value_eur,Oysters,3.5178000000000003,Europe
+RU,2011,production_value_eur,"Scallops, pectens",3400.54,Europe
+RU,2012,production_tonnes,Brown seaweeds,1584,Europe
+RU,2012,production_tonnes,Mussels,340,Europe
+RU,2012,production_tonnes,Oysters,45,Europe
+RU,2012,production_tonnes,"Scallops, pectens",504,Europe
+RU,2012,production_value_eur,Brown seaweeds,1714.5216,Europe
+RU,2012,production_value_eur,Mussels,398.684,Europe
+RU,2012,production_value_eur,Oysters,52.767,Europe
+RU,2012,production_value_eur,"Scallops, pectens",2363.9616,Europe
+RU,2013,production_tonnes,Brown seaweeds,642,Europe
+RU,2013,production_tonnes,Mussels,964,Europe
+RU,2013,production_tonnes,Oysters,54,Europe
+RU,2013,production_tonnes,"Scallops, pectens",1311,Europe
+RU,2013,production_value_eur,Brown seaweeds,694.9008,Europe
+RU,2013,production_value_eur,Mussels,1130.3863999999999,Europe
+RU,2013,production_value_eur,Oysters,63.3204,Europe
+RU,2013,production_value_eur,"Scallops, pectens",6149.1144,Europe
+RU,2014,production_tonnes,Brown seaweeds,2386,Europe
+RU,2014,production_tonnes,Mussels,798,Europe
+RU,2014,production_tonnes,Oysters,57,Europe
+RU,2014,production_tonnes,"Scallops, pectens",2400,Europe
+RU,2014,production_value_eur,Brown seaweeds,2582.6064,Europe
+RU,2014,production_value_eur,Mussels,935.7348000000001,Europe
+RU,2014,production_value_eur,Oysters,66.83820000000001,Europe
+RU,2014,production_value_eur,"Scallops, pectens",11256.96,Europe
+RU,2015,production_tonnes,Brown seaweeds,2036,Europe
+RU,2015,production_tonnes,Mussels,207,Europe
+RU,2015,production_tonnes,Oysters,36,Europe
+RU,2015,production_tonnes,"Scallops, pectens",2000,Europe
+RU,2015,production_value_eur,Brown seaweeds,2203.7664,Europe
+RU,2015,production_value_eur,Mussels,242.72820000000002,Europe
+RU,2015,production_value_eur,Oysters,42.2136,Europe
+RU,2015,production_value_eur,"Scallops, pectens",9380.8,Europe
+RU,2016,production_tonnes,Brown seaweeds,1189,Europe
+RU,2016,production_tonnes,Mussels,418,Europe
+RU,2016,production_tonnes,Oysters,216,Europe
+RU,2016,production_tonnes,"Scallops, pectens",3745,Europe
+RU,2016,production_value_eur,Brown seaweeds,1289.8272,Europe
+RU,2016,production_value_eur,Mussels,491.23359999999997,Europe
+RU,2016,production_value_eur,Oysters,253.84320000000002,Europe
+RU,2016,production_value_eur,"Scallops, pectens",17604.496,Europe
+RU,2017,production_tonnes,Brown seaweeds,1517,Europe
+RU,2017,production_tonnes,Mussels,1165,Europe
+RU,2017,production_tonnes,Oysters,531,Europe
+RU,2017,production_tonnes,"Scallops, pectens",5463,Europe
+RU,2017,production_value_eur,Brown seaweeds,1614.6948,Europe
+RU,2017,production_value_eur,Mussels,1343.3615,Europe
+RU,2017,production_value_eur,Oysters,612.2961,Europe
+RU,2017,production_value_eur,"Scallops, pectens",6299.3853,Europe
+RU,2018,production_tonnes,Brown seaweeds,4527,Europe
+RU,2018,production_tonnes,Mussels,1286,Europe
+RU,2018,production_tonnes,Oysters,2114,Europe
+RU,2018,production_tonnes,"Scallops, pectens",3840,Europe
+RU,2018,production_value_eur,Brown seaweeds,4606.6752,Europe
+RU,2018,production_value_eur,Mussels,1417.6863999999998,Europe
+RU,2018,production_value_eur,Oysters,2689.008,Europe
+RU,2018,production_value_eur,"Scallops, pectens",4884.48,Europe
+RU,2019,production_tonnes,Brown seaweeds,10573,Europe
+RU,2019,production_tonnes,Mussels,1971,Europe
+RU,2019,production_tonnes,Oysters,3297,Europe
+RU,2019,production_tonnes,"Scallops, pectens",11531,Europe
+RU,2019,production_value_eur,Brown seaweeds,11330.026800000001,Europe
+RU,2019,production_value_eur,Mussels,2288.1339,Europe
+RU,2019,production_value_eur,Oysters,4416.3315,Europe
+RU,2019,production_value_eur,"Scallops, pectens",15445.7745,Europe
+RU,2020,production_tonnes,Brown seaweeds,20832,Europe
+RU,2020,production_tonnes,Mussels,3240,Europe
+RU,2020,production_tonnes,Oysters,4102,Europe
+RU,2020,production_tonnes,"Scallops, pectens",16259,Europe
+RU,2020,production_value_eur,Brown seaweeds,23677.484544,Europe
+RU,2020,production_value_eur,Mussels,3989.43792,Europe
+RU,2020,production_value_eur,Oysters,5827.875480000001,Europe
+RU,2020,production_value_eur,"Scallops, pectens",23099.81166,Europe
+RU,2021,production_tonnes,Brown seaweeds,23863,Europe
+RU,2021,production_tonnes,Mussels,3740,Europe
+RU,2021,production_tonnes,Oysters,4574,Europe
+RU,2021,production_tonnes,"Scallops, pectens",17658,Europe
+RU,2021,production_value_eur,Brown seaweeds,26132.84856,Europe
+RU,2021,production_value_eur,Mussels,4437.0612,Europe
+RU,2021,production_value_eur,Oysters,6261.348599999999,Europe
+RU,2021,production_value_eur,"Scallops, pectens",24172.0362,Europe
+RU,2022,production_tonnes,Brown seaweeds,28654,Europe
+RU,2022,production_tonnes,Mussels,4006,Europe
+RU,2022,production_tonnes,Oysters,3872,Europe
+RU,2022,production_tonnes,"Scallops, pectens",20450,Europe
+RU,2022,production_value_eur,Brown seaweeds,37020.968,Europe
+RU,2022,production_value_eur,Mussels,5594.379,Europe
+RU,2022,production_value_eur,Oysters,6253.28,Europe
+RU,2022,production_value_eur,"Scallops, pectens",33026.75,Europe
+RU,2023,production_tonnes,Brown seaweeds,38730,Europe
+RU,2023,production_tonnes,Mussels,4116,Europe
+RU,2023,production_tonnes,Oysters,4807,Europe
+RU,2023,production_tonnes,"Scallops, pectens",26272,Europe
+RU,2023,production_value_eur,Brown seaweeds,48669.6672,Europe
+RU,2023,production_value_eur,Mussels,5704.776,Europe
+RU,2023,production_value_eur,Oysters,7550.8356,Europe
+RU,2023,production_value_eur,"Scallops, pectens",41268.0576,Europe

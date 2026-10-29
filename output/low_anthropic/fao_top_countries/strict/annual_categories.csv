@@ -1,0 +1,1575 @@
+country_code,year,measure,category,value,continent
+CL,2010,production_tonnes,Brown seaweeds,12,Americas
+CL,2010,production_tonnes,Green seaweeds,12,Americas
+CL,2010,production_tonnes,Miscellaneous aquatic plants,5,Americas
+CL,2010,production_tonnes,Mussels,224015,Americas
+CL,2010,production_tonnes,Oysters,257,Americas
+CL,2010,production_tonnes,Red seaweeds,12150,Americas
+CL,2010,production_tonnes,"Scallops, pectens",8840,Americas
+CL,2010,production_value_eur,Brown seaweeds,10.824,Americas
+CL,2010,production_value_eur,Green seaweeds,21.648,Americas
+CL,2010,production_value_eur,Miscellaneous aquatic plants,9.02,Americas
+CL,2010,production_value_eur,Mussels,422870.94960000005,Americas
+CL,2010,production_value_eur,Oysters,695.442,Americas
+CL,2010,production_value_eur,Red seaweeds,14247.09,Americas
+CL,2010,production_value_eur,"Scallops, pectens",74155.224,Americas
+CL,2011,production_tonnes,Brown seaweeds,0,Americas
+CL,2011,production_tonnes,Green seaweeds,5,Americas
+CL,2011,production_tonnes,Miscellaneous aquatic plants,220,Americas
+CL,2011,production_tonnes,Mussels,293046,Americas
+CL,2011,production_tonnes,Oysters,219,Americas
+CL,2011,production_tonnes,Red seaweeds,14469,Americas
+CL,2011,production_tonnes,"Scallops, pectens",11018,Americas
+CL,2011,production_value_eur,Brown seaweeds,0,Americas
+CL,2011,production_value_eur,Green seaweeds,304.47010000000006,Americas
+CL,2011,production_value_eur,Miscellaneous aquatic plants,2645.2052000000003,Americas
+CL,2011,production_value_eur,Mussels,1048320.9246400001,Americas
+CL,2011,production_value_eur,Oysters,592.614,Americas
+CL,2011,production_value_eur,Red seaweeds,19707.06738,Americas
+CL,2011,production_value_eur,"Scallops, pectens",135160.0096,Americas
+CL,2012,production_tonnes,Brown seaweeds,0,Americas
+CL,2012,production_tonnes,Green seaweeds,15,Americas
+CL,2012,production_tonnes,Miscellaneous aquatic plants,0,Americas
+CL,2012,production_tonnes,Mussels,246462,Americas
+CL,2012,production_tonnes,Oysters,194,Americas
+CL,2012,production_tonnes,Red seaweeds,4111,Americas
+CL,2012,production_tonnes,"Scallops, pectens",5798,Americas
+CL,2012,production_value_eur,Brown seaweeds,0,Americas
+CL,2012,production_value_eur,Green seaweeds,1608.1758,Americas
+CL,2012,production_value_eur,Miscellaneous aquatic plants,0,Americas
+CL,2012,production_value_eur,Mussels,882141.91527,Americas
+CL,2012,production_value_eur,Oysters,524.964,Americas
+CL,2012,production_value_eur,Red seaweeds,6971.26936,Americas
+CL,2012,production_value_eur,"Scallops, pectens",67987.348,Americas
+CL,2013,production_tonnes,Green seaweeds,41,Americas
+CL,2013,production_tonnes,Miscellaneous aquatic plants,11,Americas
+CL,2013,production_tonnes,Mussels,246166,Americas
+CL,2013,production_tonnes,Oysters,227,Americas
+CL,2013,production_tonnes,Red seaweeds,12460,Americas
+CL,2013,production_tonnes,"Scallops, pectens",5001,Americas
+CL,2013,production_value_eur,Green seaweeds,3939.3226400000003,Americas
+CL,2013,production_value_eur,Miscellaneous aquatic plants,143.869,Americas
+CL,2013,production_value_eur,Mussels,1871758.66394,Americas
+CL,2013,production_value_eur,Oysters,614.262,Americas
+CL,2013,production_value_eur,Red seaweeds,20904.3912,Americas
+CL,2013,production_value_eur,"Scallops, pectens",103886.07306,Americas
+CL,2014,production_tonnes,Brown seaweeds,2,Americas
+CL,2014,production_tonnes,Green seaweeds,26,Americas
+CL,2014,production_tonnes,Mussels,240821,Americas
+CL,2014,production_tonnes,Oysters,308,Americas
+CL,2014,production_tonnes,Red seaweeds,12808,Americas
+CL,2014,production_tonnes,"Scallops, pectens",4146,Americas
+CL,2014,production_value_eur,Brown seaweeds,2.3632400000000002,Americas
+CL,2014,production_value_eur,Green seaweeds,3517.33096,Americas
+CL,2014,production_value_eur,Mussels,2331229.2828,Americas
+CL,2014,production_value_eur,Oysters,833.448,Americas
+CL,2014,production_value_eur,Red seaweeds,26340.42048,Americas
+CL,2014,production_value_eur,"Scallops, pectens",81637.47636,Americas
+CL,2015,production_tonnes,Mussels,211356,Americas
+CL,2015,production_tonnes,Oysters,215,Americas
+CL,2015,production_tonnes,Red seaweeds,11952,Americas
+CL,2015,production_tonnes,"Scallops, pectens",2960,Americas
+CL,2015,production_value_eur,Mussels,1550956.3476,Americas
+CL,2015,production_value_eur,Oysters,581.79,Americas
+CL,2015,production_value_eur,Red seaweeds,26412.7248,Americas
+CL,2015,production_value_eur,"Scallops, pectens",56869.296,Americas
+CL,2016,production_tonnes,Brown seaweeds,0,Americas
+CL,2016,production_tonnes,Green seaweeds,13,Americas
+CL,2016,production_tonnes,Miscellaneous aquatic plants,4,Americas
+CL,2016,production_tonnes,Mussels,302344,Americas
+CL,2016,production_tonnes,Oysters,270,Americas
+CL,2016,production_tonnes,Red seaweeds,14846,Americas
+CL,2016,production_tonnes,"Scallops, pectens",3547,Americas
+CL,2016,production_value_eur,Brown seaweeds,0,Americas
+CL,2016,production_value_eur,Green seaweeds,2161.1928000000003,Americas
+CL,2016,production_value_eur,Miscellaneous aquatic plants,25.6736,Americas
+CL,2016,production_value_eur,Mussels,1989260.4072,Americas
+CL,2016,production_value_eur,Oysters,732.24,Americas
+CL,2016,production_value_eur,Red seaweeds,28183.6464,Americas
+CL,2016,production_value_eur,"Scallops, pectens",84971.932,Americas
+CL,2017,production_tonnes,Brown seaweeds,0,Americas
+CL,2017,production_tonnes,Green seaweeds,35,Americas
+CL,2017,production_tonnes,Miscellaneous aquatic plants,39,Americas
+CL,2017,production_tonnes,Mussels,341426.687,Americas
+CL,2017,production_tonnes,Oysters,434.14,Americas
+CL,2017,production_tonnes,Red seaweeds,16725.22,Americas
+CL,2017,production_tonnes,"Scallops, pectens",4706.46,Americas
+CL,2017,production_value_eur,Brown seaweeds,0,Americas
+CL,2017,production_value_eur,Green seaweeds,5389.412,Americas
+CL,2017,production_value_eur,Miscellaneous aquatic plants,290.5812,Americas
+CL,2017,production_value_eur,Mussels,2231609.1621830002,Americas
+CL,2017,production_value_eur,Oysters,1155.24654,Americas
+CL,2017,production_value_eur,Red seaweeds,31154.067294,Americas
+CL,2017,production_value_eur,"Scallops, pectens",123151.58559,Americas
+CL,2018,production_tonnes,Brown seaweeds,0.51,Americas
+CL,2018,production_tonnes,Green seaweeds,22.53,Americas
+CL,2018,production_tonnes,Miscellaneous aquatic plants,450.5,Americas
+CL,2018,production_tonnes,Mussels,368916.3,Americas
+CL,2018,production_tonnes,Oysters,448.5,Americas
+CL,2018,production_tonnes,Red seaweeds,20704.69,Americas
+CL,2018,production_tonnes,"Scallops, pectens",7518.45,Americas
+CL,2018,production_value_eur,Brown seaweeds,1.803696,Americas
+CL,2018,production_value_eur,Green seaweeds,4061.625744,Americas
+CL,2018,production_value_eur,Miscellaneous aquatic plants,3942.4876799999997,Americas
+CL,2018,production_value_eur,Mussels,2399410.155584,Americas
+CL,2018,production_value_eur,Oysters,1140.984,Americas
+CL,2018,production_value_eur,Red seaweeds,36695.336096,Americas
+CL,2018,production_value_eur,"Scallops, pectens",186615.146288,Americas
+CL,2019,production_tonnes,Brown seaweeds,2,Americas
+CL,2019,production_tonnes,Green seaweeds,42,Americas
+CL,2019,production_tonnes,Miscellaneous aquatic plants,861,Americas
+CL,2019,production_tonnes,Mussels,381029,Americas
+CL,2019,production_tonnes,Oysters,762,Americas
+CL,2019,production_tonnes,Red seaweeds,21677,Americas
+CL,2019,production_tonnes,"Scallops, pectens",11313,Americas
+CL,2019,production_value_eur,Brown seaweeds,1.1609,Americas
+CL,2019,production_value_eur,Green seaweeds,10355.78166,Americas
+CL,2019,production_value_eur,Miscellaneous aquatic plants,8280.76221,Americas
+CL,2019,production_value_eur,Mussels,2554773.30548,Americas
+CL,2019,production_value_eur,Oysters,2041.398,Americas
+CL,2019,production_value_eur,Red seaweeds,34651.998790000005,Americas
+CL,2019,production_value_eur,"Scallops, pectens",274889.26989,Americas
+CL,2020,production_tonnes,Green seaweeds,61,Americas
+CL,2020,production_tonnes,Miscellaneous aquatic plants,1260,Americas
+CL,2020,production_tonnes,Mussels,400551,Americas
+CL,2020,production_tonnes,Oysters,413,Americas
+CL,2020,production_tonnes,Red seaweeds,18269,Americas
+CL,2020,production_tonnes,"Scallops, pectens",4367,Americas
+CL,2020,production_value_eur,Green seaweeds,12313.40449,Americas
+CL,2020,production_value_eur,Miscellaneous aquatic plants,11536.408800000001,Americas
+CL,2020,production_value_eur,Mussels,1356539.84644,Americas
+CL,2020,production_value_eur,Oysters,1086.603,Americas
+CL,2020,production_value_eur,Red seaweeds,189853.67914,Americas
+CL,2020,production_value_eur,"Scallops, pectens",47681.744549999996,Americas
+CL,2021,production_tonnes,Brown seaweeds,2,Americas
+CL,2021,production_tonnes,Green seaweeds,72,Americas
+CL,2021,production_tonnes,Miscellaneous aquatic plants,1361,Americas
+CL,2021,production_tonnes,Mussels,425849,Americas
+CL,2021,production_tonnes,Oysters,477,Americas
+CL,2021,production_tonnes,Red seaweeds,15569,Americas
+CL,2021,production_tonnes,"Scallops, pectens",3890,Americas
+CL,2021,production_value_eur,Brown seaweeds,1.4365,Americas
+CL,2021,production_value_eur,Green seaweeds,15337.764,Americas
+CL,2021,production_value_eur,Miscellaneous aquatic plants,11730.459,Americas
+CL,2021,production_value_eur,Mussels,995432.6797999999,Americas
+CL,2021,production_value_eur,Oysters,1209.195,Americas
+CL,2021,production_value_eur,Red seaweeds,167043.825,Americas
+CL,2021,production_value_eur,"Scallops, pectens",36486.255,Americas
+CL,2022,production_tonnes,Brown seaweeds,11,Americas
+CL,2022,production_tonnes,Green seaweeds,132,Americas
+CL,2022,production_tonnes,Miscellaneous aquatic plants,2024,Americas
+CL,2022,production_tonnes,Mussels,429336,Americas
+CL,2022,production_tonnes,Oysters,417,Americas
+CL,2022,production_tonnes,Red seaweeds,13406,Americas
+CL,2022,production_tonnes,"Scallops, pectens",3465,Americas
+CL,2022,production_value_eur,Brown seaweeds,14.63,Americas
+CL,2022,production_value_eur,Green seaweeds,29343.6,Americas
+CL,2022,production_value_eur,Miscellaneous aquatic plants,20189.4,Americas
+CL,2022,production_value_eur,Mussels,1145244,Americas
+CL,2022,production_value_eur,Oysters,1188.45,Americas
+CL,2022,production_value_eur,Red seaweeds,141366.27,Americas
+CL,2022,production_value_eur,"Scallops, pectens",46742.85,Americas
+CL,2023,production_tonnes,Brown seaweeds,37,Americas
+CL,2023,production_tonnes,Green seaweeds,138,Americas
+CL,2023,production_tonnes,Miscellaneous aquatic plants,852,Americas
+CL,2023,production_tonnes,Mussels,390973,Americas
+CL,2023,production_tonnes,Oysters,386,Americas
+CL,2023,production_tonnes,Red seaweeds,14443,Americas
+CL,2023,production_tonnes,"Scallops, pectens",5396,Americas
+CL,2023,production_value_eur,Brown seaweeds,44.4444,Americas
+CL,2023,production_value_eur,Green seaweeds,37029.484800000006,Americas
+CL,2023,production_value_eur,Miscellaneous aquatic plants,8266.104,Americas
+CL,2023,production_value_eur,Mussels,1050718.9308,Americas
+CL,2023,production_value_eur,Oysters,1069.992,Americas
+CL,2023,production_value_eur,Red seaweeds,190748.71200000003,Americas
+CL,2023,production_value_eur,"Scallops, pectens",64318.1616,Americas
+CN,2010,production_tonnes,Brown seaweeds,9951305,Asia
+CN,2010,production_tonnes,"Clams, cockles, arkshells",301213,Asia
+CN,2010,production_tonnes,Freshwater molluscs,135619,Asia
+CN,2010,production_tonnes,Green seaweeds,10971,Asia
+CN,2010,production_tonnes,Miscellaneous aquatic plants,93487,Asia
+CN,2010,production_tonnes,Miscellaneous marine molluscs,456937,Asia
+CN,2010,production_tonnes,Mussels,681418,Asia
+CN,2010,production_tonnes,Oysters,3535235,Asia
+CN,2010,production_tonnes,"Pearls, mother-of-pearl, shells",3014.781,Asia
+CN,2010,production_tonnes,Red seaweeds,2217540,Asia
+CN,2010,production_tonnes,"Scallops, pectens",1365896,Asia
+CN,2010,production_value_eur,Brown seaweeds,4161787.4569039997,Asia
+CN,2010,production_value_eur,"Clams, cockles, arkshells",459434.767066,Asia
+CN,2010,production_value_eur,Freshwater molluscs,114290.84330400001,Asia
+CN,2010,production_value_eur,Green seaweeds,5187.480473999999,Asia
+CN,2010,production_value_eur,Miscellaneous aquatic plants,52450.320428000006,Asia
+CN,2010,production_value_eur,Miscellaneous marine molluscs,286861.393104,Asia
+CN,2010,production_value_eur,Mussels,198528.408628,Asia
+CN,2010,production_value_eur,Oysters,2340565.96598,Asia
+CN,2010,production_value_eur,"Pearls, mother-of-pearl, shells",14963.551306000001,Asia
+CN,2010,production_value_eur,Red seaweeds,939185.578694,Asia
+CN,2010,production_value_eur,"Scallops, pectens",2175779.4470720002,Asia
+CN,2011,production_tonnes,Brown seaweeds,9973277,Asia
+CN,2011,production_tonnes,"Clams, cockles, arkshells",279475,Asia
+CN,2011,production_tonnes,Freshwater molluscs,138891,Asia
+CN,2011,production_tonnes,Green seaweeds,8874,Asia
+CN,2011,production_tonnes,Miscellaneous aquatic plants,68822,Asia
+CN,2011,production_tonnes,Miscellaneous marine molluscs,774247,Asia
+CN,2011,production_tonnes,Mussels,674287,Asia
+CN,2011,production_tonnes,Oysters,3580474,Asia
+CN,2011,production_tonnes,"Pearls, mother-of-pearl, shells",2189.101,Asia
+CN,2011,production_tonnes,Red seaweeds,2480998,Asia
+CN,2011,production_tonnes,"Scallops, pectens",1244983,Asia
+CN,2011,production_value_eur,Brown seaweeds,4343198.94888,Asia
+CN,2011,production_value_eur,"Clams, cockles, arkshells",501652.0355,Asia
+CN,2011,production_value_eur,Freshwater molluscs,149467.406418,Asia
+CN,2011,production_value_eur,Green seaweeds,5105.0403799999995,Asia
+CN,2011,production_value_eur,Miscellaneous aquatic plants,45440.689008,Asia
+CN,2011,production_value_eur,Miscellaneous marine molluscs,572664.05108,Asia
+CN,2011,production_value_eur,Mussels,231726.81899400003,Asia
+CN,2011,production_value_eur,Oysters,2790363.641472,Asia
+CN,2011,production_value_eur,"Pearls, mother-of-pearl, shells",13401.220558,Asia
+CN,2011,production_value_eur,Red seaweeds,1147346.242372,Asia
+CN,2011,production_value_eur,"Scallops, pectens",2333541.3559479997,Asia
+CN,2012,production_tonnes,Brown seaweeds,10804292,Asia
+CN,2012,production_tonnes,"Clams, cockles, arkshells",266452,Asia
+CN,2012,production_tonnes,Freshwater molluscs,133916,Asia
+CN,2012,production_tonnes,Green seaweeds,8729,Asia
+CN,2012,production_tonnes,Miscellaneous aquatic plants,72905,Asia
+CN,2012,production_tonnes,Miscellaneous marine molluscs,859672,Asia
+CN,2012,production_tonnes,Mussels,732490,Asia
+CN,2012,production_tonnes,Oysters,3783999,Asia
+CN,2012,production_tonnes,"Pearls, mother-of-pearl, shells",2330.663,Asia
+CN,2012,production_tonnes,Red seaweeds,3057878,Asia
+CN,2012,production_tonnes,"Scallops, pectens",1360689,Asia
+CN,2012,production_value_eur,Brown seaweeds,4973081.539536,Asia
+CN,2012,production_value_eur,"Clams, cockles, arkshells",522738.8562,Asia
+CN,2012,production_value_eur,Freshwater molluscs,155395.24398199999,Asia
+CN,2012,production_value_eur,Green seaweeds,5500.54032,Asia
+CN,2012,production_value_eur,Miscellaneous aquatic plants,52542.48769,Asia
+CN,2012,production_value_eur,Miscellaneous marine molluscs,694004.60888,Asia
+CN,2012,production_value_eur,Mussels,274853.68768000003,Asia
+CN,2012,production_value_eur,Oysters,3218616.573414,Asia
+CN,2012,production_value_eur,"Pearls, mother-of-pearl, shells",15964.573767999998,Asia
+CN,2012,production_value_eur,Red seaweeds,1509413.296204,Asia
+CN,2012,production_value_eur,"Scallops, pectens",2787292.496538,Asia
+CN,2013,production_tonnes,Brown seaweeds,11077120,Asia
+CN,2013,production_tonnes,"Clams, cockles, arkshells",322422,Asia
+CN,2013,production_tonnes,Freshwater molluscs,131972,Asia
+CN,2013,production_tonnes,Green seaweeds,4402,Asia
+CN,2013,production_tonnes,Miscellaneous aquatic plants,74446,Asia
+CN,2013,production_tonnes,Miscellaneous marine molluscs,863661,Asia
+CN,2013,production_tonnes,Mussels,715035,Asia
+CN,2013,production_tonnes,Oysters,4037709,Asia
+CN,2013,production_tonnes,"Pearls, mother-of-pearl, shells",1811.764,Asia
+CN,2013,production_tonnes,Red seaweeds,3534303,Asia
+CN,2013,production_tonnes,"Scallops, pectens",1539226,Asia
+CN,2013,production_value_eur,Brown seaweeds,5304872.088428,Asia
+CN,2013,production_value_eur,"Clams, cockles, arkshells",683147.088756,Asia
+CN,2013,production_value_eur,Freshwater molluscs,145076.731096,Asia
+CN,2013,production_value_eur,Green seaweeds,3242.1325640000005,Asia
+CN,2013,production_value_eur,Miscellaneous aquatic plants,58017.852288,Asia
+CN,2013,production_value_eur,Miscellaneous marine molluscs,753314.488674,Asia
+CN,2013,production_value_eur,Mussels,289587.74493,Asia
+CN,2013,production_value_eur,Oysters,3711211.774842,Asia
+CN,2013,production_value_eur,"Pearls, mother-of-pearl, shells",13655.405961999999,Asia
+CN,2013,production_value_eur,Red seaweeds,1850828.55672,Asia
+CN,2013,production_value_eur,"Scallops, pectens",3404312.3011040003,Asia
+CN,2014,production_tonnes,Brown seaweeds,11304472,Asia
+CN,2014,production_tonnes,"Clams, cockles, arkshells",337743,Asia
+CN,2014,production_tonnes,Freshwater molluscs,394557,Asia
+CN,2014,production_tonnes,Green seaweeds,1156,Asia
+CN,2014,production_tonnes,Miscellaneous aquatic plants,77588,Asia
+CN,2014,production_tonnes,Miscellaneous marine molluscs,846243,Asia
+CN,2014,production_tonnes,Mussels,769919,Asia
+CN,2014,production_tonnes,Oysters,4159382,Asia
+CN,2014,production_tonnes,"Pearls, mother-of-pearl, shells",1799.727,Asia
+CN,2014,production_tonnes,Red seaweeds,3638355,Asia
+CN,2014,production_tonnes,"Scallops, pectens",1576378,Asia
+CN,2014,production_value_eur,Brown seaweeds,5004002.459434,Asia
+CN,2014,production_value_eur,"Clams, cockles, arkshells",756736.158024,Asia
+CN,2014,production_value_eur,Freshwater molluscs,809098.943862,Asia
+CN,2014,production_value_eur,Green seaweeds,1289.531672,Asia
+CN,2014,production_value_eur,Miscellaneous aquatic plants,63895.735288,Asia
+CN,2014,production_value_eur,Miscellaneous marine molluscs,780867.343278,Asia
+CN,2014,production_value_eur,Mussels,329871.79555000004,Asia
+CN,2014,production_value_eur,Oysters,4044400.043992,Asia
+CN,2014,production_value_eur,"Pearls, mother-of-pearl, shells",14476.512798,Asia
+CN,2014,production_value_eur,Red seaweeds,1985342.69824,Asia
+CN,2014,production_value_eur,"Scallops, pectens",3688390.327864,Asia
+CN,2015,production_tonnes,Brown seaweeds,11791512,Asia
+CN,2015,production_tonnes,"Clams, cockles, arkshells",348964,Asia
+CN,2015,production_tonnes,Freshwater molluscs,136507,Asia
+CN,2015,production_tonnes,Green seaweeds,1158,Asia
+CN,2015,production_tonnes,Miscellaneous aquatic plants,81004,Asia
+CN,2015,production_tonnes,Miscellaneous marine molluscs,788622,Asia
+CN,2015,production_tonnes,Mussels,809415,Asia
+CN,2015,production_tonnes,Oysters,4380578,Asia
+CN,2015,production_tonnes,"Pearls, mother-of-pearl, shells",1633.586,Asia
+CN,2015,production_tonnes,Red seaweeds,3745451,Asia
+CN,2015,production_tonnes,"Scallops, pectens",1710080,Asia
+CN,2015,production_value_eur,Brown seaweeds,5129988.28837,Asia
+CN,2015,production_value_eur,"Clams, cockles, arkshells",771490.309128,Asia
+CN,2015,production_value_eur,Freshwater molluscs,175093.74416600002,Asia
+CN,2015,production_value_eur,Green seaweeds,1273.189236,Asia
+CN,2015,production_value_eur,Miscellaneous aquatic plants,65832.112808,Asia
+CN,2015,production_value_eur,Miscellaneous marine molluscs,717739.077396,Asia
+CN,2015,production_value_eur,Mussels,342413.30277,Asia
+CN,2015,production_value_eur,Oysters,4200212.081428,Asia
+CN,2015,production_value_eur,"Pearls, mother-of-pearl, shells",12788.114922,Asia
+CN,2015,production_value_eur,Red seaweeds,2003944.1210800002,Asia
+CN,2015,production_value_eur,"Scallops, pectens",3947237.43744,Asia
+CN,2016,production_tonnes,Brown seaweeds,12194038.12,Asia
+CN,2016,production_tonnes,"Clams, cockles, arkshells",354391,Asia
+CN,2016,production_tonnes,Freshwater molluscs,137201,Asia
+CN,2016,production_tonnes,Green seaweeds,3740,Asia
+CN,2016,production_tonnes,Miscellaneous aquatic plants,73200,Asia
+CN,2016,production_tonnes,Miscellaneous marine molluscs,854954,Asia
+CN,2016,production_tonnes,Mussels,862829,Asia
+CN,2016,production_tonnes,Oysters,4660434,Asia
+CN,2016,production_tonnes,"Pearls, mother-of-pearl, shells",1591.6779999999999,Asia
+CN,2016,production_tonnes,Red seaweeds,4229820,Asia
+CN,2016,production_tonnes,"Scallops, pectens",1849887,Asia
+CN,2016,production_value_eur,Brown seaweeds,5272343.114936,Asia
+CN,2016,production_value_eur,"Clams, cockles, arkshells",795157.009648,Asia
+CN,2016,production_value_eur,Freshwater molluscs,178548.20199200002,Asia
+CN,2016,production_value_eur,Green seaweeds,2996.0368000000003,Asia
+CN,2016,production_value_eur,Miscellaneous aquatic plants,60349.59359999999,Asia
+CN,2016,production_value_eur,Miscellaneous marine molluscs,789881.741152,Asia
+CN,2016,production_value_eur,Mussels,369718.775184,Asia
+CN,2016,production_value_eur,Oysters,4537435.825871999,Asia
+CN,2016,production_value_eur,"Pearls, mother-of-pearl, shells",11853.860008000001,Asia
+CN,2016,production_value_eur,Red seaweeds,2185045.4095199998,Asia
+CN,2016,production_value_eur,"Scallops, pectens",4332923.724168,Asia
+CN,2017,production_tonnes,Brown seaweeds,12582170.2,Asia
+CN,2017,production_tonnes,"Clams, cockles, arkshells",352619,Asia
+CN,2017,production_tonnes,Freshwater molluscs,115934,Asia
+CN,2017,production_tonnes,Green seaweeds,3600,Asia
+CN,2017,production_tonnes,Miscellaneous aquatic plants,71740,Asia
+CN,2017,production_tonnes,Miscellaneous marine molluscs,743893,Asia
+CN,2017,production_tonnes,Mussels,927609,Asia
+CN,2017,production_tonnes,Oysters,4879422,Asia
+CN,2017,production_tonnes,"Pearls, mother-of-pearl, shells",941.4540000000001,Asia
+CN,2017,production_tonnes,Red seaweeds,4876080,Asia
+CN,2017,production_tonnes,"Scallops, pectens",2007529,Asia
+CN,2017,production_value_eur,Brown seaweeds,5548590.990544,Asia
+CN,2017,production_value_eur,"Clams, cockles, arkshells",807267.2497929999,Asia
+CN,2017,production_value_eur,Freshwater molluscs,162986.807036,Asia
+CN,2017,production_value_eur,Green seaweeds,2962.4026,Asia
+CN,2017,production_value_eur,Miscellaneous aquatic plants,58033.64256,Asia
+CN,2017,production_value_eur,Miscellaneous marine molluscs,701402.5757330001,Asia
+CN,2017,production_value_eur,Mussels,405635.06721899996,Asia
+CN,2017,production_value_eur,Oysters,4847412.99168,Asia
+CN,2017,production_value_eur,"Pearls, mother-of-pearl, shells",7154.576593000001,Asia
+CN,2017,production_value_eur,Red seaweeds,2581545.56467,Asia
+CN,2017,production_value_eur,"Scallops, pectens",4798927.810985,Asia
+CN,2018,production_tonnes,Brown seaweeds,13166260,Asia
+CN,2018,production_tonnes,"Clams, cockles, arkshells",372303,Asia
+CN,2018,production_tonnes,Freshwater molluscs,100106,Asia
+CN,2018,production_tonnes,Green seaweeds,200,Asia
+CN,2018,production_tonnes,Miscellaneous aquatic plants,69390,Asia
+CN,2018,production_tonnes,Miscellaneous marine molluscs,755669,Asia
+CN,2018,production_tonnes,Mussels,903361,Asia
+CN,2018,production_tonnes,Oysters,5139760,Asia
+CN,2018,production_tonnes,"Pearls, mother-of-pearl, shells",705.342,Asia
+CN,2018,production_tonnes,Red seaweeds,5339430,Asia
+CN,2018,production_tonnes,"Scallops, pectens",1917850,Asia
+CN,2018,production_value_eur,Brown seaweeds,5837382.687999999,Asia
+CN,2018,production_value_eur,"Clams, cockles, arkshells",846426.402864,Asia
+CN,2018,production_value_eur,Freshwater molluscs,141681.50630399998,Asia
+CN,2018,production_value_eur,Green seaweeds,668.5631999999999,Asia
+CN,2018,production_value_eur,Miscellaneous aquatic plants,53664.56064,Asia
+CN,2018,production_value_eur,Miscellaneous marine molluscs,707451.2724479999,Asia
+CN,2018,production_value_eur,Mussels,392217.665536,Asia
+CN,2018,production_value_eur,Oysters,5068954.66624,Asia
+CN,2018,production_value_eur,"Pearls, mother-of-pearl, shells",5320.3672639999995,Asia
+CN,2018,production_value_eur,Red seaweeds,2802769.51504,Asia
+CN,2018,production_value_eur,"Scallops, pectens",4550490.3664,Asia
+CN,2019,production_tonnes,Brown seaweeds,14514052,Asia
+CN,2019,production_tonnes,"Clams, cockles, arkshells",387676,Asia
+CN,2019,production_tonnes,Freshwater molluscs,96749,Asia
+CN,2019,production_tonnes,Green seaweeds,200,Asia
+CN,2019,production_tonnes,Miscellaneous aquatic plants,54650,Asia
+CN,2019,production_tonnes,Miscellaneous marine molluscs,806101,Asia
+CN,2019,production_tonnes,Mussels,870652,Asia
+CN,2019,production_tonnes,Oysters,5225595,Asia
+CN,2019,production_tonnes,"Pearls, mother-of-pearl, shells",612.137,Asia
+CN,2019,production_tonnes,Red seaweeds,5608090,Asia
+CN,2019,production_tonnes,"Scallops, pectens",1828107,Asia
+CN,2019,production_value_eur,Brown seaweeds,7089578.208192,Asia
+CN,2019,production_value_eur,"Clams, cockles, arkshells",953766.31034,Asia
+CN,2019,production_value_eur,Freshwater molluscs,146692.340234,Asia
+CN,2019,production_value_eur,Green seaweeds,723.6872000000001,Asia
+CN,2019,production_value_eur,Miscellaneous aquatic plants,44507.8344,Asia
+CN,2019,production_value_eur,Miscellaneous marine molluscs,816307.850862,Asia
+CN,2019,production_value_eur,Mussels,408960.91613599996,Asia
+CN,2019,production_value_eur,Oysters,5576415.320325,Asia
+CN,2019,production_value_eur,"Pearls, mother-of-pearl, shells",5156.153424000001,Asia
+CN,2019,production_value_eur,Red seaweeds,3180014.01549,Asia
+CN,2019,production_value_eur,"Scallops, pectens",4695068.708675999,Asia
+CN,2020,production_tonnes,Brown seaweeds,14851653.48,Asia
+CN,2020,production_tonnes,"Clams, cockles, arkshells",385108,Asia
+CN,2020,production_tonnes,Freshwater molluscs,95674,Asia
+CN,2020,production_tonnes,Green seaweeds,400,Asia
+CN,2020,production_tonnes,Miscellaneous aquatic plants,62470,Asia
+CN,2020,production_tonnes,Miscellaneous marine molluscs,802208,Asia
+CN,2020,production_tonnes,Mussels,886875,Asia
+CN,2020,production_tonnes,Oysters,5424632,Asia
+CN,2020,production_tonnes,"Pearls, mother-of-pearl, shells",456.488,Asia
+CN,2020,production_tonnes,Red seaweeds,5948410,Asia
+CN,2020,production_tonnes,"Scallops, pectens",1746238,Asia
+CN,2020,production_value_eur,Brown seaweeds,7296799.534193,Asia
+CN,2020,production_value_eur,"Clams, cockles, arkshells",947359.90338,Asia
+CN,2020,production_value_eur,Freshwater molluscs,148322.600444,Asia
+CN,2020,production_value_eur,Green seaweeds,882.0866,Asia
+CN,2020,production_value_eur,Miscellaneous aquatic plants,49965.00528,Asia
+CN,2020,production_value_eur,Miscellaneous marine molluscs,812584.56048,Asia
+CN,2020,production_value_eur,Mussels,416895.105,Asia
+CN,2020,production_value_eur,Oysters,5789758.555288,Asia
+CN,2020,production_value_eur,"Pearls, mother-of-pearl, shells",3844.2146130000006,Asia
+CN,2020,production_value_eur,Red seaweeds,3379830.2210999997,Asia
+CN,2020,production_value_eur,"Scallops, pectens",4484087.725728,Asia
+CN,2021,production_tonnes,Brown seaweeds,15509885,Asia
+CN,2021,production_tonnes,"Clams, cockles, arkshells",340407,Asia
+CN,2021,production_tonnes,Freshwater molluscs,97574,Asia
+CN,2021,production_tonnes,Green seaweeds,1040,Asia
+CN,2021,production_tonnes,Miscellaneous aquatic plants,83270,Asia
+CN,2021,production_tonnes,Miscellaneous marine molluscs,762682,Asia
+CN,2021,production_tonnes,Mussels,829481,Asia
+CN,2021,production_tonnes,Oysters,5819188,Asia
+CN,2021,production_tonnes,"Pearls, mother-of-pearl, shells",477.094,Asia
+CN,2021,production_tonnes,Red seaweeds,5989980,Asia
+CN,2021,production_tonnes,"Scallops, pectens",1829924,Asia
+CN,2021,production_value_eur,Brown seaweeds,7374064.66875,Asia
+CN,2021,production_value_eur,"Clams, cockles, arkshells",819785.15775,Asia
+CN,2021,production_value_eur,Freshwater molluscs,151832.3209,Asia
+CN,2021,production_value_eur,Green seaweeds,1362.816,Asia
+CN,2021,production_value_eur,Miscellaneous aquatic plants,64171.1928,Asia
+CN,2021,production_value_eur,Miscellaneous marine molluscs,760470.2222,Asia
+CN,2021,production_value_eur,Mussels,385501.29475,Asia
+CN,2021,production_value_eur,Oysters,6097345.1864,Asia
+CN,2021,production_value_eur,"Pearls, mother-of-pearl, shells",3941.768675,Asia
+CN,2021,production_value_eur,Red seaweeds,3309124.442,Asia
+CN,2021,production_value_eur,"Scallops, pectens",4607931.624399999,Asia
+CN,2022,production_tonnes,Brown seaweeds,14116687,Asia
+CN,2022,production_tonnes,"Clams, cockles, arkshells",345371,Asia
+CN,2022,production_tonnes,Freshwater molluscs,95064,Asia
+CN,2022,production_tonnes,Green seaweeds,200,Asia
+CN,2022,production_tonnes,Miscellaneous aquatic plants,99910,Asia
+CN,2022,production_tonnes,Miscellaneous marine molluscs,801161,Asia
+CN,2022,production_tonnes,Mussels,771230,Asia
+CN,2022,production_tonnes,Oysters,6199540,Asia
+CN,2022,production_tonnes,"Pearls, mother-of-pearl, shells",699.697,Asia
+CN,2022,production_tonnes,Red seaweeds,8287480,Asia
+CN,2022,production_tonnes,"Scallops, pectens",1792240,Asia
+CN,2022,production_value_eur,Brown seaweeds,8062685.358049999,Asia
+CN,2022,production_value_eur,"Clams, cockles, arkshells",944606.95355,Asia
+CN,2022,production_value_eur,Freshwater molluscs,169722.4818,Asia
+CN,2022,production_value_eur,Green seaweeds,804.46,Asia
+CN,2022,production_value_eur,Miscellaneous aquatic plants,86562.024,Asia
+CN,2022,production_value_eur,Miscellaneous marine molluscs,902668.0987,Asia
+CN,2022,production_value_eur,Mussels,402967.675,Asia
+CN,2022,production_value_eur,Oysters,7356064.187,Asia
+CN,2022,production_value_eur,"Pearls, mother-of-pearl, shells",6552.790299999999,Asia
+CN,2022,production_value_eur,Red seaweeds,5162827.915,Asia
+CN,2022,production_value_eur,"Scallops, pectens",5118099.768,Asia
+CN,2023,production_tonnes,Brown seaweeds,15387032.6,Asia
+CN,2023,production_tonnes,"Clams, cockles, arkshells",343500,Asia
+CN,2023,production_tonnes,Freshwater molluscs,101472,Asia
+CN,2023,production_tonnes,Green seaweeds,200,Asia
+CN,2023,production_tonnes,Miscellaneous aquatic plants,111040,Asia
+CN,2023,production_tonnes,Miscellaneous marine molluscs,926127,Asia
+CN,2023,production_tonnes,Mussels,777065,Asia
+CN,2023,production_tonnes,Oysters,6671197,Asia
+CN,2023,production_tonnes,"Pearls, mother-of-pearl, shells",757.069,Asia
+CN,2023,production_tonnes,Red seaweeds,7565610,Asia
+CN,2023,production_tonnes,"Scallops, pectens",1854344,Asia
+CN,2023,production_value_eur,Brown seaweeds,8099249.192496,Asia
+CN,2023,production_value_eur,"Clams, cockles, arkshells",925520.904,Asia
+CN,2023,production_value_eur,Freshwater molluscs,174415.14367199998,Asia
+CN,2023,production_value_eur,Green seaweeds,792.6072,Asia
+CN,2023,production_value_eur,Miscellaneous aquatic plants,93572.07552000001,Asia
+CN,2023,production_value_eur,Miscellaneous marine molluscs,1027745.3589480001,Asia
+CN,2023,production_value_eur,Mussels,399930.48942,Asia
+CN,2023,production_value_eur,Oysters,7797695.32542,Asia
+CN,2023,production_value_eur,"Pearls, mother-of-pearl, shells",6985.756008,Asia
+CN,2023,production_value_eur,Red seaweeds,4649865.0475200005,Asia
+CN,2023,production_value_eur,"Scallops, pectens",5215631.777664,Asia
+FR,2010,production_tonnes,"Clams, cockles, arkshells",1195,Europe
+FR,2010,production_tonnes,Miscellaneous aquatic plants,440,Europe
+FR,2010,production_tonnes,Mussels,70339,Europe
+FR,2010,production_tonnes,Oysters,80650,Europe
+FR,2010,production_value_eur,"Clams, cockles, arkshells",5136.862037999999,Europe
+FR,2010,production_value_eur,Miscellaneous aquatic plants,443.54497000000003,Europe
+FR,2010,production_value_eur,Mussels,157351.385224,Europe
+FR,2010,production_value_eur,Oysters,414524.90776400006,Europe
+FR,2011,production_tonnes,"Clams, cockles, arkshells",1589,Europe
+FR,2011,production_tonnes,Miscellaneous aquatic plants,47.5,Europe
+FR,2011,production_tonnes,Mussels,65021,Europe
+FR,2011,production_tonnes,Oysters,78965,Europe
+FR,2011,production_value_eur,"Clams, cockles, arkshells",7169.6714759999995,Europe
+FR,2011,production_value_eur,Miscellaneous aquatic plants,302.78335999999996,Europe
+FR,2011,production_value_eur,Mussels,155817.869768,Europe
+FR,2011,production_value_eur,Oysters,486208.59674199997,Europe
+FR,2012,production_tonnes,Brown seaweeds,100,Europe
+FR,2012,production_tonnes,"Clams, cockles, arkshells",1051,Europe
+FR,2012,production_tonnes,Mussels,77139,Europe
+FR,2012,production_tonnes,Oysters,80354,Europe
+FR,2012,production_value_eur,Brown seaweeds,254.95390799999998,Europe
+FR,2012,production_value_eur,"Clams, cockles, arkshells",4231.9945800000005,Europe
+FR,2012,production_value_eur,Mussels,161496.929418,Europe
+FR,2012,production_value_eur,Oysters,460116.513098,Europe
+FR,2013,production_tonnes,Brown seaweeds,100,Europe
+FR,2013,production_tonnes,"Clams, cockles, arkshells",1844.4,Europe
+FR,2013,production_tonnes,Mussels,74138.2,Europe
+FR,2013,production_tonnes,Oysters,77510.5,Europe
+FR,2013,production_value_eur,Brown seaweeds,263.55177199999997,Europe
+FR,2013,production_value_eur,"Clams, cockles, arkshells",7686.459747999999,Europe
+FR,2013,production_value_eur,Mussels,158315.506866,Europe
+FR,2013,production_value_eur,Oysters,466136.365486,Europe
+FR,2014,production_tonnes,Brown seaweeds,100,Europe
+FR,2014,production_tonnes,"Clams, cockles, arkshells",1875.7,Europe
+FR,2014,production_tonnes,Mussels,57633,Europe
+FR,2014,production_tonnes,Oysters,75166.79999999999,Europe
+FR,2014,production_value_eur,Brown seaweeds,263.62753999999995,Europe
+FR,2014,production_value_eur,"Clams, cockles, arkshells",9051.680044,Europe
+FR,2014,production_value_eur,Mussels,122715.415064,Europe
+FR,2014,production_value_eur,Oysters,413466.333192,Europe
+FR,2015,production_tonnes,Brown seaweeds,100,Europe
+FR,2015,production_tonnes,"Clams, cockles, arkshells",2137.9,Europe
+FR,2015,production_tonnes,Mussels,56801.700000000004,Europe
+FR,2015,production_tonnes,Oysters,64882.4,Europe
+FR,2015,production_value_eur,Brown seaweeds,220.171886,Europe
+FR,2015,production_value_eur,"Clams, cockles, arkshells",9477.538598,Europe
+FR,2015,production_value_eur,Mussels,112464.07953,Europe
+FR,2015,production_value_eur,Oysters,336270.274164,Europe
+FR,2016,production_tonnes,Brown seaweeds,100,Europe
+FR,2016,production_tonnes,"Clams, cockles, arkshells",1692,Europe
+FR,2016,production_tonnes,Mussels,51619.59,Europe
+FR,2016,production_tonnes,Oysters,77622.1,Europe
+FR,2016,production_value_eur,Brown seaweeds,220.141176,Europe
+FR,2016,production_value_eur,"Clams, cockles, arkshells",9288.665088,Europe
+FR,2016,production_value_eur,Mussels,126956.568528,Europe
+FR,2016,production_value_eur,Oysters,393311.45216000004,Europe
+FR,2017,production_tonnes,Brown seaweeds,100,Europe
+FR,2017,production_tonnes,"Clams, cockles, arkshells",1912.4,Europe
+FR,2017,production_tonnes,Mussels,52699,Europe
+FR,2017,production_tonnes,Oysters,84926.8,Europe
+FR,2017,production_value_eur,Brown seaweeds,220.44611,Europe
+FR,2017,production_value_eur,"Clams, cockles, arkshells",9642.688762,Europe
+FR,2017,production_value_eur,Mussels,135621.248018,Europe
+FR,2017,production_value_eur,Oysters,423321.295505,Europe
+FR,2018,production_tonnes,Brown seaweeds,113,Europe
+FR,2018,production_tonnes,"Clams, cockles, arkshells",2295.1,Europe
+FR,2018,production_tonnes,Miscellaneous aquatic plants,253.9,Europe
+FR,2018,production_tonnes,Mussels,48817.5,Europe
+FR,2018,production_tonnes,Oysters,92092,Europe
+FR,2018,production_value_eur,Brown seaweeds,258.691728,Europe
+FR,2018,production_value_eur,"Clams, cockles, arkshells",7122.359632000001,Europe
+FR,2018,production_value_eur,Miscellaneous aquatic plants,7666.180336,Europe
+FR,2018,production_value_eur,Mussels,100767.43295999999,Europe
+FR,2018,production_value_eur,Oysters,382511.096288,Europe
+FR,2019,production_tonnes,Brown seaweeds,104.93,Europe
+FR,2019,production_tonnes,"Clams, cockles, arkshells",1312.77,Europe
+FR,2019,production_tonnes,Green seaweeds,6.22,Europe
+FR,2019,production_tonnes,Miscellaneous aquatic plants,271.76,Europe
+FR,2019,production_tonnes,Mussels,60254.990000000005,Europe
+FR,2019,production_tonnes,Oysters,85947.09999999999,Europe
+FR,2019,production_value_eur,Brown seaweeds,402.806403,Europe
+FR,2019,production_value_eur,"Clams, cockles, arkshells",4932.793585,Europe
+FR,2019,production_value_eur,Green seaweeds,60.00067,Europe
+FR,2019,production_value_eur,Miscellaneous aquatic plants,7966.029718000001,Europe
+FR,2019,production_value_eur,Mussels,133870.566757,Europe
+FR,2019,production_value_eur,Oysters,398133.477773,Europe
+FR,2020,production_tonnes,Brown seaweeds,69.749,Europe
+FR,2020,production_tonnes,"Clams, cockles, arkshells",1013.622,Europe
+FR,2020,production_tonnes,Miscellaneous aquatic plants,273.51,Europe
+FR,2020,production_tonnes,Mussels,61219.494999999995,Europe
+FR,2020,production_tonnes,Oysters,80783.385,Europe
+FR,2020,production_value_eur,Brown seaweeds,382.17818300000005,Europe
+FR,2020,production_value_eur,"Clams, cockles, arkshells",4343.858176,Europe
+FR,2020,production_value_eur,Miscellaneous aquatic plants,7817.660438,Europe
+FR,2020,production_value_eur,Mussels,138055.65528300003,Europe
+FR,2020,production_value_eur,Oysters,357593.76820000005,Europe
+FR,2021,production_tonnes,Brown seaweeds,77.63,Europe
+FR,2021,production_tonnes,"Clams, cockles, arkshells",1316.22,Europe
+FR,2021,production_tonnes,Miscellaneous aquatic plants,252.649,Europe
+FR,2021,production_tonnes,Mussels,66321.297,Europe
+FR,2021,production_tonnes,Oysters,80910.621,Europe
+FR,2021,production_value_eur,Brown seaweeds,323.61303,Europe
+FR,2021,production_value_eur,"Clams, cockles, arkshells",5598.26527,Europe
+FR,2021,production_value_eur,Miscellaneous aquatic plants,7587.28373,Europe
+FR,2021,production_value_eur,Mussels,149412.22399999996,Europe
+FR,2021,production_value_eur,Oysters,403401.72236,Europe
+FR,2022,production_tonnes,Brown seaweeds,132.8,Europe
+FR,2022,production_tonnes,"Clams, cockles, arkshells",1100.849,Europe
+FR,2022,production_tonnes,Miscellaneous aquatic plants,388.605,Europe
+FR,2022,production_tonnes,Mussels,71195.475,Europe
+FR,2022,production_tonnes,Oysters,84785.695,Europe
+FR,2022,production_value_eur,Brown seaweeds,593.71865,Europe
+FR,2022,production_value_eur,"Clams, cockles, arkshells",6079.77675,Europe
+FR,2022,production_value_eur,Miscellaneous aquatic plants,9024.14975,Europe
+FR,2022,production_value_eur,Mussels,177207.2487,Europe
+FR,2022,production_value_eur,Oysters,411546.31085,Europe
+FR,2023,production_tonnes,Brown seaweeds,112.75,Europe
+FR,2023,production_tonnes,"Clams, cockles, arkshells",838.764,Europe
+FR,2023,production_tonnes,Miscellaneous aquatic plants,338.797,Europe
+FR,2023,production_tonnes,Mussels,54556.047999999995,Europe
+FR,2023,production_tonnes,Oysters,90429.619,Europe
+FR,2023,production_value_eur,Brown seaweeds,496.77566400000006,Europe
+FR,2023,production_value_eur,"Clams, cockles, arkshells",3797.73702,Europe
+FR,2023,production_value_eur,Miscellaneous aquatic plants,8302.539168000001,Europe
+FR,2023,production_value_eur,Mussels,135793.64106,Europe
+FR,2023,production_value_eur,Oysters,514388.834652,Europe
+ID,2010,production_tonnes,Miscellaneous marine molluscs,0,Asia
+ID,2010,production_tonnes,"Pearls, mother-of-pearl, shells",58079,Asia
+ID,2010,production_tonnes,Red seaweeds,3915017,Asia
+ID,2010,production_value_eur,Miscellaneous marine molluscs,0,Asia
+ID,2010,production_value_eur,"Pearls, mother-of-pearl, shells",25931.69271,Asia
+ID,2010,production_value_eur,Red seaweeds,1143812.518464,Asia
+ID,2011,production_tonnes,Miscellaneous marine molluscs,0,Asia
+ID,2011,production_tonnes,"Pearls, mother-of-pearl, shells",48449.4,Asia
+ID,2011,production_tonnes,Red seaweeds,5170201,Asia
+ID,2011,production_value_eur,Miscellaneous marine molluscs,0,Asia
+ID,2011,production_value_eur,"Pearls, mother-of-pearl, shells",24779.107188,Asia
+ID,2011,production_value_eur,Red seaweeds,1031027.8528000001,Asia
+ID,2012,production_tonnes,Miscellaneous marine molluscs,0,Asia
+ID,2012,production_tonnes,"Pearls, mother-of-pearl, shells",17251,Asia
+ID,2012,production_tonnes,Red seaweeds,6514854,Asia
+ID,2012,production_value_eur,Miscellaneous marine molluscs,0,Asia
+ID,2012,production_value_eur,"Pearls, mother-of-pearl, shells",9336.2412,Asia
+ID,2012,production_value_eur,Red seaweeds,1214860.402074,Asia
+ID,2013,production_tonnes,Miscellaneous marine molluscs,0,Asia
+ID,2013,production_tonnes,"Pearls, mother-of-pearl, shells",29090.7,Asia
+ID,2013,production_tonnes,Red seaweeds,9298474,Asia
+ID,2013,production_value_eur,Miscellaneous marine molluscs,0,Asia
+ID,2013,production_value_eur,"Pearls, mother-of-pearl, shells",15743.88684,Asia
+ID,2013,production_value_eur,Red seaweeds,1561443.323418,Asia
+ID,2014,production_tonnes,"Pearls, mother-of-pearl, shells",44398.78,Asia
+ID,2014,production_tonnes,Red seaweeds,10076991.6,Asia
+ID,2014,production_value_eur,"Pearls, mother-of-pearl, shells",24060.189736,Asia
+ID,2014,production_value_eur,Red seaweeds,1490095.6375580002,Asia
+ID,2015,production_tonnes,"Pearls, mother-of-pearl, shells",37505.1,Asia
+ID,2015,production_tonnes,Red seaweeds,11269341,Asia
+ID,2015,production_value_eur,"Pearls, mother-of-pearl, shells",17604.164424,Asia
+ID,2015,production_value_eur,Red seaweeds,759178.10925,Asia
+ID,2016,production_tonnes,"Pearls, mother-of-pearl, shells",51406.28,Asia
+ID,2016,production_tonnes,Red seaweeds,11050301.23,Asia
+ID,2016,production_value_eur,"Pearls, mother-of-pearl, shells",29276.904223999998,Asia
+ID,2016,production_value_eur,Red seaweeds,1049621.8732719999,Asia
+ID,2017,production_tonnes,"Pearls, mother-of-pearl, shells",63181,Asia
+ID,2017,production_tonnes,Red seaweeds,10547552,Asia
+ID,2017,production_value_eur,"Pearls, mother-of-pearl, shells",53568.95467,Asia
+ID,2017,production_value_eur,Red seaweeds,957799.504446,Asia
+ID,2018,production_tonnes,"Clams, cockles, arkshells",11330,Asia
+ID,2018,production_tonnes,Mussels,38120,Asia
+ID,2018,production_tonnes,"Pearls, mother-of-pearl, shells",24863,Asia
+ID,2018,production_tonnes,Red seaweeds,10320000,Asia
+ID,2018,production_value_eur,"Clams, cockles, arkshells",7686.57304,Asia
+ID,2018,production_value_eur,Mussels,13568.836128,Asia
+ID,2018,production_value_eur,"Pearls, mother-of-pearl, shells",25625.806976,Asia
+ID,2018,production_value_eur,Red seaweeds,1298545.8437279998,Asia
+ID,2019,production_tonnes,Brown seaweeds,80618,Asia
+ID,2019,production_tonnes,"Clams, cockles, arkshells",11883,Asia
+ID,2019,production_tonnes,Green seaweeds,45,Asia
+ID,2019,production_tonnes,Miscellaneous marine molluscs,10864,Asia
+ID,2019,production_tonnes,Mussels,26080,Asia
+ID,2019,production_tonnes,Red seaweeds,9695322,Asia
+ID,2019,production_value_eur,Brown seaweeds,24684.806080000002,Asia
+ID,2019,production_value_eur,"Clams, cockles, arkshells",12883.67713,Asia
+ID,2019,production_value_eur,Green seaweeds,34.084917000000004,Asia
+ID,2019,production_value_eur,Miscellaneous marine molluscs,14223.511112,Asia
+ID,2019,production_value_eur,Mussels,8109.021343,Asia
+ID,2019,production_value_eur,Red seaweeds,1813371.9127340002,Asia
+ID,2020,production_tonnes,Brown seaweeds,80662,Asia
+ID,2020,production_tonnes,"Clams, cockles, arkshells",10913,Asia
+ID,2020,production_tonnes,Green seaweeds,232,Asia
+ID,2020,production_tonnes,Miscellaneous marine molluscs,8070,Asia
+ID,2020,production_tonnes,Mussels,23327,Asia
+ID,2020,production_tonnes,Red seaweeds,9537526,Asia
+ID,2020,production_value_eur,Brown seaweeds,23552.357692,Asia
+ID,2020,production_value_eur,"Clams, cockles, arkshells",9612.566348999999,Asia
+ID,2020,production_value_eur,Green seaweeds,94.684428,Asia
+ID,2020,production_value_eur,Miscellaneous marine molluscs,9532.15685,Asia
+ID,2020,production_value_eur,Mussels,6905.206836,Asia
+ID,2020,production_value_eur,Red seaweeds,1541880.7931610001,Asia
+ID,2021,production_tonnes,Brown seaweeds,85317.115,Asia
+ID,2021,production_tonnes,"Clams, cockles, arkshells",11355.391,Asia
+ID,2021,production_tonnes,Green seaweeds,218.59,Asia
+ID,2021,production_tonnes,Mussels,23362.268,Asia
+ID,2021,production_tonnes,"Pearls, mother-of-pearl, shells",8226.016,Asia
+ID,2021,production_tonnes,Red seaweeds,9006495.624,Asia
+ID,2021,production_value_eur,Brown seaweeds,24323.603004999997,Asia
+ID,2021,production_value_eur,"Clams, cockles, arkshells",9907.367274999999,Asia
+ID,2021,production_value_eur,Green seaweeds,64.547015,Asia
+ID,2021,production_value_eur,Mussels,6966.782485,Asia
+ID,2021,production_value_eur,"Pearls, mother-of-pearl, shells",9621.640664999999,Asia
+ID,2021,production_value_eur,Red seaweeds,1658263.90743,Asia
+ID,2022,production_tonnes,Brown seaweeds,481.69,Asia
+ID,2022,production_tonnes,"Clams, cockles, arkshells",11774.15,Asia
+ID,2022,production_tonnes,Green seaweeds,224.576,Asia
+ID,2022,production_tonnes,Mussels,29037.877,Asia
+ID,2022,production_tonnes,"Pearls, mother-of-pearl, shells",8505.976,Asia
+ID,2022,production_tonnes,Red seaweeds,9233561.345,Asia
+ID,2022,production_value_eur,Brown seaweeds,184.8928,Asia
+ID,2022,production_value_eur,"Clams, cockles, arkshells",11445.347300000001,Asia
+ID,2022,production_value_eur,Green seaweeds,71.8352,Asia
+ID,2022,production_value_eur,Mussels,8332.58585,Asia
+ID,2022,production_value_eur,"Pearls, mother-of-pearl, shells",10654.82285,Asia
+ID,2022,production_value_eur,Red seaweeds,2594321.11635,Asia
+ID,2023,production_tonnes,"Clams, cockles, arkshells",13854.43,Asia
+ID,2023,production_tonnes,Green seaweeds,355.138,Asia
+ID,2023,production_tonnes,Mussels,37376.703,Asia
+ID,2023,production_tonnes,"Pearls, mother-of-pearl, shells",8367.805,Asia
+ID,2023,production_tonnes,Red seaweeds,9753055.352,Asia
+ID,2023,production_value_eur,"Clams, cockles, arkshells",13004.135760000001,Asia
+ID,2023,production_value_eur,Green seaweeds,180.64846800000004,Asia
+ID,2023,production_value_eur,Mussels,8917.937952000002,Asia
+ID,2023,production_value_eur,"Pearls, mother-of-pearl, shells",10580.259228,Asia
+ID,2023,production_value_eur,Red seaweeds,1719332.96766,Asia
+JP,2010,production_tonnes,Brown seaweeds,95644,Asia
+JP,2010,production_tonnes,"Clams, cockles, arkshells",784,Asia
+JP,2010,production_tonnes,Green seaweeds,0,Asia
+JP,2010,production_tonnes,Miscellaneous aquatic plants,8452,Asia
+JP,2010,production_tonnes,Oysters,200298,Asia
+JP,2010,production_tonnes,"Pearls, mother-of-pearl, shells",21.337,Asia
+JP,2010,production_tonnes,Red seaweeds,328700,Asia
+JP,2010,production_tonnes,"Scallops, pectens",219649,Asia
+JP,2010,production_value_eur,Brown seaweeds,166990.463904,Asia
+JP,2010,production_value_eur,"Clams, cockles, arkshells",11940.36932,Asia
+JP,2010,production_value_eur,Green seaweeds,0,Asia
+JP,2010,production_value_eur,Miscellaneous aquatic plants,16348.603876000001,Asia
+JP,2010,production_value_eur,Oysters,345531.109066,Asia
+JP,2010,production_value_eur,"Pearls, mother-of-pearl, shells",100362.79972400001,Asia
+JP,2010,production_value_eur,Red seaweeds,876712.9378259999,Asia
+JP,2010,production_value_eur,"Scallops, pectens",354173.72760000004,Asia
+JP,2011,production_tonnes,Brown seaweeds,43846,Asia
+JP,2011,production_tonnes,"Clams, cockles, arkshells",594,Asia
+JP,2011,production_tonnes,Green seaweeds,0,Asia
+JP,2011,production_tonnes,Miscellaneous aquatic plants,13546,Asia
+JP,2011,production_tonnes,Oysters,165910,Asia
+JP,2011,production_tonnes,"Pearls, mother-of-pearl, shells",19.587,Asia
+JP,2011,production_tonnes,Red seaweeds,292345,Asia
+JP,2011,production_tonnes,"Scallops, pectens",118425,Asia
+JP,2011,production_value_eur,Brown seaweeds,104613.825602,Asia
+JP,2011,production_value_eur,"Clams, cockles, arkshells",9493.899074,Asia
+JP,2011,production_value_eur,Green seaweeds,0,Asia
+JP,2011,production_value_eur,Miscellaneous aquatic plants,26616.822144,Asia
+JP,2011,production_value_eur,Oysters,344967.30404400005,Asia
+JP,2011,production_value_eur,"Pearls, mother-of-pearl, shells",107947.92338,Asia
+JP,2011,production_value_eur,Red seaweeds,804064.1178680001,Asia
+JP,2011,production_value_eur,"Scallops, pectens",291530.944276,Asia
+JP,2012,production_tonnes,Brown seaweeds,82490,Asia
+JP,2012,production_tonnes,"Clams, cockles, arkshells",511,Asia
+JP,2012,production_tonnes,Green seaweeds,0,Asia
+JP,2012,production_tonnes,Miscellaneous aquatic plants,16684,Asia
+JP,2012,production_tonnes,Oysters,161116,Asia
+JP,2012,production_tonnes,"Pearls, mother-of-pearl, shells",19.781,Asia
+JP,2012,production_tonnes,Red seaweeds,341580,Asia
+JP,2012,production_tonnes,"Scallops, pectens",184287,Asia
+JP,2012,production_value_eur,Brown seaweeds,199888.171824,Asia
+JP,2012,production_value_eur,"Clams, cockles, arkshells",8218.453936,Asia
+JP,2012,production_value_eur,Green seaweeds,0,Asia
+JP,2012,production_value_eur,Miscellaneous aquatic plants,33981.729716,Asia
+JP,2012,production_value_eur,Oysters,344090.11806400004,Asia
+JP,2012,production_value_eur,"Pearls, mother-of-pearl, shells",113193.0624,Asia
+JP,2012,production_value_eur,Red seaweeds,1068634.9640559999,Asia
+JP,2012,production_value_eur,"Scallops, pectens",290461.00179799995,Asia
+JP,2013,production_tonnes,Brown seaweeds,86024,Asia
+JP,2013,production_tonnes,"Clams, cockles, arkshells",457,Asia
+JP,2013,production_tonnes,Green seaweeds,0,Asia
+JP,2013,production_tonnes,Miscellaneous aquatic plants,16113,Asia
+JP,2013,production_tonnes,Oysters,164139,Asia
+JP,2013,production_tonnes,"Pearls, mother-of-pearl, shells",20.485,Asia
+JP,2013,production_tonnes,Red seaweeds,316228,Asia
+JP,2013,production_tonnes,"Scallops, pectens",167844,Asia
+JP,2013,production_value_eur,Brown seaweeds,139686.49365000002,Asia
+JP,2013,production_value_eur,"Clams, cockles, arkshells",5129.428656,Asia
+JP,2013,production_value_eur,Green seaweeds,0,Asia
+JP,2013,production_value_eur,Miscellaneous aquatic plants,31525.13001,Asia
+JP,2013,production_value_eur,Oysters,278560.562214,Asia
+JP,2013,production_value_eur,"Pearls, mother-of-pearl, shells",104363.084034,Asia
+JP,2013,production_value_eur,Red seaweeds,669210.1667899999,Asia
+JP,2013,production_value_eur,"Scallops, pectens",298328.687778,Asia
+JP,2014,production_tonnes,Brown seaweeds,77613,Asia
+JP,2014,production_tonnes,"Clams, cockles, arkshells",440,Asia
+JP,2014,production_tonnes,Green seaweeds,0,Asia
+JP,2014,production_tonnes,Miscellaneous aquatic plants,20166,Asia
+JP,2014,production_tonnes,Oysters,183685,Asia
+JP,2014,production_tonnes,"Pearls, mother-of-pearl, shells",19.585,Asia
+JP,2014,production_tonnes,Red seaweeds,276129,Asia
+JP,2014,production_tonnes,"Scallops, pectens",184588,Asia
+JP,2014,production_value_eur,Brown seaweeds,122208.216856,Asia
+JP,2014,production_value_eur,"Clams, cockles, arkshells",5338.195654,Asia
+JP,2014,production_value_eur,Green seaweeds,0,Asia
+JP,2014,production_value_eur,Miscellaneous aquatic plants,34378.99938,Asia
+JP,2014,production_value_eur,Oysters,308814.291654,Asia
+JP,2014,production_value_eur,"Pearls, mother-of-pearl, shells",116095.119316,Asia
+JP,2014,production_value_eur,Red seaweeds,620089.690308,Asia
+JP,2014,production_value_eur,"Scallops, pectens",350804.764816,Asia
+JP,2015,production_tonnes,Brown seaweeds,87622,Asia
+JP,2015,production_tonnes,"Clams, cockles, arkshells",439,Asia
+JP,2015,production_tonnes,Miscellaneous aquatic plants,15188,Asia
+JP,2015,production_tonnes,Oysters,164380,Asia
+JP,2015,production_tonnes,"Pearls, mother-of-pearl, shells",19.683,Asia
+JP,2015,production_tonnes,Red seaweeds,297370,Asia
+JP,2015,production_tonnes,"Scallops, pectens",248209,Asia
+JP,2015,production_value_eur,Brown seaweeds,125026.84238,Asia
+JP,2015,production_value_eur,"Clams, cockles, arkshells",5149.2176340000005,Asia
+JP,2015,production_value_eur,Miscellaneous aquatic plants,24061.966676,Asia
+JP,2015,production_value_eur,Oysters,286329.195064,Asia
+JP,2015,production_value_eur,"Pearls, mother-of-pearl, shells",118774.78362200002,Asia
+JP,2015,production_value_eur,Red seaweeds,634010.434002,Asia
+JP,2015,production_value_eur,"Scallops, pectens",452698.158418,Asia
+JP,2016,production_tonnes,Brown seaweeds,74740,Asia
+JP,2016,production_tonnes,"Clams, cockles, arkshells",460,Asia
+JP,2016,production_tonnes,Miscellaneous aquatic plants,15785,Asia
+JP,2016,production_tonnes,Oysters,158925,Asia
+JP,2016,production_tonnes,"Pearls, mother-of-pearl, shells",20.499,Asia
+JP,2016,production_tonnes,Red seaweeds,300683,Asia
+JP,2016,production_tonnes,"Scallops, pectens",214571,Asia
+JP,2016,production_value_eur,Brown seaweeds,148962.216552,Asia
+JP,2016,production_value_eur,"Clams, cockles, arkshells",6223.715464000001,Asia
+JP,2016,production_value_eur,Miscellaneous aquatic plants,28916.531856,Asia
+JP,2016,production_value_eur,Oysters,294326.419992,Asia
+JP,2016,production_value_eur,"Pearls, mother-of-pearl, shells",138234.609464,Asia
+JP,2016,production_value_eur,Red seaweeds,832757.552632,Asia
+JP,2016,production_value_eur,"Scallops, pectens",518729.376528,Asia
+JP,2017,production_tonnes,Brown seaweeds,83577,Asia
+JP,2017,production_tonnes,"Clams, cockles, arkshells",447,Asia
+JP,2017,production_tonnes,Miscellaneous aquatic plants,19949,Asia
+JP,2017,production_tonnes,Oysters,173900,Asia
+JP,2017,production_tonnes,"Pearls, mother-of-pearl, shells",20.201,Asia
+JP,2017,production_tonnes,Red seaweeds,304308,Asia
+JP,2017,production_tonnes,"Scallops, pectens",135090,Asia
+JP,2017,production_value_eur,Brown seaweeds,159700.401963,Asia
+JP,2017,production_value_eur,"Clams, cockles, arkshells",5195.499608,Asia
+JP,2017,production_value_eur,Miscellaneous aquatic plants,33584.922726000004,Asia
+JP,2017,production_value_eur,Oysters,264496.388265,Asia
+JP,2017,production_value_eur,"Pearls, mother-of-pearl, shells",121963.731156,Asia
+JP,2017,production_value_eur,Red seaweeds,922538.020444,Asia
+JP,2017,production_value_eur,"Scallops, pectens",361494.156181,Asia
+JP,2018,production_tonnes,Brown seaweeds,84307,Asia
+JP,2018,production_tonnes,"Clams, cockles, arkshells",448,Asia
+JP,2018,production_tonnes,Miscellaneous aquatic plants,22652,Asia
+JP,2018,production_tonnes,Oysters,176698,Asia
+JP,2018,production_tonnes,"Pearls, mother-of-pearl, shells",20.655,Asia
+JP,2018,production_tonnes,Red seaweeds,283688,Asia
+JP,2018,production_tonnes,"Scallops, pectens",173959,Asia
+JP,2018,production_value_eur,Brown seaweeds,156539.840912,Asia
+JP,2018,production_value_eur,"Clams, cockles, arkshells",5928.60968,Asia
+JP,2018,production_value_eur,Miscellaneous aquatic plants,36109.145072,Asia
+JP,2018,production_value_eur,Oysters,256865.85679999998,Asia
+JP,2018,production_value_eur,"Pearls, mother-of-pearl, shells",130851.80176,Asia
+JP,2018,production_value_eur,Red seaweeds,725487.4963839999,Asia
+JP,2018,production_value_eur,"Scallops, pectens",326580.548208,Asia
+JP,2019,production_tonnes,Brown seaweeds,77911,Asia
+JP,2019,production_tonnes,"Clams, cockles, arkshells",449,Asia
+JP,2019,production_tonnes,Miscellaneous aquatic plants,17116,Asia
+JP,2019,production_tonnes,Oysters,161646,Asia
+JP,2019,production_tonnes,"Pearls, mother-of-pearl, shells",18.842000000000002,Asia
+JP,2019,production_tonnes,Red seaweeds,251362,Asia
+JP,2019,production_tonnes,"Scallops, pectens",144466,Asia
+JP,2019,production_value_eur,Brown seaweeds,184466.016984,Asia
+JP,2019,production_value_eur,"Clams, cockles, arkshells",5562.321972,Asia
+JP,2019,production_value_eur,Miscellaneous aquatic plants,43474.62714900001,Asia
+JP,2019,production_value_eur,Oysters,286979.18789600005,Asia
+JP,2019,production_value_eur,"Pearls, mother-of-pearl, shells",132520.916919,Asia
+JP,2019,production_value_eur,Red seaweeds,771786.612532,Asia
+JP,2019,production_value_eur,"Scallops, pectens",242243.96444100002,Asia
+JP,2020,production_tonnes,Brown seaweeds,84113,Asia
+JP,2020,production_tonnes,"Clams, cockles, arkshells",370,Asia
+JP,2020,production_tonnes,Miscellaneous aquatic plants,24806,Asia
+JP,2020,production_tonnes,Oysters,159019,Asia
+JP,2020,production_tonnes,"Pearls, mother-of-pearl, shells",15.829,Asia
+JP,2020,production_tonnes,Red seaweeds,289396,Asia
+JP,2020,production_tonnes,"Scallops, pectens",149061,Asia
+JP,2020,production_value_eur,Brown seaweeds,162390.490792,Asia
+JP,2020,production_value_eur,"Clams, cockles, arkshells",4813.149646,Asia
+JP,2020,production_value_eur,Miscellaneous aquatic plants,46193.021263999995,Asia
+JP,2020,production_value_eur,Oysters,266521.486581,Asia
+JP,2020,production_value_eur,"Pearls, mother-of-pearl, shells",104936.509765,Asia
+JP,2020,production_value_eur,Red seaweeds,857019.96675,Asia
+JP,2020,production_value_eur,"Scallops, pectens",198629.144604,Asia
+JP,2021,production_tonnes,Brown seaweeds,75663,Asia
+JP,2021,production_tonnes,"Clams, cockles, arkshells",445,Asia
+JP,2021,production_tonnes,Miscellaneous aquatic plants,22926,Asia
+JP,2021,production_tonnes,Oysters,158789,Asia
+JP,2021,production_tonnes,"Pearls, mother-of-pearl, shells",13.015,Asia
+JP,2021,production_tonnes,Red seaweeds,237255,Asia
+JP,2021,production_tonnes,"Scallops, pectens",164511,Asia
+JP,2021,production_value_eur,Brown seaweeds,119650.42322999999,Asia
+JP,2021,production_value_eur,"Clams, cockles, arkshells",6782.83021,Asia
+JP,2021,production_value_eur,Miscellaneous aquatic plants,31550.553385,Asia
+JP,2021,production_value_eur,Oysters,253983.13551,Asia
+JP,2021,production_value_eur,"Pearls, mother-of-pearl, shells",99463.553215,Asia
+JP,2021,production_value_eur,Red seaweeds,568918.34337,Asia
+JP,2021,production_value_eur,"Scallops, pectens",290330.05507999996,Asia
+JP,2022,production_tonnes,Brown seaweeds,76709,Asia
+JP,2022,production_tonnes,"Clams, cockles, arkshells",458,Asia
+JP,2022,production_tonnes,Miscellaneous aquatic plants,15838,Asia
+JP,2022,production_tonnes,Oysters,165590,Asia
+JP,2022,production_tonnes,"Pearls, mother-of-pearl, shells",12.827,Asia
+JP,2022,production_tonnes,Red seaweeds,232490,Asia
+JP,2022,production_tonnes,"Scallops, pectens",172078,Asia
+JP,2022,production_value_eur,Brown seaweeds,125669.20054999998,Asia
+JP,2022,production_value_eur,"Clams, cockles, arkshells",8084.14375,Asia
+JP,2022,production_value_eur,Miscellaneous aquatic plants,533009.3959,Asia
+JP,2022,production_value_eur,Oysters,281066.99714999995,Asia
+JP,2022,production_value_eur,"Pearls, mother-of-pearl, shells",131301.1891,Asia
+JP,2022,production_value_eur,Red seaweeds,591796.9026,Asia
+JP,2022,production_value_eur,"Scallops, pectens",375374.165,Asia
+JP,2023,production_tonnes,Brown seaweeds,75200,Asia
+JP,2023,production_tonnes,"Clams, cockles, arkshells",400,Asia
+JP,2023,production_tonnes,Miscellaneous aquatic plants,22300,Asia
+JP,2023,production_tonnes,Oysters,146300,Asia
+JP,2023,production_tonnes,"Pearls, mother-of-pearl, shells",12.1,Asia
+JP,2023,production_tonnes,Red seaweeds,201100,Asia
+JP,2023,production_tonnes,"Scallops, pectens",151300,Asia
+JP,2023,production_value_eur,Brown seaweeds,111123.793704,Asia
+JP,2023,production_value_eur,"Clams, cockles, arkshells",6426.975324,Asia
+JP,2023,production_value_eur,Miscellaneous aquatic plants,683167.98396,Asia
+JP,2023,production_value_eur,Oysters,226118.10975600002,Asia
+JP,2023,production_value_eur,"Pearls, mother-of-pearl, shells",112733.26495200001,Asia
+JP,2023,production_value_eur,Red seaweeds,465562.393296,Asia
+JP,2023,production_value_eur,"Scallops, pectens",300516.989388,Asia
+KP,2010,production_tonnes,Brown seaweeds,444300,Asia
+KP,2010,production_tonnes,"Clams, cockles, arkshells",60000,Asia
+KP,2010,production_tonnes,Red seaweeds,1000,Asia
+KP,2010,production_tonnes,"Scallops, pectens",200,Asia
+KP,2010,production_value_eur,Brown seaweeds,60113.79,Asia
+KP,2010,production_value_eur,"Clams, cockles, arkshells",35178,Asia
+KP,2010,production_value_eur,Red seaweeds,180.4,Asia
+KP,2010,production_value_eur,"Scallops, pectens",180.4,Asia
+KP,2011,production_tonnes,Brown seaweeds,444300,Asia
+KP,2011,production_tonnes,"Clams, cockles, arkshells",60000,Asia
+KP,2011,production_tonnes,Red seaweeds,1000,Asia
+KP,2011,production_tonnes,"Scallops, pectens",200,Asia
+KP,2011,production_value_eur,Brown seaweeds,60113.79,Asia
+KP,2011,production_value_eur,"Clams, cockles, arkshells",35178,Asia
+KP,2011,production_value_eur,Red seaweeds,180.4,Asia
+KP,2011,production_value_eur,"Scallops, pectens",180.4,Asia
+KP,2012,production_tonnes,Brown seaweeds,444300,Asia
+KP,2012,production_tonnes,"Clams, cockles, arkshells",60000,Asia
+KP,2012,production_tonnes,Red seaweeds,1000,Asia
+KP,2012,production_tonnes,"Scallops, pectens",200,Asia
+KP,2012,production_value_eur,Brown seaweeds,60113.79,Asia
+KP,2012,production_value_eur,"Clams, cockles, arkshells",35178,Asia
+KP,2012,production_value_eur,Red seaweeds,180.4,Asia
+KP,2012,production_value_eur,"Scallops, pectens",180.4,Asia
+KP,2013,production_tonnes,Brown seaweeds,444300,Asia
+KP,2013,production_tonnes,"Clams, cockles, arkshells",60000,Asia
+KP,2013,production_tonnes,Red seaweeds,2000,Asia
+KP,2013,production_tonnes,"Scallops, pectens",250,Asia
+KP,2013,production_value_eur,Brown seaweeds,60113.79,Asia
+KP,2013,production_value_eur,"Clams, cockles, arkshells",35178,Asia
+KP,2013,production_value_eur,Red seaweeds,360.8,Asia
+KP,2013,production_value_eur,"Scallops, pectens",225.5,Asia
+KP,2014,production_tonnes,Brown seaweeds,500000,Asia
+KP,2014,production_tonnes,"Clams, cockles, arkshells",60000,Asia
+KP,2014,production_tonnes,Red seaweeds,2000,Asia
+KP,2014,production_tonnes,"Scallops, pectens",250,Asia
+KP,2014,production_value_eur,Brown seaweeds,67650,Asia
+KP,2014,production_value_eur,"Clams, cockles, arkshells",35178,Asia
+KP,2014,production_value_eur,Red seaweeds,360.8,Asia
+KP,2014,production_value_eur,"Scallops, pectens",225.5,Asia
+KP,2015,production_tonnes,Brown seaweeds,500000,Asia
+KP,2015,production_tonnes,"Clams, cockles, arkshells",60000,Asia
+KP,2015,production_tonnes,Red seaweeds,2000,Asia
+KP,2015,production_tonnes,"Scallops, pectens",250,Asia
+KP,2015,production_value_eur,Brown seaweeds,67650,Asia
+KP,2015,production_value_eur,"Clams, cockles, arkshells",35178,Asia
+KP,2015,production_value_eur,Red seaweeds,360.8,Asia
+KP,2015,production_value_eur,"Scallops, pectens",225.5,Asia
+KP,2016,production_tonnes,Brown seaweeds,550000,Asia
+KP,2016,production_tonnes,"Clams, cockles, arkshells",60000,Asia
+KP,2016,production_tonnes,Red seaweeds,3000,Asia
+KP,2016,production_tonnes,"Scallops, pectens",250,Asia
+KP,2016,production_value_eur,Brown seaweeds,74580,Asia
+KP,2016,production_value_eur,"Clams, cockles, arkshells",35256,Asia
+KP,2016,production_value_eur,Red seaweeds,542.4,Asia
+KP,2016,production_value_eur,"Scallops, pectens",226,Asia
+KP,2017,production_tonnes,Brown seaweeds,550000,Asia
+KP,2017,production_tonnes,"Clams, cockles, arkshells",62000,Asia
+KP,2017,production_tonnes,Red seaweeds,3000,Asia
+KP,2017,production_tonnes,"Scallops, pectens",300,Asia
+KP,2017,production_value_eur,Brown seaweeds,73177.5,Asia
+KP,2017,production_value_eur,"Clams, cockles, arkshells",35746.1,Asia
+KP,2017,production_value_eur,Red seaweeds,532.2,Asia
+KP,2017,production_value_eur,"Scallops, pectens",266.1,Asia
+KP,2018,production_tonnes,Brown seaweeds,600000,Asia
+KP,2018,production_tonnes,"Clams, cockles, arkshells",62000,Asia
+KP,2018,production_tonnes,Red seaweeds,3000,Asia
+KP,2018,production_tonnes,"Scallops, pectens",400,Asia
+KP,2018,production_value_eur,Brown seaweeds,76320,Asia
+KP,2018,production_value_eur,"Clams, cockles, arkshells",34174.4,Asia
+KP,2018,production_value_eur,Red seaweeds,508.8,Asia
+KP,2018,production_value_eur,"Scallops, pectens",339.2,Asia
+KP,2019,production_tonnes,Brown seaweeds,600000,Asia
+KP,2019,production_tonnes,"Clams, cockles, arkshells",62000,Asia
+KP,2019,production_tonnes,Red seaweeds,3000,Asia
+KP,2019,production_tonnes,"Scallops, pectens",400,Asia
+KP,2019,production_value_eur,Brown seaweeds,80370,Asia
+KP,2019,production_value_eur,"Clams, cockles, arkshells",35987.9,Asia
+KP,2019,production_value_eur,Red seaweeds,535.8,Asia
+KP,2019,production_value_eur,"Scallops, pectens",357.2,Asia
+KP,2020,production_tonnes,Brown seaweeds,600000,Asia
+KP,2020,production_tonnes,"Clams, cockles, arkshells",62000,Asia
+KP,2020,production_tonnes,Red seaweeds,3000,Asia
+KP,2020,production_tonnes,"Scallops, pectens",400,Asia
+KP,2020,production_value_eur,Brown seaweeds,78930,Asia
+KP,2020,production_value_eur,"Clams, cockles, arkshells",35343.1,Asia
+KP,2020,production_value_eur,Red seaweeds,526.2,Asia
+KP,2020,production_value_eur,"Scallops, pectens",350.8,Asia
+KP,2021,production_tonnes,Brown seaweeds,600000,Asia
+KP,2021,production_tonnes,"Clams, cockles, arkshells",62000,Asia
+KP,2021,production_tonnes,Red seaweeds,3000,Asia
+KP,2021,production_tonnes,"Scallops, pectens",400,Asia
+KP,2021,production_value_eur,Brown seaweeds,76050,Asia
+KP,2021,production_value_eur,"Clams, cockles, arkshells",34053.5,Asia
+KP,2021,production_value_eur,Red seaweeds,507,Asia
+KP,2021,production_value_eur,"Scallops, pectens",338,Asia
+KP,2022,production_tonnes,Brown seaweeds,600000,Asia
+KP,2022,production_tonnes,"Clams, cockles, arkshells",62000,Asia
+KP,2022,production_tonnes,Red seaweeds,3000,Asia
+KP,2022,production_tonnes,"Scallops, pectens",400,Asia
+KP,2022,production_value_eur,Brown seaweeds,85500,Asia
+KP,2022,production_value_eur,"Clams, cockles, arkshells",38285,Asia
+KP,2022,production_value_eur,Red seaweeds,570,Asia
+KP,2022,production_value_eur,"Scallops, pectens",380,Asia
+KP,2023,production_tonnes,Brown seaweeds,600000,Asia
+KP,2023,production_tonnes,"Clams, cockles, arkshells",62000,Asia
+KP,2023,production_tonnes,Red seaweeds,3000,Asia
+KP,2023,production_tonnes,"Scallops, pectens",400,Asia
+KP,2023,production_value_eur,Brown seaweeds,83160,Asia
+KP,2023,production_value_eur,"Clams, cockles, arkshells",37237.2,Asia
+KP,2023,production_value_eur,Red seaweeds,554.4,Asia
+KP,2023,production_value_eur,"Scallops, pectens",369.6,Asia
+KR,2010,production_tonnes,Brown seaweeds,656071,Asia
+KR,2010,production_tonnes,"Clams, cockles, arkshells",1155,Asia
+KR,2010,production_tonnes,Freshwater molluscs,4085,Asia
+KR,2010,production_tonnes,Green seaweeds,10067,Asia
+KR,2010,production_tonnes,Miscellaneous aquatic plants,0,Asia
+KR,2010,production_tonnes,Miscellaneous marine molluscs,748,Asia
+KR,2010,production_tonnes,Mussels,54440,Asia
+KR,2010,production_tonnes,Oysters,267776,Asia
+KR,2010,production_tonnes,Red seaweeds,235534,Asia
+KR,2010,production_tonnes,"Scallops, pectens",253,Asia
+KR,2010,production_value_eur,Brown seaweeds,101654.539492,Asia
+KR,2010,production_value_eur,"Clams, cockles, arkshells",3765.600146,Asia
+KR,2010,production_value_eur,Freshwater molluscs,12043.696126,Asia
+KR,2010,production_value_eur,Green seaweeds,13894.378234,Asia
+KR,2010,production_value_eur,Miscellaneous aquatic plants,0,Asia
+KR,2010,production_value_eur,Miscellaneous marine molluscs,1762.496274,Asia
+KR,2010,production_value_eur,Mussels,22377.143426,Asia
+KR,2010,production_value_eur,Oysters,132414.888958,Asia
+KR,2010,production_value_eur,Red seaweeds,179850.73341400002,Asia
+KR,2010,production_value_eur,"Scallops, pectens",1426.7069299999998,Asia
+KR,2011,production_tonnes,Brown seaweeds,666584,Asia
+KR,2011,production_tonnes,"Clams, cockles, arkshells",1623,Asia
+KR,2011,production_tonnes,Freshwater molluscs,3523,Asia
+KR,2011,production_tonnes,Green seaweeds,9271,Asia
+KR,2011,production_tonnes,Miscellaneous aquatic plants,0,Asia
+KR,2011,production_tonnes,Miscellaneous marine molluscs,2655,Asia
+KR,2011,production_tonnes,Mussels,70416,Asia
+KR,2011,production_tonnes,Oysters,281022,Asia
+KR,2011,production_tonnes,Red seaweeds,316428,Asia
+KR,2011,production_tonnes,"Scallops, pectens",403,Asia
+KR,2011,production_value_eur,Brown seaweeds,115014.13906400002,Asia
+KR,2011,production_value_eur,"Clams, cockles, arkshells",3544.1952260000003,Asia
+KR,2011,production_value_eur,Freshwater molluscs,8309.7201,Asia
+KR,2011,production_value_eur,Green seaweeds,15556.674034,Asia
+KR,2011,production_value_eur,Miscellaneous aquatic plants,0,Asia
+KR,2011,production_value_eur,Miscellaneous marine molluscs,10884.583732000001,Asia
+KR,2011,production_value_eur,Mussels,26363.589252,Asia
+KR,2011,production_value_eur,Oysters,157820.989876,Asia
+KR,2011,production_value_eur,Red seaweeds,179765.223814,Asia
+KR,2011,production_value_eur,"Scallops, pectens",2869.7157060000004,Asia
+KR,2012,production_tonnes,Brown seaweeds,662903,Asia
+KR,2012,production_tonnes,"Clams, cockles, arkshells",2232,Asia
+KR,2012,production_tonnes,Freshwater molluscs,3414,Asia
+KR,2012,production_tonnes,Green seaweeds,9596,Asia
+KR,2012,production_tonnes,Miscellaneous aquatic plants,0,Asia
+KR,2012,production_tonnes,Miscellaneous marine molluscs,81,Asia
+KR,2012,production_tonnes,Mussels,61310,Asia
+KR,2012,production_tonnes,Oysters,284856,Asia
+KR,2012,production_tonnes,Red seaweeds,349827,Asia
+KR,2012,production_tonnes,"Scallops, pectens",519,Asia
+KR,2012,production_value_eur,Brown seaweeds,116056.325198,Asia
+KR,2012,production_value_eur,"Clams, cockles, arkshells",4136.207592,Asia
+KR,2012,production_value_eur,Freshwater molluscs,7706.723178,Asia
+KR,2012,production_value_eur,Green seaweeds,14912.775922,Asia
+KR,2012,production_value_eur,Miscellaneous aquatic plants,0,Asia
+KR,2012,production_value_eur,Miscellaneous marine molluscs,311.29643599999997,Asia
+KR,2012,production_value_eur,Mussels,23213.979338,Asia
+KR,2012,production_value_eur,Oysters,141603.538604,Asia
+KR,2012,production_value_eur,Red seaweeds,222066.8076,Asia
+KR,2012,production_value_eur,"Scallops, pectens",3989.6190619999998,Asia
+KR,2013,production_tonnes,Brown seaweeds,713973,Asia
+KR,2013,production_tonnes,"Clams, cockles, arkshells",1622,Asia
+KR,2013,production_tonnes,Freshwater molluscs,2749,Asia
+KR,2013,production_tonnes,Green seaweeds,11806,Asia
+KR,2013,production_tonnes,Miscellaneous aquatic plants,0,Asia
+KR,2013,production_tonnes,Miscellaneous marine molluscs,362,Asia
+KR,2013,production_tonnes,Mussels,34429,Asia
+KR,2013,production_tonnes,Oysters,239779,Asia
+KR,2013,production_tonnes,Red seaweeds,405526,Asia
+KR,2013,production_tonnes,"Scallops, pectens",484,Asia
+KR,2013,production_value_eur,Brown seaweeds,120563.898818,Asia
+KR,2013,production_value_eur,"Clams, cockles, arkshells",3995.800468,Asia
+KR,2013,production_value_eur,Freshwater molluscs,6118.704372,Asia
+KR,2013,production_value_eur,Green seaweeds,24861.922513999998,Asia
+KR,2013,production_value_eur,Miscellaneous aquatic plants,0,Asia
+KR,2013,production_value_eur,Miscellaneous marine molluscs,1866.7331980000001,Asia
+KR,2013,production_value_eur,Mussels,12223.653244000001,Asia
+KR,2013,production_value_eur,Oysters,115154.007694,Asia
+KR,2013,production_value_eur,Red seaweeds,225153.11335,Asia
+KR,2013,production_value_eur,"Scallops, pectens",3112.6396400000003,Asia
+KR,2014,production_tonnes,Brown seaweeds,672581,Asia
+KR,2014,production_tonnes,"Clams, cockles, arkshells",1001,Asia
+KR,2014,production_tonnes,Freshwater molluscs,3310,Asia
+KR,2014,production_tonnes,Green seaweeds,16626,Asia
+KR,2014,production_tonnes,Miscellaneous aquatic plants,0,Asia
+KR,2014,production_tonnes,Miscellaneous marine molluscs,33,Asia
+KR,2014,production_tonnes,Mussels,51463,Asia
+KR,2014,production_tonnes,Oysters,283232,Asia
+KR,2014,production_tonnes,Red seaweeds,397841,Asia
+KR,2014,production_tonnes,"Scallops, pectens",956,Asia
+KR,2014,production_value_eur,Brown seaweeds,167229.819526,Asia
+KR,2014,production_value_eur,"Clams, cockles, arkshells",3578.764376,Asia
+KR,2014,production_value_eur,Freshwater molluscs,7486.452072,Asia
+KR,2014,production_value_eur,Green seaweeds,16186.97179,Asia
+KR,2014,production_value_eur,Miscellaneous aquatic plants,0,Asia
+KR,2014,production_value_eur,Miscellaneous marine molluscs,65.393196,Asia
+KR,2014,production_value_eur,Mussels,15166.929756000001,Asia
+KR,2014,production_value_eur,Oysters,172769.253184,Asia
+KR,2014,production_value_eur,Red seaweeds,264152.90088,Asia
+KR,2014,production_value_eur,"Scallops, pectens",4386.747112,Asia
+KR,2015,production_tonnes,Brown seaweeds,793628,Asia
+KR,2015,production_tonnes,"Clams, cockles, arkshells",132,Asia
+KR,2015,production_tonnes,Freshwater molluscs,4038,Asia
+KR,2015,production_tonnes,Green seaweeds,14420,Asia
+KR,2015,production_tonnes,Miscellaneous aquatic plants,0,Asia
+KR,2015,production_tonnes,Miscellaneous marine molluscs,61,Asia
+KR,2015,production_tonnes,Mussels,53536,Asia
+KR,2015,production_tonnes,Oysters,265432,Asia
+KR,2015,production_tonnes,Red seaweeds,389077,Asia
+KR,2015,production_tonnes,"Scallops, pectens",1557,Asia
+KR,2015,production_value_eur,Brown seaweeds,129915.76987400002,Asia
+KR,2015,production_value_eur,"Clams, cockles, arkshells",513.342632,Asia
+KR,2015,production_value_eur,Freshwater molluscs,8347.63567,Asia
+KR,2015,production_value_eur,Green seaweeds,14266.671518,Asia
+KR,2015,production_value_eur,Miscellaneous aquatic plants,0,Asia
+KR,2015,production_value_eur,Miscellaneous marine molluscs,297.987426,Asia
+KR,2015,production_value_eur,Mussels,16481.448632,Asia
+KR,2015,production_value_eur,Oysters,146071.176174,Asia
+KR,2015,production_value_eur,Red seaweeds,253524.40487,Asia
+KR,2015,production_value_eur,"Scallops, pectens",6603.879348,Asia
+KR,2016,production_tonnes,Brown seaweeds,926904,Asia
+KR,2016,production_tonnes,"Clams, cockles, arkshells",158,Asia
+KR,2016,production_tonnes,Freshwater molluscs,4793,Asia
+KR,2016,production_tonnes,Green seaweeds,14630,Asia
+KR,2016,production_tonnes,Miscellaneous aquatic plants,0,Asia
+KR,2016,production_tonnes,Mussels,54642,Asia
+KR,2016,production_tonnes,Oysters,268973,Asia
+KR,2016,production_tonnes,Red seaweeds,409724,Asia
+KR,2016,production_tonnes,"Scallops, pectens",2995,Asia
+KR,2016,production_value_eur,Brown seaweeds,141247.647792,Asia
+KR,2016,production_value_eur,"Clams, cockles, arkshells",1383.2854320000001,Asia
+KR,2016,production_value_eur,Freshwater molluscs,9538.33452,Asia
+KR,2016,production_value_eur,Green seaweeds,14757.861472,Asia
+KR,2016,production_value_eur,Miscellaneous aquatic plants,0,Asia
+KR,2016,production_value_eur,Mussels,20085.922664,Asia
+KR,2016,production_value_eur,Oysters,134629.48820000002,Asia
+KR,2016,production_value_eur,Red seaweeds,348319.781672,Asia
+KR,2016,production_value_eur,"Scallops, pectens",10507.17392,Asia
+KR,2017,production_tonnes,Brown seaweeds,1219823,Asia
+KR,2017,production_tonnes,"Clams, cockles, arkshells",137,Asia
+KR,2017,production_tonnes,Freshwater molluscs,4762,Asia
+KR,2017,production_tonnes,Green seaweeds,16415,Asia
+KR,2017,production_tonnes,Miscellaneous marine molluscs,0,Asia
+KR,2017,production_tonnes,Mussels,76161,Asia
+KR,2017,production_tonnes,Oysters,315255,Asia
+KR,2017,production_tonnes,Red seaweeds,525287,Asia
+KR,2017,production_tonnes,"Scallops, pectens",3493,Asia
+KR,2017,production_value_eur,Brown seaweeds,171620.227283,Asia
+KR,2017,production_value_eur,"Clams, cockles, arkshells",1129.209542,Asia
+KR,2017,production_value_eur,Freshwater molluscs,9148.775230000001,Asia
+KR,2017,production_value_eur,Green seaweeds,21666.601758,Asia
+KR,2017,production_value_eur,Miscellaneous marine molluscs,0,Asia
+KR,2017,production_value_eur,Mussels,31017.845382,Asia
+KR,2017,production_value_eur,Oysters,168248.338472,Asia
+KR,2017,production_value_eur,Red seaweeds,484631.612748,Asia
+KR,2017,production_value_eur,"Scallops, pectens",10818.807299,Asia
+KR,2018,production_tonnes,Brown seaweeds,1124650,Asia
+KR,2018,production_tonnes,"Clams, cockles, arkshells",90,Asia
+KR,2018,production_tonnes,Freshwater molluscs,6500,Asia
+KR,2018,production_tonnes,Green seaweeds,17200,Asia
+KR,2018,production_tonnes,Miscellaneous marine molluscs,3,Asia
+KR,2018,production_tonnes,Mussels,49500,Asia
+KR,2018,production_tonnes,Oysters,303200,Asia
+KR,2018,production_tonnes,Red seaweeds,568650,Asia
+KR,2018,production_tonnes,"Scallops, pectens",5350,Asia
+KR,2018,production_value_eur,Brown seaweeds,150976.23247999998,Asia
+KR,2018,production_value_eur,"Clams, cockles, arkshells",660.106096,Asia
+KR,2018,production_value_eur,Freshwater molluscs,12273.4008,Asia
+KR,2018,production_value_eur,Green seaweeds,22775.13032,Asia
+KR,2018,production_value_eur,Miscellaneous marine molluscs,11.561632,Asia
+KR,2018,production_value_eur,Mussels,19813.545439999998,Asia
+KR,2018,production_value_eur,Oysters,159036.200272,Asia
+KR,2018,production_value_eur,Red seaweeds,516184.535792,Asia
+KR,2018,production_value_eur,"Scallops, pectens",16285.930736,Asia
+KR,2019,production_tonnes,Brown seaweeds,1191157,Asia
+KR,2019,production_tonnes,"Clams, cockles, arkshells",37,Asia
+KR,2019,production_tonnes,Freshwater molluscs,147,Asia
+KR,2019,production_tonnes,Green seaweeds,12965,Asia
+KR,2019,production_tonnes,Miscellaneous aquatic plants,1,Asia
+KR,2019,production_tonnes,Miscellaneous marine molluscs,11,Asia
+KR,2019,production_tonnes,Mussels,51560,Asia
+KR,2019,production_tonnes,Oysters,326190,Asia
+KR,2019,production_tonnes,Red seaweeds,608642,Asia
+KR,2019,production_tonnes,"Scallops, pectens",5082,Asia
+KR,2019,production_value_eur,Brown seaweeds,212808.024194,Asia
+KR,2019,production_value_eur,"Clams, cockles, arkshells",611.788049,Asia
+KR,2019,production_value_eur,Freshwater molluscs,427.66216499999996,Asia
+KR,2019,production_value_eur,Green seaweeds,9406.741445,Asia
+KR,2019,production_value_eur,Miscellaneous aquatic plants,3.907768,Asia
+KR,2019,production_value_eur,Miscellaneous marine molluscs,802.3310309999999,Asia
+KR,2019,production_value_eur,Mussels,15456.246711000002,Asia
+KR,2019,production_value_eur,Oysters,175318.884927,Asia
+KR,2019,production_value_eur,Red seaweeds,430878.499174,Asia
+KR,2019,production_value_eur,"Scallops, pectens",15242.204434000001,Asia
+KR,2020,production_tonnes,Brown seaweeds,1204423.958,Asia
+KR,2020,production_tonnes,"Clams, cockles, arkshells",40,Asia
+KR,2020,production_tonnes,Freshwater molluscs,6094.546,Asia
+KR,2020,production_tonnes,Green seaweeds,17411.752,Asia
+KR,2020,production_tonnes,Mussels,61968,Asia
+KR,2020,production_tonnes,Oysters,300084,Asia
+KR,2020,production_tonnes,Red seaweeds,539799,Asia
+KR,2020,production_tonnes,"Scallops, pectens",5591,Asia
+KR,2020,production_value_eur,Brown seaweeds,172744.75182700003,Asia
+KR,2020,production_value_eur,"Clams, cockles, arkshells",695.125986,Asia
+KR,2020,production_value_eur,Freshwater molluscs,11034.248247,Asia
+KR,2020,production_value_eur,Green seaweeds,11733.314594000001,Asia
+KR,2020,production_value_eur,Mussels,20480.708165,Asia
+KR,2020,production_value_eur,Oysters,195785.10814899998,Asia
+KR,2020,production_value_eur,Red seaweeds,378326.341118,Asia
+KR,2020,production_value_eur,"Scallops, pectens",18224.268726,Asia
+KR,2021,production_tonnes,Brown seaweeds,1276581.985,Asia
+KR,2021,production_tonnes,"Clams, cockles, arkshells",145.811,Asia
+KR,2021,production_tonnes,Freshwater molluscs,8080.126,Asia
+KR,2021,production_tonnes,Green seaweeds,22196.262,Asia
+KR,2021,production_tonnes,Miscellaneous aquatic plants,2262.13,Asia
+KR,2021,production_tonnes,Miscellaneous marine molluscs,2147.345,Asia
+KR,2021,production_tonnes,Mussels,63672.256,Asia
+KR,2021,production_tonnes,Oysters,305914.405,Asia
+KR,2021,production_tonnes,Red seaweeds,548344.796,Asia
+KR,2021,production_tonnes,"Scallops, pectens",5106.835,Asia
+KR,2021,production_value_eur,Brown seaweeds,172211.00422499998,Asia
+KR,2021,production_value_eur,"Clams, cockles, arkshells",1669.7039449999997,Asia
+KR,2021,production_value_eur,Freshwater molluscs,15663.017174999999,Asia
+KR,2021,production_value_eur,Green seaweeds,13764.37231,Asia
+KR,2021,production_value_eur,Miscellaneous aquatic plants,529.511645,Asia
+KR,2021,production_value_eur,Miscellaneous marine molluscs,4775.166825,Asia
+KR,2021,production_value_eur,Mussels,18481.620300000002,Asia
+KR,2021,production_value_eur,Oysters,204867.92963,Asia
+KR,2021,production_value_eur,Red seaweeds,350965.366505,Asia
+KR,2021,production_value_eur,"Scallops, pectens",18514.123225,Asia
+KR,2022,production_tonnes,Brown seaweeds,1160053.829,Asia
+KR,2022,production_tonnes,"Clams, cockles, arkshells",45.976,Asia
+KR,2022,production_tonnes,Freshwater molluscs,10346.484,Asia
+KR,2022,production_tonnes,Green seaweeds,11338.861,Asia
+KR,2022,production_tonnes,Miscellaneous aquatic plants,3707.95,Asia
+KR,2022,production_tonnes,Miscellaneous marine molluscs,1615.433,Asia
+KR,2022,production_tonnes,Mussels,53064,Asia
+KR,2022,production_tonnes,Oysters,310483.019,Asia
+KR,2022,production_tonnes,Red seaweeds,552577.477,Asia
+KR,2022,production_tonnes,"Scallops, pectens",7129.009,Asia
+KR,2022,production_value_eur,Brown seaweeds,173638.4673,Asia
+KR,2022,production_value_eur,"Clams, cockles, arkshells",731.861,Asia
+KR,2022,production_value_eur,Freshwater molluscs,23638.4168,Asia
+KR,2022,production_value_eur,Green seaweeds,11392.354399999998,Asia
+KR,2022,production_value_eur,Miscellaneous aquatic plants,810.4459499999999,Asia
+KR,2022,production_value_eur,Miscellaneous marine molluscs,7150.40205,Asia
+KR,2022,production_value_eur,Mussels,18760.1345,Asia
+KR,2022,production_value_eur,Oysters,225488.75004999997,Asia
+KR,2022,production_value_eur,Red seaweeds,346048.976,Asia
+KR,2022,production_value_eur,"Scallops, pectens",20311.9633,Asia
+KR,2023,production_tonnes,Brown seaweeds,1180566.8120000002,Asia
+KR,2023,production_tonnes,"Clams, cockles, arkshells",44.183,Asia
+KR,2023,production_tonnes,Freshwater molluscs,10125.431,Asia
+KR,2023,production_tonnes,Green seaweeds,18626.214,Asia
+KR,2023,production_tonnes,Miscellaneous aquatic plants,6243.256,Asia
+KR,2023,production_tonnes,Miscellaneous marine molluscs,1020.624,Asia
+KR,2023,production_tonnes,Mussels,54322.027,Asia
+KR,2023,production_tonnes,Oysters,310753.35,Asia
+KR,2023,production_tonnes,Red seaweeds,536336.1070000001,Asia
+KR,2023,production_tonnes,"Scallops, pectens",12152.651,Asia
+KR,2023,production_value_eur,Brown seaweeds,145608.843072,Asia
+KR,2023,production_value_eur,"Clams, cockles, arkshells",340.750872,Asia
+KR,2023,production_value_eur,Freshwater molluscs,24385.456788000003,Asia
+KR,2023,production_value_eur,Green seaweeds,11280.772272,Asia
+KR,2023,production_value_eur,Miscellaneous aquatic plants,1414.294728,Asia
+KR,2023,production_value_eur,Miscellaneous marine molluscs,5098.566396000001,Asia
+KR,2023,production_value_eur,Mussels,20796.01524,Asia
+KR,2023,production_value_eur,Oysters,213916.21482000002,Asia
+KR,2023,production_value_eur,Red seaweeds,447367.96566,Asia
+KR,2023,production_value_eur,"Scallops, pectens",22496.675124,Asia
+NZ,2010,production_tonnes,Mussels,95168,Oceania
+NZ,2010,production_tonnes,Oysters,2439,Oceania
+NZ,2010,production_value_eur,Mussels,217103.650918,Oceania
+NZ,2010,production_value_eur,Oysters,8639.276624,Oceania
+NZ,2011,production_tonnes,Mussels,101311,Oceania
+NZ,2011,production_tonnes,Oysters,1804,Oceania
+NZ,2011,production_value_eur,Mussels,157380.48194,Oceania
+NZ,2011,production_value_eur,Oysters,5142.025988,Oceania
+NZ,2012,production_tonnes,Mussels,86447,Oceania
+NZ,2012,production_tonnes,Oysters,1216,Oceania
+NZ,2012,production_value_eur,Mussels,252697.809364,Oceania
+NZ,2012,production_value_eur,Oysters,6575.925466,Oceania
+NZ,2013,production_tonnes,Mussels,83561,Oceania
+NZ,2013,production_tonnes,Oysters,1497,Oceania
+NZ,2013,production_value_eur,Mussels,271965.498112,Oceania
+NZ,2013,production_value_eur,Oysters,7795.64324,Oceania
+NZ,2014,production_tonnes,Mussels,97438,Oceania
+NZ,2014,production_tonnes,Oysters,1509,Oceania
+NZ,2014,production_value_eur,Mussels,393718.173398,Oceania
+NZ,2014,production_value_eur,Oysters,8242.812446,Oceania
+NZ,2015,production_tonnes,Mussels,76811,Oceania
+NZ,2015,production_tonnes,Oysters,1909,Oceania
+NZ,2015,production_value_eur,Mussels,444504.542856,Oceania
+NZ,2015,production_value_eur,Oysters,13328.886472,Oceania
+NZ,2016,production_tonnes,Mussels,94037,Oceania
+NZ,2016,production_tonnes,Oysters,1946,Oceania
+NZ,2016,production_value_eur,Mussels,552714.532424,Oceania
+NZ,2016,production_value_eur,Oysters,13801.36348,Oceania
+NZ,2017,production_tonnes,Mussels,99716,Oceania
+NZ,2017,production_tonnes,Oysters,1834,Oceania
+NZ,2017,production_value_eur,Mussels,541092.4845629999,Oceania
+NZ,2017,production_value_eur,Oysters,13951.152890000001,Oceania
+NZ,2018,production_tonnes,Mussels,86176,Oceania
+NZ,2018,production_tonnes,Oysters,1992,Oceania
+NZ,2018,production_value_eur,Mussels,474285.164464,Oceania
+NZ,2018,production_value_eur,Oysters,14119.088063999998,Oceania
+NZ,2019,production_tonnes,Mussels,98447,Oceania
+NZ,2019,production_tonnes,Oysters,1871,Oceania
+NZ,2019,production_value_eur,Mussels,551964.1072719999,Oceania
+NZ,2019,production_value_eur,Oysters,14441.858542,Oceania
+NZ,2020,production_tonnes,Mussels,101657,Oceania
+NZ,2020,production_tonnes,Oysters,1364,Oceania
+NZ,2020,production_value_eur,Mussels,618036.017069,Oceania
+NZ,2020,production_value_eur,Oysters,10340.542124,Oceania
+NZ,2021,production_tonnes,Mussels,98016,Oceania
+NZ,2021,production_tonnes,Oysters,1816,Oceania
+NZ,2021,production_value_eur,Mussels,529583.1243949999,Oceania
+NZ,2021,production_value_eur,Oysters,14489.915504999999,Oceania
+NZ,2022,production_tonnes,Mussels,89203,Oceania
+NZ,2022,production_tonnes,Oysters,1786,Oceania
+NZ,2022,production_value_eur,Mussels,598557.7761499999,Oceania
+NZ,2022,production_value_eur,Oysters,16362.59195,Oceania
+NZ,2023,production_tonnes,Mussels,92967,Oceania
+NZ,2023,production_tonnes,Oysters,1546,Oceania
+NZ,2023,production_value_eur,Mussels,665190.2740559999,Oceania
+NZ,2023,production_value_eur,Oysters,14781.257567999999,Oceania
+PH,2010,production_tonnes,Green seaweeds,4309,Asia
+PH,2010,production_tonnes,Mussels,20877,Asia
+PH,2010,production_tonnes,Oysters,22525,Asia
+PH,2010,production_tonnes,Red seaweeds,1796963,Asia
+PH,2010,production_value_eur,Green seaweeds,2309.9904300000003,Asia
+PH,2010,production_value_eur,Mussels,3915.68573,Asia
+PH,2010,production_value_eur,Oysters,3161.8329160000003,Asia
+PH,2010,production_value_eur,Red seaweeds,229118.547988,Asia
+PH,2011,production_tonnes,Green seaweeds,5145,Asia
+PH,2011,production_tonnes,Mussels,22443,Asia
+PH,2011,production_tonnes,Oysters,21462,Asia
+PH,2011,production_tonnes,Red seaweeds,1835688,Asia
+PH,2011,production_value_eur,Green seaweeds,4939.3889819999995,Asia
+PH,2011,production_value_eur,Mussels,4818.661694,Asia
+PH,2011,production_value_eur,Oysters,3785.650704,Asia
+PH,2011,production_value_eur,Red seaweeds,232362.351958,Asia
+PH,2012,production_tonnes,Green seaweeds,3928,Asia
+PH,2012,production_tonnes,Mussels,25660,Asia
+PH,2012,production_tonnes,Oysters,20648,Asia
+PH,2012,production_tonnes,Red seaweeds,1747143,Asia
+PH,2012,production_value_eur,Green seaweeds,3411.43165,Asia
+PH,2012,production_value_eur,Mussels,5683.7275,Asia
+PH,2012,production_value_eur,Oysters,3365.11846,Asia
+PH,2012,production_value_eur,Red seaweeds,205544.07082,Asia
+PH,2013,production_tonnes,Green seaweeds,3029,Asia
+PH,2013,production_tonnes,Mussels,22894,Asia
+PH,2013,production_tonnes,Oysters,22070,Asia
+PH,2013,production_tonnes,Red seaweeds,1555349,Asia
+PH,2013,production_value_eur,Green seaweeds,2769.737124,Asia
+PH,2013,production_value_eur,Mussels,5371.042886,Asia
+PH,2013,production_value_eur,Oysters,3630.037664,Asia
+PH,2013,production_value_eur,Red seaweeds,207741.263444,Asia
+PH,2014,production_tonnes,Green seaweeds,1199,Asia
+PH,2014,production_tonnes,Mussels,18762,Asia
+PH,2014,production_tonnes,Oysters,22355,Asia
+PH,2014,production_tonnes,Red seaweeds,1548377,Asia
+PH,2014,production_value_eur,Green seaweeds,1163.224612,Asia
+PH,2014,production_value_eur,Mussels,4524.814448,Asia
+PH,2014,production_value_eur,Oysters,3647.213548,Asia
+PH,2014,production_value_eur,Red seaweeds,229981.697044,Asia
+PH,2015,production_tonnes,Green seaweeds,1219,Asia
+PH,2015,production_tonnes,Mussels,15949,Asia
+PH,2015,production_tonnes,Oysters,20261,Asia
+PH,2015,production_tonnes,Red seaweeds,1565142,Asia
+PH,2015,production_value_eur,Green seaweeds,968.741686,Asia
+PH,2015,production_value_eur,Mussels,4271.268562,Asia
+PH,2015,production_value_eur,Oysters,3586.578402,Asia
+PH,2015,production_value_eur,Red seaweeds,163806.82153000002,Asia
+PH,2016,production_tonnes,Green seaweeds,585,Asia
+PH,2016,production_tonnes,Mussels,18775,Asia
+PH,2016,production_tonnes,Oysters,19512,Asia
+PH,2016,production_tonnes,Red seaweeds,1403934,Asia
+PH,2016,production_value_eur,Green seaweeds,370.46914400000003,Asia
+PH,2016,production_value_eur,Mussels,5210.521304000001,Asia
+PH,2016,production_value_eur,Oysters,3870.020384,Asia
+PH,2016,production_value_eur,Red seaweeds,115827.14067200001,Asia
+PH,2017,production_tonnes,Green seaweeds,955,Asia
+PH,2017,production_tonnes,Mussels,19208.6,Asia
+PH,2017,production_tonnes,Oysters,22944.4,Asia
+PH,2017,production_tonnes,Red seaweeds,1414366,Asia
+PH,2017,production_value_eur,Green seaweeds,519.641854,Asia
+PH,2017,production_value_eur,Mussels,6084.560996,Asia
+PH,2017,production_value_eur,Oysters,4562.640187,Asia
+PH,2017,production_value_eur,Red seaweeds,145472.873178,Asia
+PH,2018,production_tonnes,Green seaweeds,1218.142,Asia
+PH,2018,production_tonnes,Mussels,26302.8,Asia
+PH,2018,production_tonnes,Oysters,28708.2,Asia
+PH,2018,production_tonnes,Red seaweeds,1477082.705,Asia
+PH,2018,production_value_eur,Green seaweeds,599.25616,Asia
+PH,2018,production_value_eur,Mussels,8301.58928,Asia
+PH,2018,production_value_eur,Oysters,4992.670384,Asia
+PH,2018,production_value_eur,Red seaweeds,175183.6348,Asia
+PH,2019,production_tonnes,Green seaweeds,1090.225,Asia
+PH,2019,production_tonnes,Mussels,25421.476,Asia
+PH,2019,production_tonnes,Oysters,36193.737,Asia
+PH,2019,production_tonnes,Red seaweeds,1498871.025,Asia
+PH,2019,production_value_eur,Green seaweeds,636.306257,Asia
+PH,2019,production_value_eur,Mussels,9679.532406,Asia
+PH,2019,production_value_eur,Oysters,12168.246608000001,Asia
+PH,2019,production_value_eur,Red seaweeds,203581.10437300004,Asia
+PH,2020,production_tonnes,Green seaweeds,789.357,Asia
+PH,2020,production_tonnes,Mussels,19228.959,Asia
+PH,2020,production_tonnes,Oysters,53032.063,Asia
+PH,2020,production_tonnes,Red seaweeds,1467863.904,Asia
+PH,2020,production_value_eur,Green seaweeds,451.98826,Asia
+PH,2020,production_value_eur,Mussels,7570.091230999999,Asia
+PH,2020,production_value_eur,Oysters,18998.209824999998,Asia
+PH,2020,production_value_eur,Red seaweeds,187129.967085,Asia
+PH,2021,production_tonnes,Green seaweeds,1090.019,Asia
+PH,2021,production_tonnes,Mussels,23707.056,Asia
+PH,2021,production_tonnes,Oysters,40736.898,Asia
+PH,2021,production_tonnes,Red seaweeds,1342616.5350000001,Asia
+PH,2021,production_value_eur,Green seaweeds,577.82114,Asia
+PH,2021,production_value_eur,Mussels,10557.13763,Asia
+PH,2021,production_value_eur,Oysters,15605.923905,Asia
+PH,2021,production_value_eur,Red seaweeds,173393.987325,Asia
+PH,2022,production_tonnes,Green seaweeds,637.368,Asia
+PH,2022,production_tonnes,Mussels,10892.417,Asia
+PH,2022,production_tonnes,Oysters,40038.342,Asia
+PH,2022,production_tonnes,Red seaweeds,1544322.499,Asia
+PH,2022,production_value_eur,Green seaweeds,578.8482999999999,Asia
+PH,2022,production_value_eur,Mussels,6532.542,Asia
+PH,2022,production_value_eur,Oysters,17817.5179,Asia
+PH,2022,production_value_eur,Red seaweeds,288909.24809999997,Asia
+PH,2023,production_tonnes,Green seaweeds,802.557,Asia
+PH,2023,production_tonnes,Mussels,14375.686,Asia
+PH,2023,production_tonnes,Oysters,33123.677,Asia
+PH,2023,production_tonnes,Red seaweeds,1625442.557,Asia
+PH,2023,production_value_eur,Green seaweeds,658.8997800000001,Asia
+PH,2023,production_value_eur,Mussels,9399.469464,Asia
+PH,2023,production_value_eur,Oysters,15132.613188000001,Asia
+PH,2023,production_value_eur,Red seaweeds,210521.116344,Asia
+VN,2010,production_tonnes,Freshwater molluscs,9000,Asia
+VN,2010,production_tonnes,Miscellaneous marine molluscs,98426,Asia
+VN,2010,production_tonnes,Red seaweeds,18221,Asia
+VN,2010,production_value_eur,Freshwater molluscs,8118,Asia
+VN,2010,production_value_eur,Miscellaneous marine molluscs,88780.252,Asia
+VN,2010,production_value_eur,Red seaweeds,2295.817304,Asia
+VN,2011,production_tonnes,Freshwater molluscs,10000,Asia
+VN,2011,production_tonnes,Miscellaneous marine molluscs,114800,Asia
+VN,2011,production_tonnes,Red seaweeds,15428,Asia
+VN,2011,production_value_eur,Freshwater molluscs,9020,Asia
+VN,2011,production_value_eur,Miscellaneous marine molluscs,103549.6,Asia
+VN,2011,production_value_eur,Red seaweeds,1865.9006520000003,Asia
+VN,2012,production_tonnes,Freshwater molluscs,10000,Asia
+VN,2012,production_tonnes,Miscellaneous marine molluscs,134031,Asia
+VN,2012,production_tonnes,Red seaweeds,19694,Asia
+VN,2012,production_value_eur,Freshwater molluscs,9020,Asia
+VN,2012,production_value_eur,Miscellaneous marine molluscs,120895.962,Asia
+VN,2012,production_value_eur,Red seaweeds,2345.447148,Asia
+VN,2013,production_tonnes,Freshwater molluscs,10000,Asia
+VN,2013,production_tonnes,Miscellaneous marine molluscs,181470,Asia
+VN,2013,production_tonnes,Red seaweeds,14585,Asia
+VN,2013,production_value_eur,Freshwater molluscs,9020,Asia
+VN,2013,production_value_eur,Miscellaneous marine molluscs,163685.94,Asia
+VN,2013,production_value_eur,Red seaweeds,1728.24553,Asia
+VN,2014,production_tonnes,Freshwater molluscs,10000,Asia
+VN,2014,production_tonnes,Miscellaneous marine molluscs,188881,Asia
+VN,2014,production_tonnes,Red seaweeds,15219,Asia
+VN,2014,production_value_eur,Freshwater molluscs,9020,Asia
+VN,2014,production_value_eur,Miscellaneous marine molluscs,170370.662,Asia
+VN,2014,production_value_eur,Red seaweeds,1785.0733340000002,Asia
+VN,2015,production_tonnes,Freshwater molluscs,10000,Asia
+VN,2015,production_tonnes,Miscellaneous marine molluscs,232579.99,Asia
+VN,2015,production_tonnes,Red seaweeds,13098,Asia
+VN,2015,production_value_eur,Freshwater molluscs,9020,Asia
+VN,2015,production_value_eur,Miscellaneous marine molluscs,209787.15098,Asia
+VN,2015,production_value_eur,Red seaweeds,3187.8195360000004,Asia
+VN,2016,production_tonnes,Freshwater molluscs,10000,Asia
+VN,2016,production_tonnes,Miscellaneous marine molluscs,262952.92,Asia
+VN,2016,production_tonnes,Red seaweeds,11177.5,Asia
+VN,2016,production_value_eur,Freshwater molluscs,9040,Asia
+VN,2016,production_value_eur,Miscellaneous marine molluscs,237709.43967999998,Asia
+VN,2016,production_value_eur,Red seaweeds,2770.721128,Asia
+VN,2017,production_tonnes,Freshwater molluscs,2500,Asia
+VN,2017,production_tonnes,Miscellaneous marine molluscs,282466,Asia
+VN,2017,production_tonnes,Red seaweeds,10817.5,Asia
+VN,2017,production_value_eur,Freshwater molluscs,2379.072372,Asia
+VN,2017,production_value_eur,Miscellaneous marine molluscs,257602.704982,Asia
+VN,2017,production_value_eur,Red seaweeds,2629.99935,Asia
+VN,2018,production_tonnes,Freshwater molluscs,2500,Asia
+VN,2018,production_tonnes,Miscellaneous marine molluscs,298000,Asia
+VN,2018,production_tonnes,Red seaweeds,19322.5,Asia
+VN,2018,production_value_eur,Freshwater molluscs,2251.124544,Asia
+VN,2018,production_value_eur,Miscellaneous marine molluscs,258271.51856,Asia
+VN,2018,production_value_eur,Red seaweeds,4485.089808000001,Asia
+VN,2019,production_tonnes,Freshwater molluscs,2297,Asia
+VN,2019,production_tonnes,Green seaweeds,1717,Asia
+VN,2019,production_tonnes,Miscellaneous marine molluscs,212678,Asia
+VN,2019,production_tonnes,Red seaweeds,12875,Asia
+VN,2019,production_value_eur,Freshwater molluscs,2135.739878,Asia
+VN,2019,production_value_eur,Green seaweeds,432.374526,Asia
+VN,2019,production_value_eur,Miscellaneous marine molluscs,190331.46602000002,Asia
+VN,2019,production_value_eur,Red seaweeds,3171.0483580000005,Asia
+VN,2020,production_tonnes,Freshwater molluscs,255.24,Asia
+VN,2020,production_tonnes,Green seaweeds,952,Asia
+VN,2020,production_tonnes,Miscellaneous marine molluscs,327076.46,Asia
+VN,2020,production_tonnes,Red seaweeds,12931.009999999998,Asia
+VN,2020,production_value_eur,Freshwater molluscs,231.480642,Asia
+VN,2020,production_value_eur,Green seaweeds,215.845486,Asia
+VN,2020,production_value_eur,Miscellaneous marine molluscs,296679.697683,Asia
+VN,2020,production_value_eur,Red seaweeds,3194.112053,Asia
+VN,2021,production_tonnes,Freshwater molluscs,303.76,Asia
+VN,2021,production_tonnes,Green seaweeds,900,Asia
+VN,2021,production_tonnes,Miscellaneous marine molluscs,343766.19,Asia
+VN,2021,production_tonnes,Red seaweeds,13154.17,Asia
+VN,2021,production_value_eur,Freshwater molluscs,267.451795,Asia
+VN,2021,production_value_eur,Green seaweeds,197.02273499999998,Asia
+VN,2021,production_value_eur,Miscellaneous marine molluscs,304563.49533999996,Asia
+VN,2021,production_value_eur,Red seaweeds,3161.85142,Asia
+VN,2022,production_tonnes,Freshwater molluscs,546.55,Asia
+VN,2022,production_tonnes,Green seaweeds,900,Asia
+VN,2022,production_tonnes,Miscellaneous marine molluscs,369185.26,Asia
+VN,2022,production_tonnes,Red seaweeds,9614.84,Asia
+VN,2022,production_value_eur,Freshwater molluscs,568.25675,Asia
+VN,2022,production_value_eur,Green seaweeds,226.043,Asia
+VN,2022,production_value_eur,Miscellaneous marine molluscs,388363.27275,Asia
+VN,2022,production_value_eur,Red seaweeds,2609.79725,Asia
+VN,2023,production_tonnes,Freshwater molluscs,594.81,Asia
+VN,2023,production_tonnes,Green seaweeds,900,Asia
+VN,2023,production_tonnes,Miscellaneous marine molluscs,414665.773,Asia
+VN,2023,production_tonnes,Red seaweeds,9833.344,Asia
+VN,2023,production_value_eur,Freshwater molluscs,701.411172,Asia
+VN,2023,production_value_eur,Green seaweeds,220.246488,Asia
+VN,2023,production_value_eur,Miscellaneous marine molluscs,515530.77668400004,Asia
+VN,2023,production_value_eur,Red seaweeds,4740.1966919999995,Asia

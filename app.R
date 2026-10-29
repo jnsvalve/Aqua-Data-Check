@@ -469,37 +469,53 @@ if (inherits(workbook, "error")) {
       )
     }, ignoreInit = TRUE)
 
-    observeEvent(
-      list(input$sales_country, input$sales_variable, input$sales_years, input$sales_species),
-      {
-        req(input$sales_country, input$sales_variable, input$sales_years)
-        selection <- eudcf_dashboard_resolve_sales_selection(
-          sales,
-          input$sales_country,
-          input$sales_variable,
-          input$sales_years,
-          selected_species = input$sales_species,
-          selected_segment = input$sales_segment
-        )
-        updateSelectizeInput(
-          session, "sales_species",
-          choices = stats::setNames(
-            selection$species_choices$species_code,
-            selection$species_choices$species_name
-          ),
-          selected = selection$selected_species, server = TRUE
-        )
-        updateSelectInput(
-          session, "sales_segment",
-          choices = stats::setNames(
-            selection$segment_choices$segment_code,
-            selection$segment_choices$segment_name
-          ),
-          selected = selection$selected_segment
-        )
-      },
-      ignoreInit = TRUE
-    )
+    observeEvent(list(input$sales_country, input$sales_variable, input$sales_years), {
+      req(input$sales_country, input$sales_variable, input$sales_years)
+      selection <- eudcf_dashboard_resolve_sales_selection(
+        sales,
+        input$sales_country,
+        input$sales_variable,
+        input$sales_years,
+        selected_species = input$sales_species,
+        selected_segment = input$sales_segment
+      )
+      updateSelectizeInput(
+        session, "sales_species",
+        choices = stats::setNames(
+          selection$species_choices$species_code,
+          selection$species_choices$species_name
+        ),
+        selected = selection$selected_species, server = TRUE
+      )
+      updateSelectInput(
+        session, "sales_segment",
+        choices = stats::setNames(
+          selection$segment_choices$segment_code,
+          selection$segment_choices$segment_name
+        ),
+        selected = selection$selected_segment
+      )
+    }, ignoreInit = FALSE)
+
+    observeEvent(input$sales_species, {
+      req(input$sales_country, input$sales_variable, input$sales_years)
+      selection <- eudcf_dashboard_resolve_sales_selection(
+        sales,
+        input$sales_country,
+        input$sales_variable,
+        input$sales_years,
+        selected_species = input$sales_species,
+        selected_segment = input$sales_segment
+      )
+      updateSelectInput(
+        session, "sales_segment",
+        choices = stats::setNames(
+          selection$segment_choices$segment_code,
+          selection$segment_choices$segment_name
+        ),
+        selected = selection$selected_segment
+      )
+    }, ignoreInit = TRUE)
 
     selected_economic <- reactive({
       req(input$economic_species_group, input$economic_variable, input$economic_years)
