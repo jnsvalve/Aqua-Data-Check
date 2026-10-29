@@ -12,6 +12,21 @@ source(file.path(app_root, "R", "functions.R"), local = TRUE)
 source(file.path(app_root, "R", "production_views.R"), local = TRUE)
 source(file.path(app_root, "R", "output.R"), local = TRUE)
 
+export_filename <- function(prefix, values, extension) {
+  values <- as.character(values)
+  values <- values[!is.na(values) & nzchar(values)]
+  slug <- gsub("[^A-Za-z0-9]+", "_", paste(values, collapse = "_"))
+  slug <- gsub("(^_+|_+$)", "", slug)
+  paste0(prefix, "_", slug, ".", extension)
+}
+
+save_plot_png <- function(plot, file, width, height) {
+  ggplot2::ggsave(
+    filename = file, plot = plot, width = width, height = height,
+    units = "in", dpi = 300, bg = "white", device = "png"
+  )
+}
+
 workbook_path <- file.path(
   app_root, "data", "EUDCF", "STECF_24-14_EU Aquaculture economic sector data tables.xlsx"
 )
@@ -164,6 +179,7 @@ if (inherits(workbook, "error")) {
         .caveat-list li { margin-bottom: 8px; }
         .status-line { color: #52665f; font-size: .92rem; margin-top: 8px; }
         .table-scroll { max-width: 100%; overflow-x: auto; }
+        .plot-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px; }
       "))),
       div(
         class = "container-fluid source-note",
@@ -198,7 +214,11 @@ if (inherits(workbook, "error")) {
             p(class = "view-description", "Select a country from the joint quantity/value ranking. Quantity and nominal value are shown side by side, stacked by FAO ISSCAAP group."),
             div(class = "status-line", textOutput("fao_status")),
             plotOutput("fao_country_plot", height = 460),
+            div(class = "plot-actions",
+              downloadButton("download_fao_plot", "Download PNG"),
+              downloadButton("download_fao_data", "Chart data CSV")),
             h4("Country ranking"),
+            div(class = "plot-actions", downloadButton("download_fao_ranking", "Ranking CSV")),
             div(class = "table-scroll", tableOutput("fao_ranking_table"))
           )
         )
@@ -234,6 +254,9 @@ if (inherits(workbook, "error")) {
           class = "view-title", tags$h2("Sales records by species"),
           p(class = "view-description", "Sales are shown as reported for the selected country, species, variable, and segment. Sample and population details are displayed below where present."),
           plotOutput("sales_plot", height = 390),
+            div(class = "plot-actions",
+              downloadButton("download_sales_plot", "Download PNG"),
+              downloadButton("download_sales_plot_data", "Chart data CSV")),
           div(class = "status-line", textOutput("sales_status")),
           h4("Sample and precision metadata"),
           tableOutput("sales_metadata_table"),
@@ -276,6 +299,9 @@ if (inherits(workbook, "error")) {
           class = "view-title", tags$h2("Economic measures"),
           p(class = "view-description", "Explore workbook-reported income, operating costs, labor, and capital for low-anthropic species groups. Values remain in nominal EUR; this view does not derive a profit margin."),
           plotOutput("economic_plot", height = 440),
+            div(class = "plot-actions",
+              downloadButton("download_economic_plot", "Download PNG"),
+              downloadButton("download_economic_plot_data", "Chart data CSV")),
           div(class = "status-line", textOutput("economic_status")),
           div(class = "table-scroll", tableOutput("economic_table"))
         )
@@ -288,6 +314,9 @@ if (inherits(workbook, "error")) {
         div(class = "view-title", tags$h2("National-total coverage")),
         p(class = "view-description", "Country counts below use the workbook's `tot` segment. Missing submissions and country-specific caveats remain visible rather than being filled or treated as zero."),
         plotOutput("coverage_plot", height = 360),
+        div(class = "plot-actions",
+          downloadButton("download_coverage_plot", "Download PNG"),
+          downloadButton("download_coverage_data", "Chart data CSV")),
         h4("Country-year coverage"),
         tableOutput("coverage_table"),
         h4("Key workbook caveats"),
@@ -354,12 +383,59 @@ if (inherits(workbook, "error")) {
         )
       })
 
-      output$fao_country_plot <- renderPlot({
+      fao_country_plot <- reactive({
         req(input$fao_country)
         analysis <- fao_analysis()
         validate(need(input$fao_country %in% analysis$ranking$country_code, "No country chart for this ranking."))
         build_fao_low_anthropic_country_plot(analysis, input$fao_country)
       })
+
+      output$fao_country_plot <- renderPlot(fao_country_plot())
+
+      output$download_fao_plot <- downloadHandler(
+        filename = function() export_filename(
+          "fao_low_anthropic",
+          c(input$fao_profile, input$fao_continent, input$fao_country,
+            input$fao_start_year, fao_end_year),
+          "png"
+        ),
+        content = function(file) save_plot_png(fao_country_plot(), file, 14, 6)
+      )
+
+      output$download_fao_data <- downloadHandler(
+        filename = function() export_filename(
+          "fao_low_anthropic_data",
+          c(input$fao_profile, input$fao_continent, input$fao_country,
+            input$fao_start_year, fao_end_year),
+          "csv"
+        ),
+        content = function(file) {
+          analysis <- fao_analysis()
+          data <- analysis$annual_data |>
+            dplyr::filter(country_code == input$fao_country) |>
+            dplyr::left_join(
+              analysis$ranking |>
+                dplyr::select(country_code, rank, ranking_start, ranking_end),
+              by = "country_code"
+            ) |>
+            dplyr::mutate(value_unit = dplyr::if_else(
+              measure == "production_tonnes", "tonnes", "thousand EUR"
+            ))
+          req(nrow(data) > 0)
+          utils::write.csv(data, file, row.names = FALSE, na = "")
+        }
+      )
+
+      output$download_fao_ranking <- downloadHandler(
+        filename = function() export_filename(
+          "fao_low_anthropic_ranking",
+          c(input$fao_profile, input$fao_continent, input$fao_start_year, fao_end_year),
+          "csv"
+        ),
+        content = function(file) {
+          utils::write.csv(fao_ranked_countries(), file, row.names = FALSE, na = "")
+        }
+      )
 
       output$fao_ranking_table <- renderTable({
         fao_ranked_countries() |>
@@ -377,76 +453,49 @@ if (inherits(workbook, "error")) {
 
     observeEvent(list(input$economic_species_group, input$economic_countries, input$economic_years), {
       req(input$economic_species_group, input$economic_years)
-      selected_group <- input$economic_species_group
-      selected_years <- input$economic_years
-      selected_countries <- input$economic_countries
-      segment_choices <- eudcf_dashboard_economic_segments(
-        economic, selected_group, selected_countries, selected_years
+      selection <- eudcf_dashboard_resolve_economic_selection(
+        economic,
+        input$economic_species_group,
+        input$economic_countries,
+        input$economic_years
       )
-      selected_segment <- eudcf_dashboard_default_economic_segment(
-        economic, selected_group, selected_years, selected_countries
-      )$segment_code[1]
-      if (!length(selected_segment) || is.na(selected_segment)) selected_segment <- character()
       updateSelectInput(
         session, "economic_segment",
-        choices = stats::setNames(segment_choices$segment_code, segment_choices$segment_name),
-        selected = selected_segment
-      )
-    }, ignoreInit = TRUE)
-
-    observeEvent(list(input$sales_country, input$sales_variable, input$sales_years), {
-      req(input$sales_country, input$sales_variable, input$sales_years)
-      selected_country <- input$sales_country
-      selected_variable <- input$sales_variable
-      selected_years <- input$sales_years
-      species_data <- usable_sales |>
-        dplyr::filter(
-          country_code == .env$selected_country,
-          variable_code == .env$selected_variable,
-          year >= min(.env$selected_years), year <= max(.env$selected_years)
-        )
-      species_choices <- species_data |>
-        dplyr::distinct(species_code, species_name) |>
-        dplyr::arrange(species_name)
-      selected_species <- if (!is.null(input$sales_species) && length(input$sales_species) &&
-                              input$sales_species %in% species_choices$species_code) {
-        input$sales_species
-      } else if (nrow(species_choices)) {
-        species_choices$species_code[1]
-      } else {
-        character()
-      }
-      updateSelectizeInput(
-        session, "sales_species",
-        choices = stats::setNames(species_choices$species_code, species_choices$species_name),
-        selected = selected_species, server = TRUE
+        choices = stats::setNames(
+          selection$segment_choices$segment_code,
+          selection$segment_choices$segment_name
+        ),
+        selected = selection$selected_segment
       )
     }, ignoreInit = TRUE)
 
     observeEvent(
-      list(input$sales_country, input$sales_variable, input$sales_species, input$sales_years),
+      list(input$sales_country, input$sales_variable, input$sales_years, input$sales_species),
       {
         req(input$sales_country, input$sales_variable, input$sales_years)
-        segments <- if (is.null(input$sales_species) || !nzchar(input$sales_species)) {
-          sales[0, c("segment_code", "segment_name")]
-        } else {
-          eudcf_dashboard_sales_segments(
-            sales, input$sales_country, input$sales_variable,
-            input$sales_species, input$sales_years
-          )
-        }
-        selected_segment <- if (!is.null(input$sales_segment) && length(input$sales_segment) &&
-                                input$sales_segment %in% segments$segment_code) {
-          input$sales_segment
-        } else if (nrow(segments)) {
-          segments$segment_code[1]
-        } else {
-          character()
-        }
+        selection <- eudcf_dashboard_resolve_sales_selection(
+          sales,
+          input$sales_country,
+          input$sales_variable,
+          input$sales_years,
+          selected_species = input$sales_species,
+          selected_segment = input$sales_segment
+        )
+        updateSelectizeInput(
+          session, "sales_species",
+          choices = stats::setNames(
+            selection$species_choices$species_code,
+            selection$species_choices$species_name
+          ),
+          selected = selection$selected_species, server = TRUE
+        )
         updateSelectInput(
           session, "sales_segment",
-          choices = stats::setNames(segments$segment_code, segments$segment_name),
-          selected = selected_segment
+          choices = stats::setNames(
+            selection$segment_choices$segment_code,
+            selection$segment_choices$segment_name
+          ),
+          selected = selection$selected_segment
         )
       },
       ignoreInit = TRUE
@@ -465,8 +514,10 @@ if (inherits(workbook, "error")) {
       )
     })
 
-    output$economic_plot <- renderPlot({
-      data <- eudcf_dashboard_plot_values(selected_economic())
+    economic_plot_data <- reactive(eudcf_dashboard_plot_values(selected_economic()))
+
+    economic_plot <- reactive({
+      data <- economic_plot_data()
       validate(need(nrow(data) > 0, "No economic rows for this selection."))
       variable <- economic_variables |> dplyr::filter(variable_code == input$economic_variable) |> dplyr::slice(1)
       display_unit <- paste(unique(data$plot_unit), collapse = ", ")
@@ -483,6 +534,32 @@ if (inherits(workbook, "error")) {
         theme_minimal(base_size = 12) +
         theme(panel.grid.minor = element_blank(), legend.position = "bottom")
     })
+
+    output$economic_plot <- renderPlot(economic_plot())
+
+    output$download_economic_plot <- downloadHandler(
+      filename = function() export_filename(
+        "eudcf_economics",
+        c(input$economic_variable, input$economic_species_group, input$economic_segment,
+          min(input$economic_years), max(input$economic_years)),
+        "png"
+      ),
+      content = function(file) save_plot_png(economic_plot(), file, 11, 6)
+    )
+
+    output$download_economic_plot_data <- downloadHandler(
+      filename = function() export_filename(
+        "eudcf_economics_chart_data",
+        c(input$economic_variable, input$economic_species_group, input$economic_segment,
+          min(input$economic_years), max(input$economic_years)),
+        "csv"
+      ),
+      content = function(file) {
+        data <- economic_plot_data()
+        req(nrow(data) > 0)
+        utils::write.csv(data, file, row.names = FALSE, na = "")
+      }
+    )
 
     output$economic_status <- renderText({
       data <- selected_economic()
@@ -515,8 +592,10 @@ if (inherits(workbook, "error")) {
       )
     })
 
-    output$sales_plot <- renderPlot({
-      data <- eudcf_dashboard_plot_values(selected_sales())
+    sales_plot_data <- reactive(eudcf_dashboard_plot_values(selected_sales()))
+
+    sales_plot <- reactive({
+      data <- sales_plot_data()
       validate(need(nrow(data) > 0, "No sales rows for this selection."))
       display_unit <- paste(unique(data$plot_unit), collapse = ", ")
       ggplot(data, aes(x = year, y = plot_value)) +
@@ -532,6 +611,32 @@ if (inherits(workbook, "error")) {
         theme_minimal(base_size = 12) +
         theme(panel.grid.minor = element_blank())
     })
+
+    output$sales_plot <- renderPlot(sales_plot())
+
+    output$download_sales_plot <- downloadHandler(
+      filename = function() export_filename(
+        "eudcf_sales",
+        c(input$sales_country, input$sales_species, input$sales_variable, input$sales_segment,
+          min(input$sales_years), max(input$sales_years)),
+        "png"
+      ),
+      content = function(file) save_plot_png(sales_plot(), file, 11, 5.5)
+    )
+
+    output$download_sales_plot_data <- downloadHandler(
+      filename = function() export_filename(
+        "eudcf_sales_chart_data",
+        c(input$sales_country, input$sales_species, input$sales_variable, input$sales_segment,
+          min(input$sales_years), max(input$sales_years)),
+        "csv"
+      ),
+      content = function(file) {
+        data <- sales_plot_data()
+        req(nrow(data) > 0)
+        utils::write.csv(data, file, row.names = FALSE, na = "")
+      }
+    )
 
     output$sales_status <- renderText({
       data <- selected_sales()
@@ -555,8 +660,10 @@ if (inherits(workbook, "error")) {
         dplyr::arrange(year)
     }, digits = 2, striped = TRUE, bordered = FALSE, spacing = "s")
 
-    output$coverage_plot <- renderPlot({
-      coverage <- eudcf_dashboard_national_coverage(economic)
+    coverage_data <- reactive(eudcf_dashboard_national_coverage(economic))
+
+    coverage_plot <- reactive({
+      coverage <- coverage_data()
       ggplot(coverage, aes(x = year, y = countries)) +
         geom_col(fill = "#176b5b", width = 0.75) +
         scale_x_continuous(breaks = scales::breaks_width(1)) +
@@ -566,8 +673,20 @@ if (inherits(workbook, "error")) {
         theme(panel.grid.minor = element_blank())
     })
 
+    output$coverage_plot <- renderPlot(coverage_plot())
+
+    output$download_coverage_plot <- downloadHandler(
+      filename = function() "eudcf_national_coverage.png",
+      content = function(file) save_plot_png(coverage_plot(), file, 10, 4.5)
+    )
+
+    output$download_coverage_data <- downloadHandler(
+      filename = function() "eudcf_national_coverage.csv",
+      content = function(file) utils::write.csv(coverage_data(), file, row.names = FALSE, na = "")
+    )
+
     output$coverage_table <- renderTable({
-      eudcf_dashboard_national_coverage(economic)
+      coverage_data()
     }, striped = TRUE, bordered = FALSE, spacing = "s")
   }
 }

@@ -91,6 +91,59 @@ testthat::test_that("DCF graph values scale euros only and segments follow the c
   )
 })
 
+testthat::test_that("DCF dependent selections resolve available choices together", {
+  economic <- tibble::tibble(
+    country_code = c("DEU", "FRA"),
+    species_group = "Mussel",
+    year = 2022L,
+    segment_code = c("seg.10_10", "seg.11_10"),
+    segment_name = c("Longline", "On-bottom")
+  )
+  german_economic <- eudcf_dashboard_resolve_economic_selection(
+    economic, "Mussel", "DEU", c(2022L, 2022L)
+  )
+  french_economic <- eudcf_dashboard_resolve_economic_selection(
+    economic, "Mussel", "FRA", c(2022L, 2022L)
+  )
+  testthat::expect_identical(german_economic$selected_segment, "seg.10_10")
+  testthat::expect_identical(french_economic$selected_segment, "seg.11_10")
+  testthat::expect_identical(french_economic$segment_choices$segment_code, "seg.11_10")
+
+  sales <- tibble::tibble(
+    country_code = c("DEU", "DEU", "DEU", "FRA"),
+    variable_code = "GST",
+    species_code = c("MUS", "MUS", "OYS", "OYS"),
+    species_name = c("Mussel", "Mussel", "Oyster", "Oyster"),
+    year = 2022L,
+    segment_code = c("seg.10_10", "seg.10_11", "seg.12_10", "seg.20_10"),
+    segment_name = c("Longline", "Rafts", "Oyster on-bottom", "Oyster on-bottom"),
+    value = 100
+  )
+  initial_sales <- eudcf_dashboard_resolve_sales_selection(
+    sales, "DEU", "GST", c(2022L, 2022L),
+    selected_species = "MUS", selected_segment = "seg.10_11"
+  )
+  changed_sales <- eudcf_dashboard_resolve_sales_selection(
+    sales, "FRA", "GST", c(2022L, 2022L),
+    selected_species = "MUS", selected_segment = "seg.10_11"
+  )
+  empty_sales <- eudcf_dashboard_resolve_sales_selection(
+    sales, "FRA", "GST", c(2023L, 2023L),
+    selected_species = "OYS", selected_segment = "seg.20_10"
+  )
+
+  testthat::expect_identical(initial_sales$selected_species, "MUS")
+  testthat::expect_identical(initial_sales$selected_segment, "seg.10_11")
+  testthat::expect_identical(initial_sales$segment_choices$segment_code, c("seg.10_10", "seg.10_11"))
+  testthat::expect_identical(changed_sales$selected_species, "OYS")
+  testthat::expect_identical(changed_sales$selected_segment, "seg.20_10")
+  testthat::expect_identical(changed_sales$segment_choices$segment_code, "seg.20_10")
+  testthat::expect_length(empty_sales$species_choices$species_code, 0L)
+  testthat::expect_identical(empty_sales$selected_species, character())
+  testthat::expect_length(empty_sales$segment_choices$segment_code, 0L)
+  testthat::expect_identical(empty_sales$selected_segment, character())
+})
+
 testthat::test_that("DCF sales display rounds values and achieved sample without changing source rows", {
   sales <- tibble::tibble(
     value = c("1234.56", "NULL"),

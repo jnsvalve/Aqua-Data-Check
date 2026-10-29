@@ -66,6 +66,19 @@ eudcf_dashboard_economic_segments <- function(economic, species_group,
     dplyr::arrange(segment_code)
 }
 
+eudcf_dashboard_resolve_economic_selection <- function(economic, species_group,
+                                                       country_codes = NULL,
+                                                       year_range = NULL) {
+  segment_choices <- eudcf_dashboard_economic_segments(
+    economic, species_group, country_codes, year_range
+  )
+  selected_segment <- eudcf_dashboard_default_economic_segment(
+    economic, species_group, year_range, country_codes
+  )$segment_code[1]
+  if (!length(selected_segment) || is.na(selected_segment)) selected_segment <- character()
+  list(segment_choices = segment_choices, selected_segment = selected_segment)
+}
+
 eudcf_dashboard_sales_segments <- function(sales, country_code,
                                            variable_code = NULL,
                                            species_code = NULL,
@@ -84,6 +97,44 @@ eudcf_dashboard_sales_segments <- function(sales, country_code,
   data |>
     dplyr::distinct(segment_code, segment_name) |>
     dplyr::arrange(segment_code)
+}
+
+eudcf_dashboard_resolve_sales_selection <- function(sales, country_code,
+                                                    variable_code, year_range,
+                                                    selected_species = NULL,
+                                                    selected_segment = NULL) {
+  available_sales <- eudcf_dashboard_sales_catalog(sales) |>
+    dplyr::filter(
+      country_code == .env$country_code,
+      variable_code == .env$variable_code,
+      year >= min(.env$year_range), year <= max(.env$year_range)
+    )
+  species_choices <- available_sales |>
+    dplyr::distinct(species_code, species_name) |>
+    dplyr::arrange(species_name)
+  if (is.null(selected_species) || !length(selected_species) ||
+      !selected_species %in% species_choices$species_code) {
+    selected_species <- if (nrow(species_choices)) species_choices$species_code[1] else character()
+  }
+
+  segment_choices <- if (!length(selected_species)) {
+    sales[0, c("segment_code", "segment_name")]
+  } else {
+    eudcf_dashboard_sales_segments(
+      sales, country_code, variable_code, selected_species, year_range
+    )
+  }
+  if (is.null(selected_segment) || !length(selected_segment) ||
+      !selected_segment %in% segment_choices$segment_code) {
+    selected_segment <- if (nrow(segment_choices)) segment_choices$segment_code[1] else character()
+  }
+
+  list(
+    species_choices = species_choices,
+    selected_species = selected_species,
+    segment_choices = segment_choices,
+    selected_segment = selected_segment
+  )
 }
 
 eudcf_dashboard_plot_values <- function(data) {
