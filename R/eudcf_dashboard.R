@@ -137,6 +137,23 @@ eudcf_dashboard_resolve_sales_selection <- function(sales, country_code,
   )
 }
 
+eudcf_dashboard_plot_series <- function(data, year_range) {
+  if (!nrow(data)) return(data)
+  dimensions <- intersect(
+    c("country_code", "variable_code", "segment_code", "species_code", "unit"),
+    names(data)
+  )
+  labels <- intersect(
+    c("country_name", "variable_name", "segment_name", "species_name", "plot_unit"),
+    names(data)
+  )
+  data |>
+    dplyr::group_by(dplyr::across(dplyr::all_of(dimensions))) |>
+    tidyr::complete(year = seq.int(min(year_range), max(year_range))) |>
+    tidyr::fill(dplyr::all_of(labels), .direction = "downup") |>
+    dplyr::ungroup()
+}
+
 eudcf_dashboard_plot_values <- function(data) {
   if (!"unit" %in% names(data) || !"value" %in% names(data)) {
     stop("Plot data must include value and unit", call. = FALSE)

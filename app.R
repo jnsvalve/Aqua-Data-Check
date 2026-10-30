@@ -91,6 +91,10 @@ if (inherits(workbook, "error")) {
     economic_variables$variable_code,
     paste0(economic_variables$variable_name, " (", economic_variables$variable_code, ", ", economic_variables$unit, ")")
   )
+  country_colours <- stats::setNames(
+    grDevices::hcl.colors(nrow(economic_countries), palette = "Dark 3"),
+    economic_countries$country_code
+  )
   low_anthropic_groups <- eudcf_dashboard_low_anthropic_groups(economic)
   sales_countries <- usable_sales |>
     dplyr::distinct(country_code, country_name) |>
@@ -213,7 +217,7 @@ if (inherits(workbook, "error")) {
             class = "view-title", tags$h2("FAO low-anthropic production"),
             p(class = "view-description", "Select a country from the joint quantity/value ranking. Quantity and nominal value are shown side by side, stacked by FAO ISSCAAP group."),
             div(class = "status-line", textOutput("fao_status")),
-            plotOutput("fao_country_plot", height = 460),
+            plotOutput("fao_country_plot", height = "auto"),
             div(class = "plot-actions",
               downloadButton("download_fao_plot", "Download PNG"),
               downloadButton("download_fao_data", "Chart data CSV")),
@@ -387,10 +391,15 @@ if (inherits(workbook, "error")) {
         req(input$fao_country)
         analysis <- fao_analysis()
         validate(need(input$fao_country %in% analysis$ranking$country_code, "No country chart for this ranking."))
-        build_fao_low_anthropic_country_plot(analysis, input$fao_country)
+        build_fao_low_anthropic_country_plot(
+          analysis, input$fao_country,
+          compact = isTRUE(session$clientData$output_fao_country_plot_width < 650)
+        )
       })
 
-      output$fao_country_plot <- renderPlot(fao_country_plot())
+      output$fao_country_plot <- renderPlot(fao_country_plot(), height = function() {
+        if (isTRUE(session$clientData$output_fao_country_plot_width < 650)) 1000 else 620
+      })
 
       output$download_fao_plot <- downloadHandler(
         filename = function() export_filename(
@@ -399,7 +408,10 @@ if (inherits(workbook, "error")) {
             input$fao_start_year, fao_end_year),
           "png"
         ),
-        content = function(file) save_plot_png(fao_country_plot(), file, 14, 6)
+        content = function(file) save_plot_png(
+          build_fao_low_anthropic_country_plot(fao_analysis(), input$fao_country),
+          file, 14, 7
+        )
       )
 
       output$download_fao_data <- downloadHandler(
@@ -537,21 +549,49 @@ if (inherits(workbook, "error")) {
       validate(need(nrow(data) > 0, "No economic rows for this selection."))
       variable <- economic_variables |> dplyr::filter(variable_code == input$economic_variable) |> dplyr::slice(1)
       display_unit <- paste(unique(data$plot_unit), collapse = ", ")
-      ggplot(data, aes(x = year, y = plot_value, colour = country_name, group = country_code)) +
+      segment_name <- unique(data$segment_name)[1]
+      monetary <- any(toupper(data$unit) %in% c("EURO", "EUR"))
+      endpoints <- data |>
+        dplyr::filter(is.finite(plot_value)) |>
+        dplyr::group_by(country_code) |>
+        dplyr::slice_max(year, n = 1, with_ties = FALSE) |>
+        dplyr::ungroup()
+      direct_labels <- nrow(endpoints) > 0 && nrow(endpoints) <= 6
+      data <- eudcf_dashboard_plot_series(data, input$economic_years)
+      plot <- ggplot(data, aes(x = year, y = plot_value, colour = country_code, group = country_code)) +
         geom_line(linewidth = 0.8, na.rm = TRUE) +
         geom_point(size = 2, na.rm = TRUE) +
-        scale_x_continuous(breaks = scales::breaks_width(1), limits = range(input$economic_years)) +
+        scale_colour_manual(values = country_colours, breaks = economic_countries$country_code,
+                            labels = economic_countries$country_name) +
+        scale_x_continuous(breaks = aquaculture_year_breaks,
+                           expand = expansion(mult = c(0.03, if (direct_labels) 0.25 else 0.03))) +
+        coord_cartesian(xlim = range(input$economic_years), clip = "off") +
         scale_y_continuous(labels = scales::label_comma()) +
         labs(
           title = variable$variable_name,
-          subtitle = paste(input$economic_species_group, "|", input$economic_segment, "|", display_unit, "| nominal values"),
-          x = NULL, y = NULL, colour = NULL
+          subtitle = paste(input$economic_species_group, "|", segment_name),
+          x = NULL, y = display_unit, colour = NULL,
+          caption = paste0("Source: STECF / EUDCF | ", paste(range(input$economic_years), collapse = "-"),
+                           if (monetary) " | Nominal EUR" else "",
+                           "\nReported values; missing years remain gaps.")
         ) +
-        theme_minimal(base_size = 12) +
-        theme(panel.grid.minor = element_blank(), legend.position = "bottom")
+        aquaculture_plot_theme()
+      if (direct_labels) {
+        plot <- plot +
+          ggrepel::geom_text_repel(
+            data = endpoints, aes(label = country_name), direction = "y",
+            nudge_x = max(0.15, diff(range(input$economic_years)) * 0.04),
+            hjust = 0, size = 3.5, seed = 42, max.overlaps = Inf,
+            min.segment.length = 0, show.legend = FALSE
+          ) +
+          theme(legend.position = "none")
+      }
+      plot
     })
 
-    output$economic_plot <- renderPlot(economic_plot())
+    output$economic_plot <- renderPlot(
+      aquaculture_wrap_plot_labels(economic_plot(), session$clientData$output_economic_plot_width)
+    )
 
     output$download_economic_plot <- downloadHandler(
       filename = function() export_filename(
@@ -614,21 +654,31 @@ if (inherits(workbook, "error")) {
       data <- sales_plot_data()
       validate(need(nrow(data) > 0, "No sales rows for this selection."))
       display_unit <- paste(unique(data$plot_unit), collapse = ", ")
+      variable_name <- unique(data$variable_name)[1]
+      species_name <- unique(data$species_name)[1]
+      country_name <- unique(data$country_name)[1]
+      segment_name <- unique(data$segment_name)[1]
+      monetary <- any(toupper(data$unit) %in% c("EURO", "EUR"))
+      data <- eudcf_dashboard_plot_series(data, input$sales_years)
       ggplot(data, aes(x = year, y = plot_value)) +
         geom_line(colour = "#176b5b", linewidth = 0.9, na.rm = TRUE) +
         geom_point(colour = "#176b5b", size = 2, na.rm = TRUE) +
-        scale_x_continuous(breaks = scales::breaks_width(1), limits = range(input$sales_years)) +
+        scale_x_continuous(breaks = aquaculture_year_breaks, limits = range(input$sales_years)) +
         scale_y_continuous(labels = scales::label_comma()) +
         labs(
-          title = unique(data$variable_name)[1],
-          subtitle = paste(unique(data$species_name)[1], "|", display_unit),
-          x = NULL, y = NULL
+          title = paste(country_name, "-", variable_name),
+          subtitle = paste(species_name, "|", segment_name),
+          x = NULL, y = display_unit,
+          caption = paste0("Source: STECF / EUDCF | ", paste(range(input$sales_years), collapse = "-"),
+                           if (monetary) " | Nominal EUR" else "",
+                           "\nAs reported; not expanded from samples. Missing years remain gaps.")
         ) +
-        theme_minimal(base_size = 12) +
-        theme(panel.grid.minor = element_blank())
+        aquaculture_plot_theme()
     })
 
-    output$sales_plot <- renderPlot(sales_plot())
+    output$sales_plot <- renderPlot(
+      aquaculture_wrap_plot_labels(sales_plot(), session$clientData$output_sales_plot_width)
+    )
 
     output$download_sales_plot <- downloadHandler(
       filename = function() export_filename(
@@ -682,14 +732,17 @@ if (inherits(workbook, "error")) {
       coverage <- coverage_data()
       ggplot(coverage, aes(x = year, y = countries)) +
         geom_col(fill = "#176b5b", width = 0.75) +
-        scale_x_continuous(breaks = scales::breaks_width(1)) +
-        scale_y_continuous(breaks = scales::breaks_pretty(), expand = expansion(mult = c(0, 0.08))) +
-        labs(x = NULL, y = "Countries with national-total data", caption = "Counts reflect presence of workbook rows, not completeness or reliability.") +
-        theme_minimal(base_size = 12) +
-        theme(panel.grid.minor = element_blank())
+        scale_x_continuous(breaks = aquaculture_year_breaks) +
+        scale_y_continuous(breaks = function(limits) unique(round(scales::breaks_pretty()(limits))),
+                           expand = expansion(mult = c(0, 0.08))) +
+        labs(title = "National-total reporting coverage", x = NULL, y = "Countries with national-total data",
+             caption = "Source: STECF / EUDCF\nCounts reflect presence of workbook rows, not completeness or reliability.") +
+        aquaculture_plot_theme()
     })
 
-    output$coverage_plot <- renderPlot(coverage_plot())
+    output$coverage_plot <- renderPlot(
+      aquaculture_wrap_plot_labels(coverage_plot(), session$clientData$output_coverage_plot_width)
+    )
 
     output$download_coverage_plot <- downloadHandler(
       filename = function() "eudcf_national_coverage.png",

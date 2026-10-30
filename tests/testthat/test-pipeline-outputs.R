@@ -54,6 +54,34 @@ testthat::test_that("DCF economics filters low-anthropic species and chooses a r
   testthat::expect_false(any(selected$segment_code == "tot"))
 })
 
+testthat::test_that("DCF plot series preserve annual gaps and reported zeroes", {
+  reported <- tibble::tibble(
+    country_code = c("DEU", "DEU", "FRA"),
+    country_name = c("Germany", "Germany", "France"),
+    year = c(2020L, 2022L, 2021L), value = c(0, 2000, 1000), unit = "EURO"
+  ) |>
+    eudcf_dashboard_plot_values()
+  series <- eudcf_dashboard_plot_series(reported, c(2020L, 2022L))
+  germany <- dplyr::filter(series, country_code == "DEU")
+  testthat::expect_equal(nrow(series), 6L)
+  testthat::expect_equal(germany$plot_value, c(0, NA, 2))
+  testthat::expect_true(all(germany$country_name == "Germany"))
+  testthat::expect_true(all(germany$plot_unit == "thousand EUR"))
+  testthat::expect_equal(nrow(reported), 3L)
+  testthat::expect_equal(eudcf_dashboard_plot_series(reported[0, ], 2020:2022), reported[0, ])
+})
+
+testthat::test_that("Dashboard chart defaults use sparse integer years and a shared theme", {
+  testthat::expect_equal(aquaculture_year_breaks(c(2021, 2022)), 2021:2022)
+  testthat::expect_equal(aquaculture_year_breaks(c(2022, 2022)), 2022)
+  testthat::expect_lte(length(aquaculture_year_breaks(c(2000, 2025))), 8L)
+  testthat::expect_equal(aquaculture_plot_theme()$legend.position, "bottom")
+  rows <- tibble::tibble(year = 2020:2022, plot_value = c(0, NA, 2))
+  plot <- ggplot2::ggplot(rows, ggplot2::aes(year, plot_value)) +
+    ggplot2::geom_line() + aquaculture_plot_theme()
+  testthat::expect_true(is.na(ggplot2::ggplot_build(plot)$data[[1]]$y[2]))
+})
+
 testthat::test_that("DCF graph values scale euros only and segments follow the country", {
   plot_values <- eudcf_dashboard_plot_values(tibble::tibble(
     value = c(1250000, 275), unit = c("EURO", "KG")

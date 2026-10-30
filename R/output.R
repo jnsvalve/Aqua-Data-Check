@@ -1,4 +1,35 @@
-build_fao_low_anthropic_country_plot <- function(analysis, country_code) {
+aquaculture_plot_theme <- function(base_size = 12) {
+  ggplot2::theme_minimal(base_size = base_size) +
+    ggplot2::theme(
+      panel.grid.minor = ggplot2::element_blank(),
+      panel.grid.major.x = ggplot2::element_blank(),
+      panel.grid.major.y = ggplot2::element_line(colour = "#e0e6e3", linewidth = 0.3),
+      plot.title = ggplot2::element_text(face = "bold", colour = "#1c302c"),
+      plot.subtitle = ggplot2::element_text(colour = "#52665f", margin = ggplot2::margin(b = 12)),
+      plot.caption = ggplot2::element_text(hjust = 0, colour = "#52665f", margin = ggplot2::margin(t = 12)),
+      plot.background = ggplot2::element_rect(fill = "white", colour = NA),
+      legend.position = "bottom",
+      legend.key.width = grid::unit(1.3, "lines"),
+      plot.margin = ggplot2::margin(12, 16, 12, 12)
+    )
+}
+
+aquaculture_year_breaks <- function(limits) {
+  years <- seq.int(ceiling(min(limits)), floor(max(limits)))
+  step <- max(1L, ceiling(length(years) / 8L))
+  years[seq.int(1L, length(years), by = step)]
+}
+
+aquaculture_wrap_plot_labels <- function(plot, width) {
+  if (is.null(width) || width >= 600) return(plot)
+  plot + ggplot2::labs(
+    title = stringr::str_wrap(plot$labels$title, width = 30),
+    subtitle = stringr::str_wrap(plot$labels$subtitle, width = 35),
+    caption = stringr::str_wrap(plot$labels$caption, width = 42)
+  )
+}
+
+build_fao_low_anthropic_country_plot <- function(analysis, country_code, compact = FALSE) {
   country_data <- analysis$annual_data |>
     dplyr::filter(.data$country_code == .env$country_code) |>
     dplyr::mutate(category = as.character(category))
@@ -59,14 +90,11 @@ build_fao_low_anthropic_country_plot <- function(analysis, country_code) {
         labels = categories, drop = FALSE
       ) +
       ggplot2::scale_x_continuous(
-        limits = range(analysis$years), breaks = scales::breaks_width(5),
+        limits = range(analysis$years), breaks = aquaculture_year_breaks,
         labels = scales::label_number(accuracy = 1, big.mark = ""), expand = c(0, 0)
       ) +
       ggplot2::scale_y_continuous(
-        breaks = function(limits) {
-          breaks <- scales::breaks_pretty()(limits)
-          breaks[breaks != 0]
-        },
+        breaks = scales::breaks_pretty(),
         labels = scales::label_comma(),
         expand = ggplot2::expansion(mult = c(0, 0.05))
       ) +
@@ -74,21 +102,26 @@ build_fao_low_anthropic_country_plot <- function(analysis, country_code) {
         title = if (selected_measure == "production_tonnes") "Quantity (tonnes)" else "Value (thousand EUR, nominal)",
         x = NULL, y = NULL, fill = NULL
       ) +
-      ggplot2::theme_minimal(base_size = 12) +
-      ggplot2::theme(panel.grid.minor = ggplot2::element_blank(), legend.position = "bottom")
+      aquaculture_plot_theme() +
+      ggplot2::guides(fill = ggplot2::guide_legend(ncol = if (compact) 1 else 3))
   })
   country_name <- suppressWarnings(countrycode::countrycode(country_code, "iso2c", "country.name"))
   if (is.na(country_name)) country_name <- country_code
   country_rank <- analysis$ranking |> dplyr::filter(.data$country_code == .env$country_code)
   ranking_scope <- if (is.null(analysis$continent)) "Worldwide" else analysis$continent
-  patchwork::wrap_plots(panels, nrow = 1, guides = "collect") +
+  patchwork::wrap_plots(panels, ncol = if (compact) 1 else 2, guides = "collect") +
     patchwork::plot_annotation(
-      title = paste(country_name, "- FAO low-anthropic aquaculture"),
-      subtitle = paste0(
+      title = stringr::str_wrap(paste(country_name, "- FAO low-anthropic aquaculture"),
+                                width = if (compact) 30 else 80),
+      subtitle = stringr::str_wrap(paste0(
         analysis$profile, " profile | ", ranking_scope, " | Joint quantity/value rank ", country_rank$rank,
         " | Three-year averages: ", country_rank$ranking_start, "-", country_rank$ranking_end
+      ), width = if (compact) 36 else 110),
+      caption = stringr::str_wrap(
+        "Source: FAO; values converted using annual USD/EUR rates. Missing years remain gaps.",
+        width = if (compact) 40 else 110
       ),
-      caption = "Source: FAO; values converted using annual USD/EUR rates. Missing years remain gaps."
+      theme = aquaculture_plot_theme()
     ) & ggplot2::theme(legend.position = "bottom")
 }
 
